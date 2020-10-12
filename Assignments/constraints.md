@@ -38,6 +38,21 @@
 
 ## Security
 
+* Secure Data Storage
+  * Storage of passwords and emails of user accounts is a priority to keep user information private.
+* Secure Audio Data
+  * When recording audio for analysis, audio needs to be encrypted in order to protect users privacy.
+* Secure Communications
+  * All communication between connected services (web, backend, APIs) needs to be protected via means like HTTPS and authentication tokens
+
 ## Social
 
+* Intended for public use
+  * Since the application will be available for all people to use, the UI must be held to high usability standards
+
 ## Diversity & Cultural
+
+* English as Base Language
+  * The application is intended for a userbase that are English speakers as their primary language. The UI will be in English.
+* Only Support Latin/Germanic Languages
+  * The tools in the app will only support Latin and Germanic based languages, i.e., French, Spanish, German.
