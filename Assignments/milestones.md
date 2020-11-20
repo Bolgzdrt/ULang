@@ -27,6 +27,7 @@ Deploy the application to a cloud platform to make it accessible from anywhere.
 <u>Deliverable</u>: Final application.
 
 ---
+
 ## Timeline
 
 |Task|Assignee|Start Date|End Date|
@@ -59,6 +60,7 @@ Deploy the application to a cloud platform to make it accessible from anywhere.
 |Document technologies used|Robert, Messmer, Jantzen|3/26/2021|4/16/2021|
 
 ---
+
 ## Effort Matrix
 
 Effort points on a scale of 1 being the easiest/least time commitment, to 3 being the hardest/most time commitment
