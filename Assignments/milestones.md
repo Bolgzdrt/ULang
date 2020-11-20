@@ -35,19 +35,19 @@ Deploy the application to a cloud platform to make it accessible from anywhere.
 |Research cloud platforms (Azure, Firebase, AWS)|Robert|10/5/2020|11/2/2020|
 |Research natural language processing|Messmer|10/5/2020|11/2/2020|
 |Research testing frameworks|Robert, Messmer, Jantzen|10/5/2020|11/2/2020|
-|Design database|Jantzen|11/2/2020|11/16/2020|
-|Design general UI layout|Messmer|11/2/2020|11/16/2020|
-|Design user dictionaries functionality|Jantzen|11/2/2020|11/16/2020|
-|Design flash cards functionality|Messmer|11/2/2020|11/16/2020|
-|Design pronunciation practice functionality|Robert|11/2/2020|11/16/2020|
-|Design vocabulary games functionality|Robert, Messmer, Jantzen|11/2/2020|11/16/2020|
-|Implement database|Jantzen|11/16/2020|2/29/2021|
-|Implement cloud platform|Robert|11/16/2020|2/29/2021|
-|Implement general UI layout|Messmer|11/16/2020|2/29/2021|
-|Implement user dictionaries functionality|Jantzen|11/16/2020|2/29/2021|
-|Implement flash cards functionality|Messmer|11/16/2020|2/29/2021|
-|Implement pronunciation practice functionality|Robert|11/16/2020|2/29/2021|
-|Implement vocabulary games functionality|Robert, Messmer, Jantzen|11/16/2020|2/29/2021|
+|Design database|Jantzen|11/2/2020|12/8/2020|
+|Design general UI layout|Messmer|11/2/2020|12/8/2020|
+|Design user dictionaries functionality|Jantzen|11/2/2020|12/8/2020|
+|Design flash cards functionality|Messmer|11/2/2020|12/8/2020|
+|Design pronunciation practice functionality|Robert|11/2/2020|12/8/2020|
+|Design vocabulary games functionality|Robert, Messmer, Jantzen|11/2/2020|12/8/2020|
+|Implement database|Jantzen|12/8/2020|2/29/2021|
+|Implement cloud platform|Robert|12/8/2020|2/29/2021|
+|Implement general UI layout|Messmer|12/8/2020|2/29/2021|
+|Implement user dictionaries functionality|Jantzen|12/8/2020|2/29/2021|
+|Implement flash cards functionality|Messmer|12/8/2020|2/29/2021|
+|Implement pronunciation practice functionality|Robert|12/8/2020|2/29/2021|
+|Implement vocabulary games functionality|Robert, Messmer, Jantzen|12/8/2020|2/29/2021|
 |Test UI|Robert, Messmer, Jantzen|2/29/2021|3/26/2021|
 |Test app functionalities|Robert, Messmer, Jantzen|2/29/2021|3/26/2021|
 |Refine application|Robert, Messmer, Jantzen|2/29/2021|3/26/2021|
