@@ -1,0 +1,37 @@
+Table users as U {
+  usersID int [pk, increment] // auto-increment
+  full_name varchar
+  username varchar
+  password varchar
+  wordSetList varchar
+  friendsList varchar
+}
+
+Table wordSet as WS {
+  setID int [pk, increment]
+  setName varchar
+  language varchar
+  wordList varchar
+  favorite boolean
+  descritption varchar
+}
+
+Ref{
+  U.wordSetList > WS.setID
+}
+
+Ref{
+    U.friendsList > U.usersID
+}
+
+Table word as W {
+  wordID int [pk, increment]
+  spelling varchar
+  englishWord varchar
+  wordType int
+  notes varchar
+}
+
+Ref{
+  WS.wordList > W.wordID
+}
