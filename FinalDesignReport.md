@@ -187,3 +187,24 @@ ULang is a foreign language learning application focused on note keeping and pra
 - [Karma](https://karma-runner.github.io/latest/index.html)
 
 ### Effort
+|Task|Assignee|Hours|
+|----|--------|:-----------:|
+|Professional Biography|Jantzen, Messmer, Robert|1|
+|Project Description|Jantzen, Messmer, Robert|3|
+|Capstone Assessment|Jantzen, Messmer, Robert|3|
+|Design Diagrams|Jantzen, Messmer, Robert|5|
+|Task List & Effort Matrix|Jantzen, Messmer, Robert|2|
+|Major Constraints|Jantzen, Messmer, Robert|3|
+|Presentation|Jantzen, Messmer, Robert|4|
+|Peer Reviews|Jantzen, Messmer, Robert|2|
+|Final Report|Jantzen, Messmer, Robert|2|
+|Research database paradigm|Jantzen|4|
+|Design database|Robert|2|
+|Research cloud platforms (Azure, Firebase, AWS)|Robert|4|
+|Research natural language processing|Messmer|4|
+|Design general UI layout|Jantzen, Messmer, Robert|10|
+|Design user dictionaries functionality|Jantzen, Messmer, Robert|1|
+|Design flash cards functionality|Jantzen, Messmer|1|
+|Design pronunciation practice functionality|Jantzen, Messmer|1|
+|Design vocabulary games functionality|Robert, Messmer, Jantzen|1|
+|Research testing frameworks|Robert, Messmer, Jantzen|3|
