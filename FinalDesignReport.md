@@ -187,6 +187,7 @@ ULang is a foreign language learning application focused on note keeping and pra
 - [Karma](https://karma-runner.github.io/latest/index.html)
 
 ### Effort
+
 |Task|Assignee|Hours|
 |----|--------|:-----------:|
 |Professional Biography|Jantzen, Messmer, Robert|1|
