@@ -49,6 +49,7 @@ export default {
   justify-content: center;
   position: relative;
   cursor: pointer;
+  height: 100%;
 }
 
 .nav-modal {
