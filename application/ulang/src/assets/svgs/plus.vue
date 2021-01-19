@@ -41,6 +41,7 @@ export default {
 </script>
 
 <style scoped>
+@import '../styles/utils.css';
 
 #plusContainer {
   display: flex;
@@ -57,7 +58,7 @@ export default {
   width: 150px; /* Possibly make this 200 when the SVGs are in */
   height: 75px;
   border: 1px solid black;
-  background: #fff;
+  background: var(--white);
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;

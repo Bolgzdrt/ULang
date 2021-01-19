@@ -24,19 +24,21 @@ export default {
 </script>
 
 <style scoped>
+@import '../assets/styles/utils.css';
+
 nav {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
+  height: 50px;
   width: 100%;
-  background: #7666D8;
+  background: var(--purple);
   padding: 0 2vw;
 }
 
 nav h1 {
-  color: #fff;
+  color: var(--white);
 }
 
 nav .nav-items {
