@@ -44,12 +44,5 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
-  /* I don't know if these work, but these are most of the main colors for the app */
-  /* --purple: #7666D8;
-  --white: #fff;
-  --accent-red: #ff6663;
-  --yellow: #faff00;
-  --gray: #ccc; */
 }
 </style>
