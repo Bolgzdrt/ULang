@@ -1,4 +1,4 @@
-# ulang
+# ULang
 
 ## Project setup
 ```
