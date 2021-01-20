@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser')
 
 const { authRouter } = require('./routes/authRoutes')
 
+console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config({ path: './.env.local' })
 } else {
