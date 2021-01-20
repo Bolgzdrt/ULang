@@ -1,6 +1,17 @@
 <template>
   <div class="home">
-    <h1>Home Page</h1>
+    <div class="quickStart">  
+      <h1>Quick Start</h1>
+      
+    </div>
+    <div class="row">
+      <div class="column">
+        <h1>Recent Activity</h1>
+      </div>
+      <div class="column">
+        <h1>Recent Sets</h1>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -14,3 +25,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
+}
+</style>

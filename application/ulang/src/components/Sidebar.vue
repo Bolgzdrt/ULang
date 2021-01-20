@@ -37,7 +37,7 @@ export default {
   display: flex;
   flex-direction: column;
   text-align: left;
-  height: calc(100% - 60px);
+  height: calc(100% - 50px);
   width: 240px;
   position: fixed;
   z-index: 1;
