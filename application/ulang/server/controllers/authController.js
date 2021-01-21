@@ -31,12 +31,12 @@ const handleErrors = (err) => {
 
 const maxAge = 60 * 60 * 24
 const createToken = (id) => {
-  return jwt.sign({ id }, 'chris secret key', {
+  return jwt.sign({ id }, process.env.SECRET_KEY, {
     expiresIn: maxAge
   })
 }
 
-const signup_post = async (req, res) => {
+const signup = async (req, res) => {
   const { email, username, password } = req.body
 
   try {
@@ -56,7 +56,7 @@ const signup_post = async (req, res) => {
   }
 }
 
-const login_post = async (req, res) => {
+const login = async (req, res) => {
   const { email, password } = req.body
 
   try {
@@ -76,13 +76,13 @@ const login_post = async (req, res) => {
   }
 }
 
-const logout_get = async (req, res) => {
+const logout = async (req, res) => {
   res.cookie('jwt', '', { maxAge: 1 })
   res.redirect('/')
 }
 
 module.exports = {
-  signup_post,
-  login_post,
-  logout_get
+  signup,
+  login,
+  logout
 }
