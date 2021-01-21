@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 
 // handle errors
 const handleErrors = (err) => {
+  console.log(err)
   let errors = { email: '', password: '', username: '' }
 
   if (err.code === 11000) {
@@ -57,10 +58,10 @@ const signup = async (req, res) => {
 }
 
 const login = async (req, res) => {
-  const { email, password } = req.body
+  const { email, username, password } = req.body
 
   try {
-    const user = await User.login(email, password)
+    const user = await User.login(username, password)
     const token = createToken(user._id)
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
     res.status(200).json({
