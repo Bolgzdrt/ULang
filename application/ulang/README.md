@@ -1,24 +1,37 @@
 # ULang
 
 ## Project setup
-```
-yarn install
+
+```sh
+npm install
 ```
 
-### Compiles and hot-reloads for development
+## Runs Development Environment
+
+```sh
+npm run start
 ```
-yarn serve
+
+or
+
+```sh
+npm run start:dev
+```
+
+### Compiles and hot-reloads front-end for development
+
+```sh
+npm run serve
 ```
 
 ### Compiles and minifies for production
-```
-yarn build
+
+```sh
+npm run build
 ```
 
 ### Run your unit tests
-```
-yarn test:unit
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+```sh
+npm run test:unit
+```
