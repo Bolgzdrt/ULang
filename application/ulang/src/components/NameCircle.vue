@@ -1,0 +1,28 @@
+<template>
+  <div class="circle">
+    <p>{{ this.initials }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'NameCircle',
+  props: ['initials']
+}
+</script>
+
+<style scoped>
+@import "../assets/styles/utils.css";
+
+/* TODO: Maybe look into slots or some other conditional styling for if this needs to be bigger or smaller */
+.circle {
+  background: var(--white);
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
