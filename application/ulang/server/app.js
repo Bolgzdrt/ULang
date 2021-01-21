@@ -18,7 +18,7 @@ app.use(express.json())
 app.use(cors())
 app.use(cookieParser())
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 8081
 const dbUri = process.env.DBURI
 mongoose
   .connect(dbUri, {
