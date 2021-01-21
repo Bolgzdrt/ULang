@@ -1,3 +1,4 @@
+/* Nothing in here is currently being used yet */
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 
@@ -5,13 +6,17 @@ const requireAuth = (req, res, next) => {
   const token = req.cookies.jwt
 
   if (token) {
-    jwt.verify(token, 'SECRET KEY HIDE IN ENV VARS', (err, decodedToken) => {
-      if (err) {
-        res.redirect('/login')
-      } else {
-        next()
+    jwt.verify(
+      token,
+      'THIS IS WHERE THE SECRET KEY WILL GO',
+      (err, decodedToken) => {
+        if (err) {
+          res.redirect('/login')
+        } else {
+          next()
+        }
       }
-    })
+    )
   } else {
     res.redirect('/login')
   }
@@ -23,7 +28,7 @@ const checkUser = (req, res, next) => {
   if (token) {
     jwt.verify(
       token,
-      'SECRET KEY HIDE IN ENV VARS',
+      'THIS IS WHERE THE SECRET KEY WILL GO',
       async (err, decodedToken) => {
         if (err) {
           res.locals.user = null
