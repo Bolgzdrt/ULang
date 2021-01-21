@@ -17,8 +17,7 @@ export default {
 
 <style>
 #app {
-  /* import Roboto font from Google */
-  font-family: /* Roboto, */ Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', Avenir, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
