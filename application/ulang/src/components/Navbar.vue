@@ -7,18 +7,20 @@
       <Plus />
       <!-- add down arrow. Probably also a component using state -->
       <div>🇫🇷</div>
-      <!-- temp add generated innitials component -->
-      <div>CJ</div>
+      <NameCircle initials="CJ" />
     </div>
   </nav>
 </template>
 
 <script>
 import Plus from '@/assets/svgs/plus.vue'
+import NameCircle from '@/components/NameCircle.vue'
+
 export default {
   name: "Navbar",
   components: {
-    Plus
+    Plus,
+    NameCircle
   }
 }
 </script>
