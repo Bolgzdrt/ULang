@@ -1,5 +1,5 @@
 <template>
-  <div id="plusContainer" @click="onAddWordClick">
+  <div id="plus-container" @click="onAddClick">
     <svg
       id="plus"
       width="30"
@@ -17,7 +17,7 @@
         fill="white"
       />
     </svg>
-    <div class="nav-modal" v-if="clicked">
+    <div class="nav-drop-down" v-if="clicked">
       <div><p>New Word</p></div>
       <div><p>New Set</p></div>
     </div>
@@ -33,7 +33,7 @@ export default {
     }
   },
   methods: {
-    onAddWordClick(e) {
+    onAddClick(e) {
       this.clicked = !this.clicked
     }
   }
@@ -43,7 +43,7 @@ export default {
 <style scoped>
 @import '../styles/utils.css';
 
-#plusContainer {
+#plus-container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,7 +52,7 @@ export default {
   height: 100%;
 }
 
-.nav-modal {
+.nav-drop-down {
   position: absolute;
   bottom: -75px;
   right: 0;
@@ -66,7 +66,7 @@ export default {
   align-items: flex-start;
 }
 
-.nav-modal div {
+.nav-drop-down div {
   width: 100%;
   height: 100%;
   display: flex;
@@ -74,7 +74,7 @@ export default {
   align-items: center;
 }
 
-.nav-modal div:hover {
+.nav-drop-down div:hover {
   background: #ccc;
 }
 

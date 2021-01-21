@@ -77,6 +77,7 @@ const login = async (req, res) => {
   }
 }
 
+// TODO
 const logout = async (req, res) => {
   res.cookie('jwt', '', { maxAge: 1 })
   res.redirect('/')
