@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const login = async (email, password) => {
+export const login = async (email, password) => {
   try {
     const res = await axios.post('/login', {
       email,
@@ -12,10 +12,21 @@ const login = async (email, password) => {
       return true
     }
   } catch (err) {
-    console.error(err.message)
+    console.error(err)
   }
 }
 
-module.exports = {
-  login
+export const logout = async (id) => {
+  try {
+    const res = await axios.get('logout')
+    if (res.body.success) {
+      return true
+    } else {
+      console.error(res.body.errors)
+      return false
+    }
+  } catch (err) {
+    console.error(err)
+  }
 }
+

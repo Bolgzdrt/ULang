@@ -7,7 +7,7 @@ router.post('/login', authController.login)
 
 router.post('/signup', authController.signup)
 
-router.get('/logout' /*, authController.logout_get */)
+router.get('/logout', authController.logout)
 
 module.exports = {
   authRouter: router
