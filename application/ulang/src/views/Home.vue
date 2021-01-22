@@ -29,8 +29,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
 import QuickStartCard from '@/components/QuickStartCard.vue'
 import SetCard from '@/components/SetCard.vue'
 
@@ -69,7 +67,7 @@ export default {
 
 .home {
   margin-left: 240px;
-  max-width: 1500px;
+  max-width: calc(100vw - 240px);
   overflow: hidden;
 }
 

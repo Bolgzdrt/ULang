@@ -60,6 +60,9 @@ nav {
   height: 50px;
   width: 100%;
   background: var(--purple);
+  position: fixed;
+  top: 0;
+  z-index: 100;
 }
 
 .logged-out-nav {
