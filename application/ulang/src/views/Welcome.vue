@@ -6,15 +6,20 @@
         <router-link id="signup" class="btn" :to="{ name: 'Signup' }">Get Started</router-link>
         <router-link :to="{ name: 'Login' }">Log In</router-link>
       </div>
-      <div id="map" style="width: 40vw; height: 30vh; background: #000;"></div>
+      <div id="map">
+        <World />
+      </div>
     </div>
     <div id="flags" style="width: 80%; height: 75px; background: #000;"></div>
   </div>
 </template>
 
 <script>
+import World from '@/assets/svgs/world.vue'
+
 export default {
-  name: 'Welcome'
+  name: 'Welcome',
+  components: { World }
 }
 </script>
 
@@ -29,17 +34,25 @@ export default {
   justify-content: space-evenly;
   align-items: center;
 }
+
 .content-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  width: 85%;
+  width: 90%;
+  height: 60%;
 }
+
+#map {
+  height: 100%;
+  width: 60%;
+}
+
 .menu {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 40%;
 }
 
 .menu p {
