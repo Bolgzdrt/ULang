@@ -9,7 +9,9 @@
       <div @click="onNameClick" id="user-container">
         <NameCircle initials="CJ" />
         <div class="nav-drop-down" v-if="clicked">
-          <router-link :to="{ name: 'Profile', params: { id: userId } }">Profile</router-link>
+          <router-link :to="{ name: 'Profile', params: { id: userId } }"
+            >Profile</router-link
+          >
           <router-link :to="{ name: 'Settings' }">Settings</router-link>
           <p @click="logout">Logout</p>
         </div>
@@ -24,15 +26,15 @@ import NameCircle from '@/components/NameCircle.vue'
 import { logout } from '@/services/authService'
 
 export default {
-  name: "Navbar",
+  name: 'Navbar',
   components: {
     Plus,
     NameCircle
   },
+  props: ['userId'],
   data() {
     return {
-      clicked: false,
-      userId: 'tempFakeId'
+      clicked: false
     }
   },
   methods: {
@@ -115,7 +117,6 @@ nav .nav-items {
 .nav-drop-down p:hover {
   background: #ccc;
 }
-
 
 .nav-drop-down a,
 .nav-drop-down p {
