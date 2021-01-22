@@ -23,7 +23,7 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  width: 400px;
+  width: 30vw;
   height: 200px;
   filter: drop-shadow(5px 5px 4px rgba(0, 0, 0, 0.3));
   border: 2px solid #CCCCCC;

@@ -1,8 +1,10 @@
 <template>
   <div id="app">
     <Navbar />
-    <Sidebar v-bind:friends="friends"/>
-    <router-view/>
+    <div class="main-container">
+      <Sidebar v-bind:friends="friends"/>
+      <router-view/>
+    </div>
   </div>
 </template>
 
@@ -37,11 +39,16 @@ export default {
   color: #2c3e50;
   width: 100vw;
   height: 100vh;
+  overflow-x: hidden;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.main-container {
+  margin-top: 50px;
 }
 </style>
