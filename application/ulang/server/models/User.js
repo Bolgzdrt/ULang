@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const { isEmail } = require('validator')
 const bcrypt = require('bcrypt')
+const Set = require('./Set').setSchema
 
 const userSchema = new mongoose.Schema(
   {
@@ -22,7 +23,7 @@ const userSchema = new mongoose.Schema(
       unique: true
     },
     wordSetList: {
-      // type: [WordSet], // TODO
+      type: [Set] // TODO
     },
     friendsList: {
       // type: [User]
