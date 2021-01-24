@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Navbar />
+    <Navbar :userId="userId" />
     <div class="main-container">
-      <Sidebar v-bind:friends="friends"/>
+      <Sidebar v-if="userId" v-bind:friends="friends"/>
       <router-view/>
     </div>
   </div>
@@ -24,7 +24,8 @@ export default {
         { name: 'Joe Schmo', pic: 'JS' },
         { name: 'Name Name', pic: 'NN' },
         { name: 'Place Holder', pic: 'PH' }
-      ]
+      ],
+      userId: ''
     }
   }
 }
@@ -50,5 +51,7 @@ export default {
 
 .main-container {
   margin-top: 50px;
+  width: 100%;
+  height: calc(100% - 50px);
 }
 </style>

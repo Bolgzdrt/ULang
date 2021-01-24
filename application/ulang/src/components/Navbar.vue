@@ -1,7 +1,8 @@
 <template>
   <nav v-bind:class="getClass()">
-    <!-- temp -->
-    <h1>ULang</h1>
+    <span @click="logoClick" id="logo-container">
+      <Logo id="logo" />
+    </span>
     <div v-if="userId" class="nav-items">
       <Plus />
       <!-- add down arrow. Also need to get SVGs for flags cus emojis don't work on windows 😑 -->
@@ -9,7 +10,9 @@
       <div @click="onNameClick" id="user-container">
         <NameCircle initials="CJ" />
         <div class="nav-drop-down" v-if="clicked">
-          <router-link :to="{ name: 'Profile', params: { id: userId } }">Profile</router-link>
+          <router-link :to="{ name: 'Profile', params: { id: userId } }"
+            >Profile</router-link
+          >
           <router-link :to="{ name: 'Settings' }">Settings</router-link>
           <p @click="logout">Logout</p>
         </div>
@@ -19,20 +22,22 @@
 </template>
 
 <script>
+import Logo from '@/assets/svgs/logo.vue'
 import Plus from '@/assets/svgs/plus.vue'
 import NameCircle from '@/components/NameCircle.vue'
 import { logout } from '@/services/authService'
 
 export default {
-  name: "Navbar",
+  name: 'Navbar',
   components: {
     Plus,
-    NameCircle
+    NameCircle,
+    Logo
   },
+  props: ['userId'],
   data() {
     return {
-      clicked: false,
-      userId: 'tempFakeId'
+      clicked: false
     }
   },
   methods: {
@@ -47,6 +52,15 @@ export default {
     },
     logout() {
       logout(this.userId)
+    },
+    logoClick() {
+      if (this.userId && this.$route.name !== 'Home') {
+        this.$router.push({ name: 'Home' })
+      } else {
+        if (this.$route.name !== 'Welcome') {
+          this.$router.push({ name: 'Welcome' })
+        }
+      }
     }
   }
 }
@@ -63,6 +77,15 @@ nav {
   position: fixed;
   top: 0;
   z-index: 100;
+}
+
+#logo-container {
+  height: 100%;
+}
+
+#logo {
+  height: 100%;
+  cursor: pointer;
 }
 
 .logged-out-nav {
@@ -115,7 +138,6 @@ nav .nav-items {
 .nav-drop-down p:hover {
   background: #ccc;
 }
-
 
 .nav-drop-down a,
 .nav-drop-down p {
