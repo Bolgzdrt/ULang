@@ -20,6 +20,10 @@ const wordSchema = new mongoose.Schema(
     },
     notes: {
       type: String
+    },
+    ownerId: {
+      type: String,
+      required: true
     }
   },
   {
@@ -28,7 +32,4 @@ const wordSchema = new mongoose.Schema(
   }
 )
 
-module.exports = {
-  Word: mongoose.model('word', wordSchema),
-  wordSchema
-}
+module.exports = mongoose.model('word', wordSchema)

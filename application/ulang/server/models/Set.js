@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const Word = require('./Word').wordSchema
 
 const setSchema = new mongoose.Schema(
   {
@@ -12,7 +11,7 @@ const setSchema = new mongoose.Schema(
       required: true
     },
     words: {
-      type: [Word] // TODO: Type will be list of Words
+      type: [String] // List of IDs of words
     },
     favorite: {
       type: Boolean,
@@ -21,6 +20,10 @@ const setSchema = new mongoose.Schema(
     },
     description: {
       type: String
+    },
+    ownerId: {
+      type: String,
+      required: true
     }
   },
   {
@@ -29,7 +32,5 @@ const setSchema = new mongoose.Schema(
   }
 )
 
-module.exports = {
-  Set: mongoose.model('set', setSchema),
-  setSchema
-}
+module.exports = mongoose.model('set', setSchema)
+
