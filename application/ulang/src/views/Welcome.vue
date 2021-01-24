@@ -12,7 +12,7 @@
     </div>
     <div id="flags">
       <span id="flag-container" v-for="(country, index) in countries" :key="index">
-        <FlagIcon :src="require(`@/assets/pngs/flags_large/icons8-${country}-100.png`)" :alt="country" />
+        <FlagIcon :src="require(`@/assets/pngs/flags_large/icons8-${country}-100.png`)" :alt="country.charAt(0).toUpperCase() + country.slice(1)" />
       </span>
     </div>
   </div>
