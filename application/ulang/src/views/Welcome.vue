@@ -10,16 +10,26 @@
         <World />
       </div>
     </div>
-    <div id="flags" style="width: 80%; height: 75px; background: #000;"></div>
+    <div id="flags">
+      <span id="flag-container" v-for="(country, index) in countries" :key="index">
+        <FlagIcon :src="require(`@/assets/pngs/flags_large/icons8-${country}-100.png`)" :alt="country" />
+      </span>
+    </div>
   </div>
 </template>
 
 <script>
 import World from '@/assets/svgs/world.vue'
+import FlagIcon from '@/components/FlagIcon.vue'
 
 export default {
   name: 'Welcome',
-  components: { World }
+  components: { World, FlagIcon },
+  data() {
+    return {
+      countries: ['france', 'spain', 'germany', 'italy', 'portugal', 'switzerland', 'sweden', 'netherlands']
+    }
+  }
 }
 </script>
 
@@ -74,5 +84,17 @@ export default {
   font-size: 1.25rem !important;
   border-radius: 50px;
   margin-bottom: 0.5rem;
+}
+
+#flags {
+  width: 80%;
+  height: 75px;
+  display: flex;
+  justify-content: space-between; 
+}
+
+#flag-container {
+  margin: 0;
+  padding: 0;
 }
 </style>
