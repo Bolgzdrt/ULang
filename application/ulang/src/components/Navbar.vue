@@ -1,7 +1,8 @@
 <template>
   <nav v-bind:class="getClass()">
     <!-- temp -->
-    <h1>ULang</h1>
+    <!-- <h1>ULang</h1> -->
+    <Logo id="logo" />
     <div v-if="userId" class="nav-items">
       <Plus />
       <!-- add down arrow. Also need to get SVGs for flags cus emojis don't work on windows 😑 -->
@@ -21,6 +22,7 @@
 </template>
 
 <script>
+import Logo from '@/assets/svgs/logo.vue'
 import Plus from '@/assets/svgs/plus.vue'
 import NameCircle from '@/components/NameCircle.vue'
 import { logout } from '@/services/authService'
@@ -29,7 +31,8 @@ export default {
   name: 'Navbar',
   components: {
     Plus,
-    NameCircle
+    NameCircle,
+    Logo
   },
   props: ['userId'],
   data() {
@@ -65,6 +68,10 @@ nav {
   position: fixed;
   top: 0;
   z-index: 100;
+}
+
+#logo {
+  height: 95%;
 }
 
 .logged-out-nav {
