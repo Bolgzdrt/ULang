@@ -1,8 +1,8 @@
 <template>
   <nav v-bind:class="getClass()">
-    <!-- temp -->
-    <!-- <h1>ULang</h1> -->
-    <Logo id="logo" />
+    <span @click="logoClick" id="logo-container">
+      <Logo id="logo" />
+    </span>
     <div v-if="userId" class="nav-items">
       <Plus />
       <!-- add down arrow. Also need to get SVGs for flags cus emojis don't work on windows 😑 -->
@@ -52,6 +52,15 @@ export default {
     },
     logout() {
       logout(this.userId)
+    },
+    logoClick() {
+      if (this.userId && this.$route.name !== 'Home') {
+        this.$router.push({ name: 'Home' })
+      } else {
+        if (this.$route.name !== 'Welcome') {
+          this.$router.push({ name: 'Welcome' })
+        }
+      }
     }
   }
 }
@@ -70,8 +79,13 @@ nav {
   z-index: 100;
 }
 
+#logo-container {
+  height: 100%;
+}
+
 #logo {
-  height: 95%;
+  height: 100%;
+  cursor: pointer;
 }
 
 .logged-out-nav {
