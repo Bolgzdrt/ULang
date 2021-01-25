@@ -22,10 +22,10 @@ const userSchema = new mongoose.Schema(
       unique: true
     },
     wordSetList: {
-      // type: [WordSet], // TODO
+      type: [String] // List of IDs of sets
     },
     friendsList: {
-      // type: [User]
+      type: String // List of IDs of friends
     },
     recentList: {
       // type: [String] // TODO
