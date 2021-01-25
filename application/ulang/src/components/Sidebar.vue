@@ -11,13 +11,13 @@
     <hr>
     <a href="#">Friends</a>
     <div class="friendLink"> 
-      <span>
         <a href="#" v-for="friend in friends" :key="friend.id">
-          {{ friend.pic }}
-          {{ friend.name }}
+          <div class="user">
+            <NameCircle :initials="friend.pic" />
+            <div class="name">{{ friend.name }}</div>
+          </div>
         </a>
-        <a href="#">View All Friends</a>
-      </span>
+        <a href="#" class="viewAll">View All Friends</a>
     </div>
     <div id="ppLink">
       <a href="#">Privacy Policy</a>
@@ -26,7 +26,12 @@
 </template>
 
 <script>
+import NameCircle from '@/components/NameCircle.vue'
+
 export default {
+  components: {
+    NameCircle
+  },
   props: ['friends'],
   name: "Sidebar"
 }
@@ -85,5 +90,24 @@ hr {
   font-size: 16px;
   margin: 0px 0px 0px 0px;
   text-align: center;
+}
+
+.circle {
+  background: #bfdbf7;
+  color: black !important;
+}
+
+.user {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.name {
+  padding-left: 10px;
+}
+
+.viewAll {
+  margin-top: 20px;
 }
 </style>
