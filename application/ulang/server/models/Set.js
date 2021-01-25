@@ -25,6 +25,7 @@ const setSchema = new mongoose.Schema(
       type: String,
       required: true
     }
+    // highScores: {} // ??
   },
   {
     collection: 'set',

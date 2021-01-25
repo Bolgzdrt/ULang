@@ -5,6 +5,9 @@ const cookieParser = require('cookie-parser')
 // const { requireAuth, checkUser } = require('./middleware/authMiddleware')
 
 const { authRouter } = require('./routes/authRoutes')
+const { setRouter } = require('./routes/setRoutes')
+const { wordRouter } = require('./routes/wordRoutes')
+const { userRouter } = require('./routes/userRoutes')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config({ path: './.env.local' })
@@ -32,3 +35,6 @@ mongoose
 // app.get('*', checkUser)
 // app.all('/', requireAuth)
 app.use(authRouter)
+app.use('/set', setRouter)
+app.use('/word', wordRouter)
+app.use('/user', userRouter)
