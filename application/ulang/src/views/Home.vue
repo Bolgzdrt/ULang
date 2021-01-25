@@ -66,9 +66,9 @@ export default {
 }
 
 .home {
-  margin-left: 240px;
-  max-width: calc(100vw - 240px);
-  overflow: hidden;
+  margin-left: 2vw;
+  width: 100%;
+  overflow-y: auto;
 }
 
 h1 {

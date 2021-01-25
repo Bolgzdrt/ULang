@@ -37,9 +37,10 @@ export default {
   display: flex;
   flex-direction: column;
   text-align: left;
-  height: calc(100% - 50px);
+  height: 100%;
   width: 240px;
-  position: fixed;
+  min-width: 240px;
+  position: relative;
   z-index: 1;
   overflow-x: hidden;
   box-shadow: 4px 0px 8px rgb(0, 0, 0, 0.5);

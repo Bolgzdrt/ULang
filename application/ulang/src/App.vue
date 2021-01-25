@@ -25,7 +25,7 @@ export default {
         { name: 'Name Name', pic: 'NN' },
         { name: 'Place Holder', pic: 'PH' }
       ],
-      userId: ''
+      userId: 'userId'
     }
   }
 }
@@ -53,5 +53,6 @@ export default {
   margin-top: 50px;
   width: 100%;
   height: calc(100% - 50px);
+  display: flex;
 }
 </style>
