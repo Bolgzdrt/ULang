@@ -2,8 +2,8 @@
   <div id="app">
     <Navbar :userId="userId" />
     <div class="main-container">
-      <Sidebar v-if="userId" v-bind:friends="friends"/>
-      <router-view/>
+      <Sidebar v-if="userId" v-bind:friends="friends" />
+      <router-view />
     </div>
   </div>
 </template>
