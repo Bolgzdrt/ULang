@@ -45,8 +45,8 @@ const signup = async (req, res) => {
     const token = createToken(user._id)
     res.cookie('jwt', token, { /* httpOnly: true, */ maxAge: maxAge * 1000 })
     res.status(201).json({
+      token,
       success: true,
-      user
     })
   } catch (err) {
     const errors = handleErrors(err)
@@ -70,15 +70,17 @@ const login = async (req, res) => {
     })
   } catch (err) {
     const errors = handleErrors(err)
-    res.status(400).json({
+    console.log(errors)
+    res.status(200).json({
       success: false,
       errors
     })
   }
 }
 
-// TODO
+// TODO: Potentially don't even need this. Can probably just drop the token from the browser
 const logout = async (req, res) => {
+  const { token } = req.body
   res.cookie('jwt', '', { maxAge: 1 })
   res.redirect('/')
 }
