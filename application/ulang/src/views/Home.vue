@@ -66,7 +66,6 @@ export default {
 }
 
 .home {
-  margin-left: 2vw;
   width: 100%;
   overflow-y: auto;
 }

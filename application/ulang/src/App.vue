@@ -3,7 +3,7 @@
     <Navbar :userId="userId" />
     <div class="main-container">
       <Sidebar v-if="userId" v-bind:friends="friends" />
-      <router-view />
+      <router-view id="routeView" />
     </div>
   </div>
 </template>
@@ -25,7 +25,7 @@ export default {
         { name: 'Name Name', pic: 'NN' },
         { name: 'Place Holder', pic: 'PH' }
       ],
-      userId: ''
+      userId: 'rb'
     }
   }
 }
@@ -54,5 +54,9 @@ export default {
   width: 100%;
   height: calc(100% - 50px);
   display: flex;
+}
+
+#routeView {
+  background-color: #eee;
 }
 </style>
