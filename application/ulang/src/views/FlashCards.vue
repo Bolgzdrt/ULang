@@ -1,9 +1,10 @@
 <template>
   <div class="flashCards">
-    <div class="set">
-      <div class="name">Set Name</div>
-      <div class="progress">Progress: {{ index + 1 }} / {{ total }}</div>
+    <div class="backButton">
+      <Back />
+      <div>Back to sets</div>
     </div>
+    <SetProg v-bind:curr="index + 1" v-bind:total="total" v-bind:setName="setName"/>
     <div class="scene">
       <div class="card" @click="toggleCard" v-bind:class="{isFlipped: flipped}">
         <div class="cardFace">{{ words[index].english }}</div>
@@ -19,8 +20,12 @@
 </template>
 
 <script>
+import Back from '@/assets/svgs/back.vue'
+import SetProg from '@/components/SetProg.vue'
+
 export default {
   name: 'FlashCards',
+  components: { Back, SetProg },
   data() {
     return {
       words: [
@@ -29,6 +34,7 @@ export default {
         { english: 'diamond', translation: 'diamant' },
         { english: 'dog', translation: 'chienne/chien' }
       ],
+      setName: 'Random Set',
       index: 0,
       total: 0,
       flipped: false
@@ -40,12 +46,22 @@ export default {
     },
     nextCard: function() {
       if (!(this.index >= this.total - 1)) {
-        this.index += 1;
+        if (this.flipped == true){
+          this.toggleCard();
+        }
+        setTimeout(() => {
+          this.index += 1;
+        }, 100);
       }
     },
     prevCard: function() {
       if (!(this.index == 0)) {
-        this.index -= 1; 
+        if (this.flipped == true){
+          this.toggleCard();
+        }
+        setTimeout(() => {
+          this.index -= 1;
+        }, 100);
       }
     },
   },
@@ -63,16 +79,6 @@ export default {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-}
-
-.name {
-  font-size: 16px;
-  font-size: 4vw;
-}
-
-.progress {
-  font-size: 16px;
-  font-size: 2vw;
 }
 
 .nav {
@@ -120,7 +126,7 @@ export default {
 .card {
   width: 100%;
   height: 100%;
-  transition: transform 0.5s;
+  transition: transform 0.25s;
   transform-style: preserve-3d;
   cursor: pointer;
   position: relative;
@@ -153,5 +159,20 @@ export default {
 
 .cardFaceBack {
   transform: rotateX(180deg);
+}
+
+.backButton {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  top: 70px;
+  left: 260px;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.backButton div {
+  padding-left: 6px;
 }
 </style>
