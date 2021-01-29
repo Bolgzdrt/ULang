@@ -12,7 +12,7 @@ const handleErrors = (err) => {
   }
 
   // incorrect username
-  if (!(err.message.includes('is not registered') !== -1)) {
+  if (err.message.includes('is not registered')) {
     errors.username = err.message
   }
 
@@ -47,6 +47,7 @@ const signup = async (req, res) => {
     res.status(201).json({
       token,
       success: true,
+      userId: user._id
     })
   } catch (err) {
     const errors = handleErrors(err)
@@ -66,27 +67,20 @@ const login = async (req, res) => {
     res.cookie('jwt', token, { /* httpOnly: true, */ maxAge: maxAge * 1000 })
     res.status(200).json({
       success: true,
-      user: user._id
+      token,
+      userId: user._id
     })
   } catch (err) {
     const errors = handleErrors(err)
     console.log(errors)
-    res.status(200).json({
+    res.status(400).json({
       success: false,
       errors
     })
   }
 }
 
-// TODO: Potentially don't even need this. Can probably just drop the token from the browser
-const logout = async (req, res) => {
-  const { token } = req.body
-  res.cookie('jwt', '', { maxAge: 1 })
-  res.redirect('/')
-}
-
 module.exports = {
   signup,
   login,
-  logout
 }

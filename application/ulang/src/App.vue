@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <Navbar :userId="userId" />
+    <Navbar :userId="userId" @logout="() => userId = ''" />
     <div class="main-container">
       <Sidebar v-if="userId" v-bind:friends="friends" />
-      <router-view />
+      <router-view :key="$route.fullPath" />
     </div>
   </div>
 </template>
@@ -11,6 +11,7 @@
 <script>
 import Navbar from '@/components/Navbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -27,6 +28,15 @@ export default {
       ],
       userId: ''
     }
+  },
+  methods: {
+    ...mapGetters('auth', ['getUserId'])
+  },
+  updated() {
+    this.userId = this.getUserId()
+  },
+  mounted() {
+    this.userId = this.getUserId()
   }
 }
 </script>
