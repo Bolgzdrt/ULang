@@ -14,7 +14,7 @@
             >Profile</router-link
           >
           <router-link :to="{ name: 'Settings' }">Settings</router-link>
-          <p @click="logout">Logout</p>
+          <p @click="triggerLogout">Logout</p>
         </div>
       </div>
     </div>
@@ -25,7 +25,7 @@
 import Logo from '@/assets/svgs/logo.vue'
 import Plus from '@/assets/svgs/plus.vue'
 import NameCircle from '@/components/NameCircle.vue'
-import { logout } from '@/services/authService'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'Navbar',
@@ -41,7 +41,8 @@ export default {
     }
   },
   methods: {
-    getClass(property) {
+    ...mapMutations('auth', ['logout']),
+    getClass() {
       return {
         'logged-in-nav': this.userId,
         'logged-out-nav': !this.userId
@@ -50,12 +51,16 @@ export default {
     onNameClick(e) {
       this.clicked = !this.clicked
     },
-    logout() {
-      logout(this.userId)
+    triggerLogout() {
+      this.logout()
+      this.$router.push({ name: 'Welcome' })
+      this.$emit('logout')
     },
     logoClick() {
-      if (this.userId && this.$route.name !== 'Home') {
-        this.$router.push({ name: 'Home' })
+      if (this.userId) {
+        if (this.$route.name !== 'Home') {
+          this.$router.push({ name: 'Home' })
+        }
       } else {
         if (this.$route.name !== 'Welcome') {
           this.$router.push({ name: 'Welcome' })

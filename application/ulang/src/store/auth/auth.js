@@ -14,6 +14,9 @@ const getters = {
     email: state.email || localStorage.getItem('email'),
     userID: state.userId || Vue.$cookies.get('userId')
   }),
+  getUserId: () => {
+   return state.userId || Vue.$cookies.get('userId')
+  },
   getToken: () => ({
     token: state.token || Vue.$cookies.get('token')
   }),
@@ -33,7 +36,6 @@ const actions = {
     commit('setUserId', userId)
     return
   },
-  logout: async({ commit }) => commit('logout')
 }
 
 // sync
