@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { login, signup } from '../../services/authService'
+import { getUserInfo } from '../../services/userService'
 
 const state = {
   token: '',
@@ -36,6 +37,9 @@ const actions = {
     commit('setUserId', userId)
     return
   },
+  getUserInfo: async (userId) => {
+    return await getUserInfo(userId)
+  }
 }
 
 // sync

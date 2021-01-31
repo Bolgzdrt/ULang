@@ -21,9 +21,12 @@ const userSchema = new mongoose.Schema(
       required: [true, 'A username is required'],
       unique: true
     },
+    firstName: String,
+    lastName: String,
     wordSetList: {
       type: [String] // List of IDs of sets
     },
+    // TODO: Maybe change this to a list of following and followers
     friendsList: {
       type: String // List of IDs of friends
     },
