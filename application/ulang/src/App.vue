@@ -2,7 +2,7 @@
   <div id="app">
     <Navbar :userId="userId" @logout="() => userId = ''" />
     <div class="main-container">
-      <Sidebar v-if="userId" v-bind:friends="friends" />
+      <Sidebar v-if="userId" :friends="friends" />
       <router-view :key="$route.fullPath" />
     </div>
   </div>

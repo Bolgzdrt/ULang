@@ -40,6 +40,10 @@ const unfollowUser = async (req, res) => {
       },
       { new: true }
     )
+    res.status(200).json({
+      success: true,
+      message: 'Followed User'
+    })
   } catch (err) {
     console.log(err)
     res.status(400).json({
@@ -49,7 +53,27 @@ const unfollowUser = async (req, res) => {
   }
 }
 
+const getUserInfo = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const user = await User.findById(id)
+    res.status(200).json({
+      firstName: user.firstName || '',
+      lastName: user.lastName || '',
+      email: user.email,
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      message: 'Error getting user info'
+    })
+  }
+}
+
 module.exports = {
   followUser,
-  unfollowUser
+  unfollowUser,
+  getUserInfo
 }
