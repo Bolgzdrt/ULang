@@ -3,7 +3,7 @@
     <Navbar :userId="userId" @logout="() => userId = ''" />
     <div class="main-container">
       <Sidebar v-if="userId" :friends="friends" />
-      <router-view id="routeView" :key="$route.fullPath" />
+      <router-view class="defaultPage" :key="$route.fullPath" />
     </div>
   </div>
 </template>
@@ -68,7 +68,9 @@ export default {
   display: flex;
 }
 
-#routeView {
+.defaultPage {
   background-color: #eee;
+  width: 100%;
+  height: 100%;
 }
 </style>
