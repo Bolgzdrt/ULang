@@ -13,7 +13,7 @@ const getters = {
   getUserInfo: () => ({
     username: state.username || localStorage.getItem('username'),
     email: state.email || localStorage.getItem('email'),
-    userID: state.userId || Vue.$cookies.get('userId')
+    userId: state.userId || Vue.$cookies.get('userId')
   }),
   getUserId: () => {
    return state.userId || Vue.$cookies.get('userId')
@@ -37,7 +37,7 @@ const actions = {
     commit('setUserId', userId)
     return
   },
-  getUserInfo: async (userId) => {
+  getUserInfo: async ({}, userId) => {
     return await getUserInfo(userId)
   }
 }

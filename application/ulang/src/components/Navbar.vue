@@ -25,7 +25,7 @@
 import Logo from '@/assets/svgs/logo.vue'
 import Plus from '@/assets/svgs/plus.vue'
 import NameCircle from '@/components/NameCircle.vue'
-import { mapMutations, mapGetters } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'Navbar',
@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     ...mapMutations('auth', ['logout']),
-    ...mapGetters('auth', ['getUserInfo']),
+    ...mapActions('auth', ['getUserInfo']),
     getClass() {
       return {
         'logged-in-nav': this.userId,
@@ -71,19 +71,20 @@ export default {
     }
   },
   updated() {
-    this.getUserInfo(this.userId)
-      .then((info) => {
-        console.log(info)
-        const { firstName, lastName, username } = info
-        if (firstName && lastName) {
-          this.initials = `${firstName[0]}${lastName[0]}`
-        } else {
-          this.initials = username[0]
-        }
-      })
-      .catch((err) => {
-        console.error(err)
-      })
+    if (!this.initials && this.userId) {
+      this.getUserInfo(this.userId)
+        .then((info) => {
+          const { firstName, lastName, username } = info
+          if (firstName && lastName) {
+            this.initials = `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`
+          } else {
+            this.initials = username[0].toUpperCase()
+          }
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    }
   }
 }
 </script>

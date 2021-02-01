@@ -33,7 +33,9 @@ export default {
     ...mapGetters('auth', ['getUserId'])
   },
   updated() {
-    this.userId = this.getUserId()
+    if (!['Welcome', 'Login', 'Signup'].includes(this.$route.name)) {
+      this.userId = this.getUserId()
+    }
   },
   mounted() {
     this.userId = this.getUserId()
