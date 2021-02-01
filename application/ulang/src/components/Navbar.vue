@@ -8,7 +8,7 @@
       <!-- add down arrow. Also need to get SVGs for flags cus emojis don't work on windows 😑 -->
       <div>🇫🇷</div>
       <div @click="onNameClick" id="user-container">
-        <NameCircle initials="CJ" />
+        <NameCircle :initials="initials" />
         <div class="nav-drop-down" v-if="clicked">
           <router-link :to="{ name: 'Profile', params: { id: userId } }"
             >Profile</router-link
@@ -25,7 +25,7 @@
 import Logo from '@/assets/svgs/logo.vue'
 import Plus from '@/assets/svgs/plus.vue'
 import NameCircle from '@/components/NameCircle.vue'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'Navbar',
@@ -37,11 +37,13 @@ export default {
   props: ['userId'],
   data() {
     return {
-      clicked: false
+      clicked: false,
+      initials: ''
     }
   },
   methods: {
     ...mapMutations('auth', ['logout']),
+    ...mapActions('auth', ['getUserInfo']),
     getClass() {
       return {
         'logged-in-nav': this.userId,
@@ -66,6 +68,22 @@ export default {
           this.$router.push({ name: 'Welcome' })
         }
       }
+    }
+  },
+  updated() {
+    if (!this.initials && this.userId) {
+      this.getUserInfo(this.userId)
+        .then((info) => {
+          const { firstName, lastName, username } = info
+          if (firstName && lastName) {
+            this.initials = `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`
+          } else {
+            this.initials = username[0].toUpperCase()
+          }
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     }
   }
 }
