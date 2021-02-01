@@ -25,7 +25,7 @@ export default {
         { name: 'Name Name', pic: 'NN' },
         { name: 'Place Holder', pic: 'PH' }
       ],
-      userId: 'rb'
+      userId: ''
     }
   }
 }
