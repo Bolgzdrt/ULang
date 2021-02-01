@@ -6,6 +6,7 @@ import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import Profile from '../views/Profile.vue'
 import Settings from '../views/Settings.vue'
+import FlashCards from '../views/FlashCards.vue'
 
 Vue.use(VueRouter)
 
@@ -40,6 +41,11 @@ const routes = [
     path: '/settings',
     name: 'Settings',
     component: Settings
+  },
+  {
+    path: '/flashCards',
+    name: 'FlashCards',
+    component: FlashCards
   },
   {
     path: '/about',
