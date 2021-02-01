@@ -26,9 +26,10 @@ const createSet = async (req, res) => {
   }
 }
 
-const getAllSets = async (req, res) => {
+const getAllSetsOfLanguage = async (req, res) => {
+  const { id, lang } = req.body
   try {
-    const sets = await Set.find({})
+    const sets = await Set.find({ userId: id, language: lang })
     res.status(200).json({
       success: true,
       sets
@@ -127,7 +128,7 @@ const deleteSet = async (req, res) => {
 
 module.exports = {
   createSet,
-  getAllSets,
+  getAllSetsOfLanguage,
   getSetById,
   updateSet,
   toggleFavorite,
