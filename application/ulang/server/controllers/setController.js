@@ -16,7 +16,6 @@ const createSet = async (req, res) => {
       ownerId
     })
     User.findByIdAndUpdate(user._id, { $push: { sets: set._id }}).exec()
-    console.log(user);
     res.status(201).json({
       success: true,
       id: set._id
