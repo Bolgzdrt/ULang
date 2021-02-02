@@ -27,9 +27,9 @@ const createSet = async (req, res) => {
 }
 
 const getAllSetsOfLanguage = async (req, res) => {
-  const { id, lang } = req.body
+  const { id, lang } = req.params
   try {
-    const sets = await Set.find({ userId: id, language: lang })
+    const sets = await Set.find({ ownerId: id, language: lang })
     res.status(200).json({
       success: true,
       sets
@@ -66,9 +66,13 @@ const toggleFavorite = async (req, res) => {
 
   try {
     const set = await Set.findById(id)
-    await set.findByIdAndUpdate(id, {
-      favorite: !set.favorite
-    }, { new: true })
+    await set.findByIdAndUpdate(
+      id,
+      {
+        favorite: !set.favorite
+      },
+      { new: true }
+    )
     res.status(200).json({
       success: true,
       set: updatedSet
@@ -78,20 +82,20 @@ const toggleFavorite = async (req, res) => {
     res.status(400).json({
       success: false,
       error: err.message
-    }) 
+    })
   }
 }
 
 const updateSet = async (req, res) => {
   const { id } = req.params
   const args = req.body
-  const inputs = {
+  const inputs = ({
     name: args.name,
     language: args.language,
     words: args.words,
     favorite: args.favorite,
     description: args.description
-  } = req.body
+  } = req.body)
 
   const updates = filterUpdates(inputs)
   try {
@@ -100,7 +104,7 @@ const updateSet = async (req, res) => {
       success: true,
       set: updatedSet
     })
-  } catch(err) {
+  } catch (err) {
     console.log(err)
     res.status(400).json({
       success: false,
@@ -118,7 +122,7 @@ const deleteSet = async (req, res) => {
       success: true
     })
   } catch (err) {
-    console.log(err);
+    console.log(err)
     res.status(400).json({
       success: false,
       error: err.message
