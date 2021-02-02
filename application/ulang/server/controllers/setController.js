@@ -1,10 +1,12 @@
 const Set = require('../models/Set')
+const User = require('../models/User')
 const { filterUpdates } = require('../utils/utils')
 
 const createSet = async (req, res) => {
   const { name, language, words, favorite, description, ownerId } = req.body
 
   try {
+    const user = await User.findById(ownerId)
     const set = await Set.create({
       name,
       language,
@@ -13,6 +15,8 @@ const createSet = async (req, res) => {
       description,
       ownerId
     })
+    User.findByIdAndUpdate(user._id, { $push: { sets: set._id }}).exec()
+    console.log(user);
     res.status(201).json({
       success: true,
       id: set._id
@@ -29,7 +33,9 @@ const createSet = async (req, res) => {
 const getAllSetsOfLanguage = async (req, res) => {
   const { id, lang } = req.params
   try {
-    const sets = await Set.find({ ownerId: id, language: lang })
+    const user = await User.findById(id)
+    const setsOfUser = user.sets;
+    const sets = await Set.find({ _id: { $in: setsOfUser }, language: lang })
     res.status(200).json({
       success: true,
       sets
