@@ -26,7 +26,6 @@ export default {
   width: 30vw;
   height: 200px;
   filter: drop-shadow(5px 5px 4px rgba(0, 0, 0, 0.3));
-  border: 2px solid #CCCCCC;
   background: white;
   text-align: center;
   margin: 20px 5px 20px 5px;
