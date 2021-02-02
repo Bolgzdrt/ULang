@@ -7,6 +7,8 @@ import Signup from '../views/Signup.vue'
 import Profile from '../views/Profile.vue'
 import Settings from '../views/Settings.vue'
 import FlashCards from '../views/FlashCards.vue'
+import Learn from '../views/Learn.vue'
+import Game from '../views/Game.vue'
 
 Vue.use(VueRouter)
 
@@ -46,6 +48,16 @@ const routes = [
     path: '/flashCards',
     name: 'FlashCards',
     component: FlashCards
+  },
+  {
+    path: '/learn',
+    name: 'Learn',
+    component: Learn
+  },
+  {
+    path: '/game',
+    name: 'Game',
+    component: Game
   },
   {
     path: '/about',

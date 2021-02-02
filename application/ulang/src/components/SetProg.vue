@@ -14,12 +14,12 @@ export default {
 
 <style scoped>
 .setProgress {
-  padding-top: 100px;
+  padding-top: 50px;
 }
 
 .name {
-  font-size: 16px;
-  font-size: 4vw;
+  font-size: 20px;
+  font-size: 3vw;
 }
 
 .progress {

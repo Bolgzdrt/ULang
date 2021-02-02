@@ -1,9 +1,6 @@
 <template>
   <div class="flashCards">
-    <div class="backButton">
-      <Back />
-      <div>Back to sets</div>
-    </div>
+    <BackButton />
     <SetProg v-bind:curr="index + 1" v-bind:total="total" v-bind:setName="setName"/>
     <div class="scene">
       <div class="card" @click="toggleCard" v-bind:class="{isFlipped: flipped}">
@@ -20,12 +17,12 @@
 </template>
 
 <script>
-import Back from '@/assets/svgs/back.vue'
 import SetProg from '@/components/SetProg.vue'
+import BackButton from '@/components/BackButton.vue'
 
 export default {
   name: 'FlashCards',
-  components: { Back, SetProg },
+  components: { BackButton, SetProg },
   data() {
     return {
       words: [
@@ -159,20 +156,5 @@ export default {
 
 .cardFaceBack {
   transform: rotateX(180deg);
-}
-
-.backButton {
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  top: 70px;
-  left: 260px;
-  font-size: 28px;
-  cursor: pointer;
-}
-
-.backButton div {
-  padding-left: 6px;
 }
 </style>
