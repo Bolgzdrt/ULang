@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema(
     },
     firstName: String,
     lastName: String,
-    wordSetList: {
+    sets: {
       type: [String] // List of IDs of sets
     },
     // TODO: Maybe change this to a list of following and followers
