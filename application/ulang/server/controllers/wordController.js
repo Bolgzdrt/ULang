@@ -2,7 +2,7 @@ const Word = require('../models/Word')
 const { filterUpdates } = require('../utils/utils')
 
 const createWord = async (req, res) => {
-  const { word, language, english, partOfSpeech, notes, ownerId } = req.body
+  const { word, language, english, partOfSpeech, description, ownerId } = req.body
 
   try {
     const newWord = await Word.create({
@@ -10,7 +10,7 @@ const createWord = async (req, res) => {
       language,
       english,
       partOfSpeech,
-      notes,
+      description,
       ownerId
     })
     res.status(201).json({
