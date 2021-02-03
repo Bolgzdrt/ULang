@@ -42,7 +42,7 @@ export default {
         language: 'FR'
       };
       createWord(word).then(data => {
-        this.annotherWordModal = !this.annotherWordModal;
+        this.annotherWordModal = true;
       }).catch(err => {
         console.log(err);
       });

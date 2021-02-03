@@ -26,19 +26,19 @@ export default {
         { name: 'Name Name', pic: 'NN' },
         { name: 'Place Holder', pic: 'PH' }
       ],
-      userId: 'sadf'
+      userId: ''
     }
   },
   methods: {
     ...mapGetters('auth', ['getUserId'])
-  // },
-  // updated() {
-  //   if (!['Welcome', 'Login', 'Signup'].includes(this.$route.name)) {
-  //     this.userId = this.getUserId()
-  //   }
-  // },
-  // mounted() {
-  //   this.userId = this.getUserId()
+  },
+  updated() {
+    if (!['Welcome', 'Login', 'Signup'].includes(this.$route.name)) {
+      this.userId = this.getUserId()
+    }
+  },
+  mounted() {
+    this.userId = this.getUserId()
   }
 }
 </script>
