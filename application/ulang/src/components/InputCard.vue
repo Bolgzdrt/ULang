@@ -3,17 +3,30 @@
      <div class="word">
       <p class="word">Word</p>
      </div>
-    <hr>
     <div class="entry">
-      <input type="text" placeholder="Translation">
-      <button>Submit</button>
+      <input class="textBox" type="text" placeholder="Enter translation here..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter translation here...'" v-model="input">
+      <AccentButtons @buttonClicked="appendChar" />
+      <button class="submitButton">Submit</button>
     </div>
   </div>
 </template>
 
 <script>
+import AccentButtons from '@/components/AccentButtons.vue'
+
 export default {
-  name: 'InputCard'
+  name: 'InputCard',
+  components: { AccentButtons },
+  data() {
+    return {
+      input: ''
+    }
+  },
+  methods: {
+    appendChar(char){
+      this.input += char;
+    }
+  }
 }
 </script>
 
@@ -48,37 +61,33 @@ div {
   justify-content: center;
 }
 
-input {
-  width: 50%;
-  height: 15%;
-  margin-bottom: 2%;
-  text-align: center;
-  font-size: 100%;
-  border: 1px solid #000000;
-  box-sizing: border-box;
-  border-radius: 25px;
+.textBox {
+  width: 80%;
+  border: 0px solid #000000;
+  border-bottom-width: 1px;
+  background-color: transparent;
+  font-size: 200%;
+  outline: none;
 }
 
-button {
-  height: 15%;
-  width: 50%;
-  border: 1px solid #000000;
-  box-sizing: border-box;
-  border-radius: 25px;
-  font-size: 100%;
+.submitButton {
+  height: 43px;
+  width: 145px;
+  border-radius: 5px;
+  font-size: 120%;
   transition: 0.1s;
-  box-shadow: 0 5px rgb(190, 190, 190);
-}
-
-button:hover {
-  filter: drop-shadow(5px 5px 4px rgba(0, 0, 0, 0.3));
+  outline: none;
   background: var(--purple);
-  cursor: pointer;
+  color: white;
+  border: none;
+  filter: drop-shadow(3px 3px 4px rgba(0, 0, 0, 0.3));
 }
 
-button:active {
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
+.submitButton:hover {
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+  background: #5b49d0;
+  cursor: pointer;
+  text-shadow: 1px 1px black;
 }
 
 .word {
