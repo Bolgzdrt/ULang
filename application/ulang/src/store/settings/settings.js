@@ -5,7 +5,7 @@ const state = {
 }
 
 const getters = {
-  getLanguage = () => state.language
+  getLanguage: () => state.language
 }
 
 // async
@@ -13,7 +13,7 @@ const actions = {}
 
 // sync
 const mutations = {
-  setLanguage = (state, lang) => {
+  setLanguage: (state, lang) => {
     state.language = lang
   }
 }
