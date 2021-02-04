@@ -66,6 +66,12 @@ const getSetById = async (req, res) => {
   }
 }
 
+/*
+  Favorite on the set should only reflect the ownerId.
+  If we allow people to favorite other peoples' sets,
+  then there needs to be a different means of storing that,
+  or it needs to just be moved to the user.
+*/
 const toggleFavorite = async (req, res) => {
   const { id } = req.params
 
@@ -73,9 +79,7 @@ const toggleFavorite = async (req, res) => {
     const set = await Set.findById(id)
     await set.findByIdAndUpdate(
       id,
-      {
-        favorite: !set.favorite
-      },
+      { favorite: !set.favorite },
       { new: true }
     )
     res.status(200).json({
