@@ -8,6 +8,8 @@
 
     1.3 [User Settings](./get_started/user_settings.md)
 
+    1.4 [Navigating the Home Page](./get_started/home.md)
+
 2. Dictionary Management
 
     2.1 [Creating Sets](./dictionary_management/create_sets.md)
