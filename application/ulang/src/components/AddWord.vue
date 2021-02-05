@@ -66,9 +66,20 @@
       </div>
     </div>
     <div class="buttonBox">
-      <button class="cancelButton" @click="submit">Cancel</button>
+      <button class="cancelButton" @click="cancel">Cancel</button>
       <button class="submitButton" @click="submit">Add</button>
     </div>
+    <transition name="modalFade" v-if="anotherWordModal">
+      <div class="modalBackdrop">
+        <div class="modal">
+          <p>Add another word?</p>
+          <div class="buttonBox">
+            <button class="cancelButton" @click="cancel">No</button>
+            <button class="submitButton" @click="clear">Yes</button>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -92,7 +103,7 @@ export default {
         {name: 'Test', length: '{# of words}?', description: '{Description}', _id: 2, selected: false},
         {name: 'Food', length: '{# of words}?', description: '{Description}', _id: 3, selected: false}
       ],
-      annotherWordModal: false
+      anotherWordModal: false
     }
   },
   methods: {
@@ -106,10 +117,11 @@ export default {
         language: 'FR'
       };
       createWord(word).then(data => {
-        this.annotherWordModal = true;
+        this.anotherWordModal = true;
       }).catch(err => {
         console.log(err);
       });
+      this.anotherWordModal = true
     },
     nextClick() {
       if (this.conjugationIndex === this.conjugationData.length -1) {
@@ -123,6 +135,24 @@ export default {
     backClick() {
       if (this.conjugationIndex > 0) {
         this.conjugationIndex--
+      }
+    },
+    cancel() {
+      // this should return the user to the page they came from, not sure how yet
+      console.log("retern from whence you came")
+    },
+    clear() {
+      this.english = ''
+      this.translation = ''
+      this.definition = ''
+      this.partOfSpeech = ''
+      this.tableTitle = ''
+      this.conjugationData = [{ title: '', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }]
+      this.conjugationIndex = 0
+      this.anotherWordModal = false
+      var i = 0
+      for (i = 0; i < this.sets.length; i++) {
+        this.sets[i].selected = false
       }
     }
   }
@@ -338,5 +368,28 @@ button:hover {
 
 .cancelButton:hover {
   background: #d9d9d9;
+}
+
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.modal {
+  background: #FFFFFF;
+  box-shadow: 2px 2px 20px 1px;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 3%;
+  border-radius: 5px;
 }
 </style>
