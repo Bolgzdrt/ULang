@@ -1,19 +1,74 @@
 <template>
   <div class="addWord">
-    <h1>Add a new word</h1>
-    <div class="field">
-      <input type="text" id="english" placeholder="Enter a word..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a word...'" v-model="english"><br>
-      <label for="english">English Word</label>
+    <div class="onlyWord">
+      <div class="default">
+        <p>Add a new word</p>
+        <div class="field">
+          <input type="text" id="english" placeholder="Enter a word..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a word...'" v-model="english" class="wordInput"><br>
+          <label for="english" class="required wordEntryLabel">English Word</label>
+        </div>
+        <div class="field">
+          <input type="text" id="translation" placeholder="Enter the translation..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter the translation...'" v-model="translation" class="wordInput"><br>
+          <label for="translation" class="required wordEntryLabel">Translation</label>
+        </div>
+        <div class="field">
+          <input type="text" id="definition" placeholder="Enter a definition for your word..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a definition for your word...'" v-model="definition" class="wordInput"><br>
+          <label for="definition" class="wordEntryLabel">Definition</label>
+        </div>
+        <div class="field">
+          <select id="partOfSpeech" v-model="partOfSpeech">
+            <option value="">--Select an option--</option>
+            <option value="noun">Noun</option>
+            <option value="verb" selected>Verb</option>
+            <option value="adjective">Adjective</option>
+            <option value="adverb">Adverb</option>
+            <option value="pronoun">Pronoun</option>
+            <option value="preposition">Preposition</option>
+            <option value="conjunction">Conjunction</option>
+            <option value="interjection">Interjection</option>
+          </select><br>
+          <label for="partOfSpeech" class="required wordEntryLabel">Part of speech</label>
+        </div>
+      </div>
+      <div class="tables" v-if="partOfSpeech === 'verb'">
+        <p class="verbTitle">Verb Tables</p>
+        <div class="tableTitleLabel">
+          <label for="tableName" class="tableTitleLabel">Title: </label>
+          <input type="text" id="tableName" v-model="conjugationData[conjugationIndex].title" class="conjugationTableInput">
+        </div>
+        <table>
+          <tr>
+            <td><input id="tableTL" class="conjugationTableInput" type="text" v-model="conjugationData[conjugationIndex].tl"></td>
+            <td><input id="tableTR" class="conjugationTableInput" type="text" v-model="conjugationData[conjugationIndex].tr"></td>
+          </tr>
+          <tr>
+            <td><input id="tableML" class="conjugationTableInput" type="text" v-model="conjugationData[conjugationIndex].ml"></td>
+            <td><input id="tableMR" class="conjugationTableInput" type="text" v-model="conjugationData[conjugationIndex].mr"></td>
+          </tr>
+          <tr>
+            <td><input id="tableBL" class="conjugationTableInput" type="text" v-model="conjugationData[conjugationIndex].bl"></td>
+            <td><input id="tableBR" class="conjugationTableInput" type="text" v-model="conjugationData[conjugationIndex].br"></td>
+          </tr>
+        </table>
+        <div class="nav">
+          <div class="tableChange" @click="backClick"><img src="@/assets/pngs/Vector.png" alt="previous"></div>
+          <div class="tableChange" @click="nextClick"><img src="@/assets/pngs/Vector.png" alt="next" style="transform: rotate(180deg);"></div>
+          </div>
+      </div>
     </div>
-    <div class="field">
-      <input type="text" id="translation" placeholder="Enter word's translation..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter word\'s translation...'" v-model="translation"><br>
-      <label for="translation">Translation</label>
+    <div class="setList">
+      <p>Sets to add to</p>
+      <div class="row" v-for="set in sets" :key="set._id">
+        <input type="checkbox" value="set.selected" v-model="set.selected">
+        <div class="name">{{ set.name }}</div>
+        <div class="length">{{ set.length }}</div>
+        <div class="desc">{{ set.description }}</div>
+      </div>
     </div>
-    <div class="field">
-      <input type="text" id="description" placeholder="Enter a description..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a description...'" v-model="description"><br>
-      <label for="description">Description</label>
+    <div class="buttonBox">
+      <button class="cancelButton" @click="submit">Cancel</button>
+      <button class="submitButton" @click="submit">Add</button>
     </div>
-    <button class="submitButton" @click="submit">Submit</button>
   </div>
 </template>
 
@@ -27,7 +82,16 @@ export default {
     return {
       english: '',
       translation: '',
-      description: '',
+      definition: '',
+      partOfSpeech: '',
+      tableTitle: '',
+      conjugationData: [{ title: '', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }],
+      conjugationIndex: 0,
+      sets: [
+        {name: 'Animals', length: '{# of words}?', description: '{Description}', _id: 1, selected: false},
+        {name: 'Test', length: '{# of words}?', description: '{Description}', _id: 2, selected: false},
+        {name: 'Food', length: '{# of words}?', description: '{Description}', _id: 3, selected: false}
+      ],
       annotherWordModal: false
     }
   },
@@ -37,7 +101,7 @@ export default {
       const word = {
         english: this.english,
         word: this.translation,
-        description: this.description,
+        description: this.definition,
         ownerId: this.getUserId(),
         language: 'FR'
       };
@@ -46,6 +110,20 @@ export default {
       }).catch(err => {
         console.log(err);
       });
+    },
+    nextClick() {
+      if (this.conjugationIndex === this.conjugationData.length -1) {
+        // going with topleft, middleleft, etc. cus they don't always mean the same thing from language to langauge.
+        this.conjugationData.push({ title: '', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' })
+        this.conjugationIndex++
+      } else {
+        this.conjugationIndex++
+      }
+    },
+    backClick() {
+      if (this.conjugationIndex > 0) {
+        this.conjugationIndex--
+      }
     }
   }
 }
@@ -55,28 +133,135 @@ export default {
 .addWord {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  justify-content: center;
   margin: 3%;
 }
 
-.addWord > div {
-  margin: 1% 0% 1% 0%;
+.onlyWord {
+  display: flex;
+  flex-direction: row;
+  align-content: stretch;
+  width: 100%;
+
 }
 
-h1 {
+.default {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 50%;
+}
+
+.tables {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+  margin: 0% 0% 0% 3%;
+  background-color: #eee;
+}
+
+.setList {
+  margin-top: 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 1.25em;
+  border: 0px solid #ccc;
+  border-bottom-width: 1px;
+  width: 100%;
+}
+
+.row > input {
+  margin-right: 2em;
+  position: relative;
+  width: 1.3em;
+  height: 1.3em;
+}
+
+.row > div {
+  text-align: left;
+  margin: 1%;
+}
+
+.row > .name {
+  width: 8em;
+}
+
+.row > .length {
+  width: 8em;
+}
+
+.row > .description {
+  justify-self: stretch;
+}
+
+p {
   margin-bottom: 1%;
+  font-size: 2em;
 }
 
 .field {
   display: inline-block;
+  margin: 1% 0% 1% 0%;
+  width: 100%;
 }
 
-label {
+.wordEntryLabel {
   float: left;
 }
 
-input {
-  width: 200%;
+.tableTitleLabel {
+  margin: 1% 0 2% 0;
+}
+
+.required:after {
+    content:" *";
+    color: red;
+  }
+
+.wordInput {
+  width: 100%;
+  border: 0px solid #000000;
+  border-bottom-width: 1px;
+  background-color: transparent;
+  font-size: 125%;
+  outline: none;
+  text-indent: 4px;
+}
+
+.wordInput::placeholder {
+  font-size: 0.75em;
+}
+
+.conjugationTableInput {
+  border: 0px solid #000000;
+  font-size: 100%;
+  outline: none;
+  text-align: center;
+  padding: 5px;
+}
+
+table {
+  border-style: hidden;
+  border-collapse: collapse;
+  width: 70%;
+}
+
+td {
+  padding: 0.5rem;
+  border: 1px solid black
+}
+
+select {
+  width: 100%;
   border: 0px solid #000000;
   border-bottom-width: 1px;
   background-color: transparent;
@@ -84,27 +269,74 @@ input {
   outline: none;
 }
 
-input::placeholder {
-  font-size: 0.75em;
+select:hover {
+  cursor: pointer;
 }
 
-.submitButton {
-  margin-top: 1%;
+.verbTitle {
+  margin: 1%;
+  font-size: 1.5em;
+}
+
+.nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 15%;
+  margin: 1%;
+}
+
+.tableChange {
+  width: 2em;
+  height: 2em;
+  background: #FFFFFF;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  -webkit-user-select: none;  
+  -moz-user-select: none;    
+  -ms-user-select: none;      
+  user-select: none;
+}
+
+.buttonBox {
+  margin-top: 3%;
+}
+
+button {
   height: 43px;
   width: 145px;
   border-radius: 5px;
   font-size: 120%;
   transition: 0.1s;
   outline: none;
-  background: var(--purple);
-  color: white;
   border: none;
   filter: drop-shadow(3px 3px 4px rgba(0, 0, 0, 0.3));
 }
-.submitButton:hover {
+button:hover {
   filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
-  background: #5b49d0;
   cursor: pointer;
-  text-shadow: 1px 1px black;
+}
+
+.submitButton {
+  background: var(--purple);
+  color: white;
+  margin-left: 1em;
+}
+
+.submitButton:hover {
+  background: #5b49d0;
+}
+
+.cancelButton {
+  background: #eee;
+  margin-right: 1em;
+}
+
+.cancelButton:hover {
+  background: #d9d9d9;
 }
 </style>
