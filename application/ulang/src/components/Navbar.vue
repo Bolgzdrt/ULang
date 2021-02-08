@@ -6,7 +6,8 @@
     <div v-if="userId" class="nav-items">
       <Plus />
       <!-- add down arrow. Also need to get SVGs for flags cus emojis don't work on windows 😑 -->
-      <div>🇫🇷</div>
+      <!-- <div>🇫🇷</div> -->
+      <LanguageSelector />
       <div @click="onNameClick" id="user-container">
         <NameCircle :initials="initials" />
         <div class="nav-drop-down" v-if="clicked">
@@ -25,6 +26,7 @@
 import Logo from '@/assets/svgs/logo.vue'
 import Plus from '@/assets/svgs/plus.vue'
 import NameCircle from '@/components/NameCircle.vue'
+import LanguageSelector from '@/components/LanguageSelector.vue'
 import { mapMutations, mapActions } from 'vuex'
 
 export default {
@@ -32,7 +34,8 @@ export default {
   components: {
     Plus,
     NameCircle,
-    Logo
+    Logo,
+    LanguageSelector
   },
   props: ['userId'],
   data() {
