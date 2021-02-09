@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <Navbar :userId="userId" @logout="() => userId = ''" />
-    <div class="main-container">
+    <section class="main-container">
       <Sidebar v-if="userId" :friends="friends" />
       <router-view class="defaultPage" :key="$route.fullPath" />
-    </div>
+    </section>
   </div>
 </template>
 
@@ -14,6 +14,7 @@ import Sidebar from '@/components/Sidebar.vue'
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'App',
   components: {
     Navbar,
     Sidebar
