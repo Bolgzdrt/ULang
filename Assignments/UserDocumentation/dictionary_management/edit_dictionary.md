@@ -2,6 +2,9 @@
 
 Select the profile button at the top right of the page to access the profile page. 
 
+<!-- TODO: Add profile page when implemented -->
+---- TODO: Add profile page when implemented ----
+
 The profile page will list the sets in your dicitonary.
 -  You can filter and sort your lists using the filter entry box, and sort drop menu respectively. 
 - A set can be marked for quick access by clicking the lightning bolt on the set, this will add it to the quick access section on the home page. 

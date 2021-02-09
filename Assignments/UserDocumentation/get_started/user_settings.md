@@ -4,7 +4,7 @@ Navigate to the "My Profile" page by clicking on your profile icon in the top ri
 
 ### Example View
 
-<!-- Update image when completely implemented -->
+<!-- TODO: Update image when completely implemented -->
 
 ![User Settings](./images/user_settings.png)
 
