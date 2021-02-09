@@ -9,6 +9,7 @@ import Settings from '../views/Settings.vue'
 import FlashCards from '../views/FlashCards.vue'
 import Learn from '../views/Learn.vue'
 import Game from '../views/Game.vue'
+import CreateWord from '../views/CreateWord.vue'
 
 Vue.use(VueRouter)
 
@@ -59,6 +60,11 @@ const routes = [
     name: 'Game',
     component: Game
   },
+  {
+    path: '/createWord',
+    name: 'CreateWord',
+    component: CreateWord
+  }
 ]
 
 const router = new VueRouter({
