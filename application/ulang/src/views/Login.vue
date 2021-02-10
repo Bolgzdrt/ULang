@@ -106,8 +106,8 @@ html, body {
   border-width: 1px;
   border-radius: 3%;
   top: 10%;
-  height: 60%;
-  width: 25%;
+  width: 500px;  
+  height: 400px;
   min-height: 250px;
   min-width: 180px;
   position: relative;
@@ -118,6 +118,7 @@ html, body {
 }
 .login-header{
   padding: 5%;
+  font-size:xx-large;
 }
 .login-content .inputbox {
   overflow: hidden;
@@ -176,7 +177,7 @@ html, body {
 .login-content .submit-button {
   display: inline-block;
   margin-right: 2px;
-  padding: 10px 40px;
+  padding: 15px 60px;
   background:#7666D8;
   border: 1px solid #c0c0c0;
   border-radius: 20%/50%;

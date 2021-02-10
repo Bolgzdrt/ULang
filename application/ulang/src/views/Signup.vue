@@ -123,8 +123,8 @@ html, body {
   border-width: 1px;
   border-radius: 3%;
   top: 10%;
-  height: 60%;
-  width: 25%;
+  width: 500px;
+  height: 500px;
   min-height: 250px;
   min-width: 180px;
   position: relative;
@@ -135,6 +135,8 @@ html, body {
 }
 .signup-header{
   padding: 5%;
+  padding-top: 10%;
+  font-size: xx-large;
 }
 .signup-content .inputbox {
   overflow: hidden;
@@ -147,7 +149,6 @@ html, body {
 }
 .signup-content .inputbox-content input {
   width: 100%;
-  height: 30px;
   box-sizing: border-box;
   line-height: 30px;
   font-size: 14px;
@@ -193,13 +194,12 @@ html, body {
 .signup-content .submit-button {
   display: inline-block;
   margin-right: 2px;
-  padding: 10px 40px;
+  padding: 15px 60px ;
   background:#7666D8;
-  border: 1px solid #c0c0c0;
-  border-radius: 20%/50%;
+  border: 1px solid #fff;
+  border-radius: 20%/70%;
   color:#fff;
   font-size: 1.125em;
-  outline: none;
   transition: all 100ms ease-out;
   }
 
