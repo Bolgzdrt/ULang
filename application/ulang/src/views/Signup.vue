@@ -17,6 +17,7 @@
           <dd class="inputbox-content">
             <input type="text" name="username" id="username" 
             v-model="username"
+            pattern="^(?=.{4,20}$)(?![.])(?!.*[.]{2})[a-zA-Z0-9.]+(?<![.])$"
             required/>
             <label for="username">Username</label>
             <span class="underline"></span>
