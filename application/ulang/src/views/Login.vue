@@ -46,8 +46,8 @@ export default {
     return {
       username: '',
       password: '',
-      usernameError: 'usernameError',
-      passwordError: 'passwordError'
+      usernameError: '',
+      passwordError: ''
     }
   },
   methods: {
