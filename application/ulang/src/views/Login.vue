@@ -4,7 +4,7 @@
       <header class="login-header">
         <h1>Log In</h1>
       </header>
-      <div class="input-container">
+      <section class="input-container">
         <div class="inputbox">
           <div class="inputbox-content">
             <input
@@ -31,7 +31,7 @@
             <p class="error">{{ passwordError }}</p>
           </div>
         </div>
-      </div>
+      </section>
       <button class="submit-button">Submit</button>
     </form>
   </div>
