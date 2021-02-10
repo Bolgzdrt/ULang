@@ -1,9 +1,9 @@
 <template>
   <div class="sidebar">
-    <a href="#">Home</a>
+    <router-link :to="{ name: 'Home' }">Home</router-link>
     <hr>
     <div class="pageLinks">
-      <a href="#">Flash Cards</a>
+      <router-link :to="{ name: 'FlashCards' }">Flash Cards</router-link>
       <a href="#">Learn</a>
       <a href="#">Game</a>
       <a href="#">Pronunciation</a>
@@ -29,11 +29,11 @@
 import NameCircle from '@/components/NameCircle.vue'
 
 export default {
+  name: "Sidebar",
+  props: ['friends'],
   components: {
     NameCircle
   },
-  props: ['friends'],
-  name: "Sidebar"
 }
 </script>
 

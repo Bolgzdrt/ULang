@@ -45,7 +45,6 @@ const signup = async (req, res) => {
     const token = createToken(user._id)
     res.cookie('jwt', token, { /* httpOnly: true, */ maxAge: maxAge * 1000 })
     res.status(201).json({
-      token,
       success: true,
       userId: user._id
     })
@@ -67,7 +66,6 @@ const login = async (req, res) => {
     res.cookie('jwt', token, { /* httpOnly: true, */ maxAge: maxAge * 1000 })
     res.status(200).json({
       success: true,
-      token,
       userId: user._id
     })
   } catch (err) {

@@ -1,11 +1,6 @@
-import axios from 'axios'
-
-const baseUrl =
-  process.env.NODE_ENV === 'production'
-    ? 'productionURL'
-    : `http://localhost:8081`
+import axios from '@/axios'
 
 export const getUserInfo = async (userId) => {
-  const res = await axios.get(`${baseUrl}/user/getUserInfo/${userId}`)
+  const res = await axios.get(`user/getUserInfo/${userId}`)
   return res.data
 }
