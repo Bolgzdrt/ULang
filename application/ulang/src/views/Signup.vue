@@ -113,7 +113,7 @@ html, body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 300px;
+  height: 100%;
   background: #0f1041;
 }
 .signup-content {
@@ -123,8 +123,10 @@ html, body {
   border-width: 1px;
   border-radius: 3%;
   top: 10%;
-  height: 75%;
-  width: 75vh;
+  height: 60%;
+  width: 25%;
+  min-height: 250px;
+  min-width: 180px;
   position: relative;
   padding: 0;
   background: #fff;
@@ -201,4 +203,11 @@ html, body {
   transition: all 100ms ease-out;
   }
 
+.signup-content button:hover, .signup-content  button:focus {
+  transform: translateY(-3px);
+}
+
+.signup-content button:active{
+  background-color: #ff6663;
+}
 </style>

@@ -1,7 +1,10 @@
 <template>
   <div class="login">
-            <dl class="inputbox">
-          <dt class="inputbox-title">Username</dt>
+    <section class="login-content">
+        <header class="login-header">
+        <h1>Log In</h1>
+      </header>
+        <dl class="inputbox">
           <dd class="inputbox-content">
             <input type="text" name="username" id="username" 
             v-model="username"
@@ -12,10 +15,9 @@
         </dl>
 
         <dl class="inputbox">
-          <dt class="inputbox-title">Password</dt>
           <dd class="inputbox-content">
             <input type="password" name="password" id="password" 
-            pattern="(?=.\d)(?=.[a-z])(?=.*[A-Z]).{8,}"
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
             title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
             v-model="password"
             required/>
@@ -24,9 +26,8 @@
           </dd>
         </dl>
 
-
-    <form @submit="onSubmit">
-    </form>
+        <button @submit="onSubmit" class="submit-button">Submit</button>      
+    </section>
   </div>
 </template>
 
@@ -81,6 +82,13 @@ html, body {
   font-size: 14px;
 }
 
+#wrap {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 60px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+}
+
 .input::before {
   content: "";
   display: block;
@@ -88,44 +96,39 @@ html, body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 300px;
+  height: 100%;
   background: #0f1041;
 }
-.login {
+.login-content {
   margin: auto;
   border: solid;
   border-color: #7666D8;
   border-width: 1px;
   border-radius: 3%;
   top: 10%;
-  height: 75%;
-  width: 75vh;
+  height: 60%;
+  width: 25%;
+  min-height: 250px;
+  min-width: 180px;
   position: relative;
   padding: 0;
   background: #fff;
   z-index: 10;
   
 }
-.login .inputbox {
+.login-header{
+  padding: 5%;
+}
+.login-content .inputbox {
   overflow: hidden;
   position: relative;
-  padding: 15px 0 28px 200px;
+  padding: 5%;
 }
-.login .inputbox-title {
-  position: absolute;
-  top: 15px;
-  left: 0;
-  width: 200px;
-  height: 30px;
-  color: #666;
-  font-weight: bold;
-  line-height: 30px;
-}
-.login .inputbox-content {
+.login-content .inputbox-content {
   position: relative;
   width: 100%;
 }
-.login .inputbox-content input {
+.login-content .inputbox-content input {
   width: 100%;
   height: 30px;
   box-sizing: border-box;
@@ -138,16 +141,16 @@ html, body {
   border-radius: 0;
   -webkit-appearance: none;
 }
-.login .inputbox-content input:focus ~ label, .login .inputbox-content input:valid ~ label {
+.login-content .inputbox-content input:focus ~ label, .login-content .inputbox-content input:valid ~ label {
   color: #7666D8;
   transform: translateY(-20px);
   font-size: 0.825em;
   cursor: default;
 }
-.login .inputbox-content input:focus ~ .underline {
+.login-content .inputbox-content input:focus ~ .underline {
   width: 100%;
 }
-.login .inputbox-content label {
+.login-content .inputbox-content label {
   position: absolute;
   top: 0;
   left: 0;
@@ -158,7 +161,7 @@ html, body {
   transition: all 200ms ease-out;
   z-index: 10;
 }
-.login .inputbox-content .underline {
+.login-content .inputbox-content .underline {
   content: "";
   display: block;
   position: absolute;
@@ -168,5 +171,26 @@ html, body {
   height: 2px;
   background: #7666D8;
   transition: all 200ms ease-out;
+}
+
+.login-content .submit-button {
+  display: inline-block;
+  margin-right: 2px;
+  padding: 10px 40px;
+  background:#7666D8;
+  border: 1px solid #c0c0c0;
+  border-radius: 20%/50%;
+  color:#fff;
+  font-size: 1.125em;
+  outline: none;
+  transition: all 100ms ease-out;
+  }
+
+.login-content button:hover, .login-content  button:focus {
+transform: translateY(-3px);
+}
+
+.login-content button:active{
+  background-color: #ff6663;
 }
 </style>
