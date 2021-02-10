@@ -2,6 +2,7 @@
 
 Search for a user by name, username, or email or click go to the profile of a user you are currently following.
 
+<!-- TODO: Update image for final implementation of sidebar -->
 ![User on Sidebar](./images/sidebar.png)
 
 Select the heart button on one of their sets to copy it to your list of sets.

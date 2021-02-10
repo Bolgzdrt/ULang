@@ -1,5 +1,8 @@
 # Home
 
+<!-- TODO: Add final image of homepage when completed -->
+---- TODO: Add final image of homepage when completed ----
+
 ## Navigation Bar
 
 - Profile - Takes you to the Profile Page containing profile info, and user's sets

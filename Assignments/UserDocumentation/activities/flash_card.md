@@ -3,6 +3,7 @@
 Access the Flash Card activity page from a set, sidebar, or the homepage.
 
 <!-- TODO: Get a screen shot from the landing page -->
+---- TODO: Get a screen shot from the landing page ----
 
 Select word set to study with from the dropdown.
 

@@ -34,6 +34,6 @@
 
     4.1 [Following Other Users](./social/following_users.md)
 
-    4.2 [Copying Sets](./social/copy_user_sets.md)
+    4.2 [Copying Sets](./dictionary_management/copy_user_sets.md)
 
 5. [Frequently Asked Questions](./faq.md)

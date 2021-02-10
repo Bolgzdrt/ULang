@@ -2,6 +2,7 @@
 
 Navigate to the signup page from the welcome page by clicking "Get Started".
 
+<!-- TODO: Update when finalized -->
 ![Sign Up](./images/sign_up.png)
 
 Enter a valid email, username, and password.
