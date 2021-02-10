@@ -18,22 +18,22 @@ const requireAuth = (req, res, next) => {
   }
 }
 
-const checkUser = (req, res, next) => {
+// This doesn't really do anything right now, but I'll leave it for now
+const checkUser = (req, _, next) => {
   const token = req.cookies.jwt
 
   if (token) {
     jwt.verify(token, process.env.SECRET_KEY, async (err, decodedToken) => {
       if (err) {
-        res.locals.user = null
         next()
       } else {
         let user = await User.findById(decodedToken.id)
-        res.locals.user = user
-        next()
+        if (user._id) {
+          next()
+        }
       }
     })
   } else {
-    res.locals.user = null
     next()
   }
 }
