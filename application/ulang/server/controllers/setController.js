@@ -1,18 +1,21 @@
 const Set = require('../models/Set')
+const User = require('../models/User')
 const { filterUpdates } = require('../utils/utils')
 
 const createSet = async (req, res) => {
-  const { name, language, words, favorite, description, ownerId } = req.body
+  const { name, language, words, favorite, definition, ownerId } = req.body
 
   try {
+    const user = await User.findById(ownerId)
     const set = await Set.create({
       name,
       language,
       words,
       favorite,
-      description,
+      definition,
       ownerId
     })
+    User.findByIdAndUpdate(user._id, { $push: { sets: set._id }}).exec()
     res.status(201).json({
       success: true,
       id: set._id
@@ -27,9 +30,11 @@ const createSet = async (req, res) => {
 }
 
 const getAllSetsOfLanguage = async (req, res) => {
-  const { id, lang } = req.body
+  const { id, lang } = req.params
   try {
-    const sets = await Set.find({ userId: id, language: lang })
+    const user = await User.findById(id)
+    const setsOfUser = user.sets;
+    const sets = await Set.find({ _id: { $in: setsOfUser }, language: lang })
     res.status(200).json({
       success: true,
       sets
@@ -61,14 +66,22 @@ const getSetById = async (req, res) => {
   }
 }
 
+/*
+  Favorite on the set should only reflect the ownerId.
+  If we allow people to favorite other peoples' sets,
+  then there needs to be a different means of storing that,
+  or it needs to just be moved to the user.
+*/
 const toggleFavorite = async (req, res) => {
   const { id } = req.params
 
   try {
     const set = await Set.findById(id)
-    await set.findByIdAndUpdate(id, {
-      favorite: !set.favorite
-    }, { new: true })
+    await set.findByIdAndUpdate(
+      id,
+      { favorite: !set.favorite },
+      { new: true }
+    )
     res.status(200).json({
       success: true,
       set: updatedSet
@@ -78,20 +91,20 @@ const toggleFavorite = async (req, res) => {
     res.status(400).json({
       success: false,
       error: err.message
-    }) 
+    })
   }
 }
 
 const updateSet = async (req, res) => {
   const { id } = req.params
   const args = req.body
-  const inputs = {
+  const inputs = ({
     name: args.name,
     language: args.language,
     words: args.words,
     favorite: args.favorite,
     description: args.description
-  } = req.body
+  } = req.body)
 
   const updates = filterUpdates(inputs)
   try {
@@ -100,7 +113,7 @@ const updateSet = async (req, res) => {
       success: true,
       set: updatedSet
     })
-  } catch(err) {
+  } catch (err) {
     console.log(err)
     res.status(400).json({
       success: false,
@@ -118,7 +131,7 @@ const deleteSet = async (req, res) => {
       success: true
     })
   } catch (err) {
-    console.log(err);
+    console.log(err)
     res.status(400).json({
       success: false,
       error: err.message

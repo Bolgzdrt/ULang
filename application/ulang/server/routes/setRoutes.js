@@ -5,8 +5,9 @@ const router = Router()
 
 router.post('/createSet', setController.createSet)
 /**
- * {id}: userId
- * {lang}: language code
+ * Get Sets By Language
+ * @param {string} id - the userId
+ * @param {string} lang - language code to filter with
  */
 router.get('/getSetsOfLang/:id/:lang', setController.getAllSetsOfLanguage)
 router.get('/getSet/:id', setController.getSetById)

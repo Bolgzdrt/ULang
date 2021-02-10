@@ -18,7 +18,7 @@ const setSchema = new mongoose.Schema(
       required: true,
       default: false
     },
-    description: {
+    definition: {
       type: String
     },
     ownerId: {
