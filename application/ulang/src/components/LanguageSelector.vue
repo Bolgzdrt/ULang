@@ -1,10 +1,12 @@
 <template>
   <div id="lang-selector">
-    <FlagSVGs language="french" height="16" />
-  <div class="dropdown_arrow" @click="dropdownClick">
-      <DropDown height="50" />
-      <div class="lang-selector-dropdown" v-if="dropdownClicked">
-
+    <div class="lang-container" @click="dropdownClick">
+      <FlagSVGs language="french" height="16" />
+      <div class="dropdown_arrow">
+        <DropDown height="50" />
+        <div class="lang-selector-dropdown" v-if="dropdownClicked">
+          <!-- Languages and flags and stuff -->
+        </div>
       </div>
     </div>
   </div>
@@ -33,7 +35,7 @@ export default {
 </script>
 
 <style scoped>
-@import "../assets/styles/utils.css";
+@import '../assets/styles/utils.css';
 
 #lang-selector {
   width: 100%;
@@ -44,10 +46,18 @@ export default {
   align-items: center;
 }
 
+.lang-container {
+  height: 100%;
+  display: flex;
+  cursor: pointer;
+}
+
 .dropdown_arrow {
   height: 100%;
-  cursor: pointer;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .lang-selector-dropdown {

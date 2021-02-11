@@ -25,4 +25,11 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
+.circle p {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 </style>
