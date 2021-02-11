@@ -47,5 +47,5 @@ mongoose
 app.all('*', checkUser)
 app.use(authRouter)
 app.use('/set', requireAuth, setRouter)
-app.use('/word', requireAuth, wordRouter)
+app.use('/word', /* requireAuth, */ wordRouter)
 app.use('/user', requireAuth, userRouter)

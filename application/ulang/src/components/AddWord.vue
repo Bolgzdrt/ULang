@@ -99,7 +99,7 @@ export default {
       conjugationData: [{ title: '', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }],
       conjugationIndex: 0,
       sets: [
-        {name: 'Animals', length: '{# of words}?', description: '{Description}', _id: 1, selected: false},
+        {name: 'Animals', length: '{# of words}?', description: '{Description}', _id: "60259407e404812a00f2b030", selected: false},
         {name: 'Test', length: '{# of words}?', description: '{Description}', _id: 2, selected: false},
         {name: 'Food', length: '{# of words}?', description: '{Description}', _id: 3, selected: false}
       ],
@@ -109,14 +109,27 @@ export default {
   methods: {
     ...mapGetters('auth', ['getUserId']),
     submit() {
-      const word = {
+      const requestPayload = {
         english: this.english,
         word: this.translation,
         description: this.definition,
-        ownerId: this.getUserId(),
+        partOfSpeech: this.partOfSpeech,
+        ownerId: "601461de23055a43508ffca6",
+        conjugationData: this.conjugationData,
         language: 'FR'
       };
-      createWord(word).then(data => {
+      const setIds = this.sets.reduce((acc, curr) => {
+        
+        if (curr.selected) {
+          return [...acc, curr._id]
+        } else {
+          return acc
+        }
+      },
+      []
+      );
+      requestPayload["setIds"] = setIds
+      createWord(requestPayload).then(data => {
         this.anotherWordModal = true;
       }).catch(err => {
         console.log(err);
@@ -163,8 +176,9 @@ export default {
 .addWord {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  margin: 3%;
+  justify-content: space-between;
+  padding: 3%;
+  height: 100%;
 }
 
 .onlyWord {
@@ -172,7 +186,6 @@ export default {
   flex-direction: row;
   align-content: stretch;
   width: 100%;
-
 }
 
 .default {

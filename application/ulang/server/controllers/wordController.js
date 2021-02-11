@@ -1,18 +1,32 @@
 const Word = require('../models/Word')
+const Set = require('../models/Set')
+const Conjugation = require('../models/Conjugation')
 const { filterUpdates } = require('../utils/utils')
 
 const createWord = async (req, res) => {
-  const { word, language, english, partOfSpeech, description, ownerId } = req.body
+  const { word, language, english, partOfSpeech, description, ownerId, setIds, conjugationData } = req.body
 
   try {
+    const conjIds = conjugationData.map(async(conj) => {
+      const newConj = await Conjugation.create(conj)
+      return newConj._id
+    });
+    const conjugationIds = await Promise.all(conjIds)
+    
     const newWord = await Word.create({
       word,
       language,
       english,
       partOfSpeech,
       description,
-      ownerId
+      ownerId,
+      conjugationIds
     })
+
+    setIds.forEach(setId => {
+      Set.findByIdAndUpdate(setId, { $push: { words: newWord._id }}).exec()
+    });
+
     res.status(201).json({
       success: true,
       id: newWord._id

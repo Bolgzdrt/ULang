@@ -27,6 +27,6 @@ export default {
   background-color: white;
   border-radius: 5px;
   filter: drop-shadow(5px 5px 4px rgba(0, 0, 0, 0.3));
-  max-height: 100%;
+  height: 100%;
 }
 </style>

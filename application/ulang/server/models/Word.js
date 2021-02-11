@@ -16,13 +16,17 @@ const wordSchema = new mongoose.Schema(
     },
     // Noun, Verb, Adjective, etc.
     partOfSpeech: {
-      type: String
+      type: String,
+      required: true
     },
     notes: {
       type: String
     },
     description: {
       type: String
+    },
+    conjugationIds: {
+      type: [String]
     },
     ownerId: {
       type: String,
