@@ -3,7 +3,6 @@ import { login, signup } from '../../services/authService'
 import { getUserInfo } from '../../services/userService'
 
 const state = {
-  token: '',
   userId: '',
   username: '',
   email: '',
@@ -18,22 +17,17 @@ const getters = {
   getUserId: () => {
    return state.userId || Vue.$cookies.get('userId')
   },
-  getToken: () => ({
-    token: state.token || Vue.$cookies.get('token')
-  }),
 }
 
 // async
 const actions = {
   login: async ({ commit }, password) => {
-    const { token, userId } = await login(state.username, password)
-    commit('setToken', token)
+    const { userId } = await login(state.username, password)
     commit('setUserId', userId)
     return
   },
   signUp: async ({ commit }, password) => {
-    const { token, userId } = await signup(state.email, state.username, password)
-    commit('setToken', token)
+    const { userId } = await signup(state.email, state.username, password)
     commit('setUserId', userId)
     return
   },
@@ -56,19 +50,13 @@ const mutations = {
     state.userId = userId
     Vue.$cookies.set('userId', userId)
   },
-  setToken: (state, token) => {
-    state.token = token
-    Vue.$cookies.set('token', token)
-  },
   logout: (state) => {
     state.email = ''
     state.username = ''
     state.userId = ''
-    state.token = ''
     localStorage.removeItem('email')
     localStorage.removeItem('username')
     Vue.$cookies.remove('userId')
-    Vue.$cookies.remove('token')
   }
 }
 

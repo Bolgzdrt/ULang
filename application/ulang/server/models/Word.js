@@ -21,6 +21,9 @@ const wordSchema = new mongoose.Schema(
     notes: {
       type: String
     },
+    description: {
+      type: String
+    },
     ownerId: {
       type: String,
       required: true

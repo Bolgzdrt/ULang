@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "if-env NODE_ENV=production ?? npm run start:prod || npm run start:dev",
+    "start:prod": "concurrently \"npm run serve\" \"npm run server:prod\"",
     "start:dev": "concurrently \"npm run serve\" \"npm run server:dev\"",
     "serve": "vue-cli-service serve --port=8080",
     "server:dev": "nodemon server/app.js",

@@ -2,6 +2,9 @@
 
 In the top navigation bar, click the plus button and then click "Create New Set"
 
+<!-- TODO: Add image of set creation form when implemented-->
+---- TODO: Add image of set creation form when implemented ----
+
 Enter Set title.
 
 Enter description of the set, if desired.
