@@ -11,7 +11,6 @@ export const languageCodes = {
   romanian: 'RO'
 }
 
-// TODO: figure this out
 Vue.directive('click-outside', {
   bind: function(el, binding, vnode) {
     el.eventSetDrag = function() {

@@ -1,17 +1,19 @@
 <template>
   <div id="lang-selector">
     <div class="lang-container" @click="dropdownClick">
-      <FlagSVGs language="french" height="16" />
-      <div class="dropdown_arrow">
-        <DropDown height="50" />
-        <div class="lang-selector-dropdown" v-if="dropdownClicked">
-          <!-- Languages and flags and stuff -->
-          <div class="languages-list">
-            <div class="language-item" v-for="(lang, index) in studiedLanguages" :key="index">
-              <FlagSVGs :language="lang" height="16" />
-              <span>
-                {{ lang.charAt(0).toUpperCase() + lang.slice(1)}}
-              </span>
+      <div id="outside-click-element" v-click-outside="hideDropdown">
+        <FlagSVGs language="french" height="16" />
+        <div class="dropdown_arrow">
+          <DropDown height="50" />
+          <div class="lang-selector-dropdown" v-if="dropdownClicked">
+            <!-- Languages and flags and stuff -->
+            <div class="languages-list">
+              <div class="language-item" @click="clickedLang(lang)" v-for="(lang, index) in studiedLanguages" :key="index">
+                <FlagSVGs :language="lang" height="16" />
+                <span>
+                  {{ lang.charAt(0).toUpperCase() + lang.slice(1)}}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -41,6 +43,9 @@ export default {
     },
     hideDropdown() {
       this.dropdownClicked = false
+    },
+    clickedLang(lang) {
+      console.log(lang)
     }
   },
   created() {
@@ -65,8 +70,15 @@ export default {
 
 .lang-container {
   height: 100%;
-  display: flex;
   cursor: pointer;
+}
+
+#outside-click-element {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .dropdown_arrow {
