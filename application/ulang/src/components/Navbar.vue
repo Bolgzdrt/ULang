@@ -5,15 +5,13 @@
     </span>
     <div v-if="userId" class="nav-items">
       <Plus />
-      <!-- add down arrow. Also need to get SVGs for flags cus emojis don't work on windows 😑 -->
-      <!-- <div>🇫🇷</div> -->
       <LanguageSelector />
       <div @click="onNameClick" id="user-container">
         <NameCircle :initials="initials" />
         <div class="nav-drop-down" v-if="clicked">
-          <router-link :to="{ name: 'Profile', params: { id: userId } }"
-            >Profile</router-link
-          >
+          <router-link :to="{ name: 'Profile', params: { id: userId } }">
+            Profile
+          </router-link>
           <router-link :to="{ name: 'Settings' }">Settings</router-link>
           <p @click="triggerLogout">Logout</p>
         </div>
