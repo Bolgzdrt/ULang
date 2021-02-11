@@ -4,7 +4,7 @@ const Conjugation = require('../models/Conjugation')
 const { filterUpdates } = require('../utils/utils')
 
 const createWord = async (req, res) => {
-  const { word, language, english, partOfSpeech, description, ownerId, setIds, conjugationData } = req.body
+  const { word, language, english, partOfSpeech, definition, ownerId, setIds, conjugationData } = req.body
 
   try {
     const conjIds = conjugationData.map(async(conj) => {
@@ -18,7 +18,7 @@ const createWord = async (req, res) => {
       language,
       english,
       partOfSpeech,
-      description,
+      definition,
       ownerId,
       conjugationIds
     })

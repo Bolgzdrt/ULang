@@ -3,7 +3,7 @@ const User = require('../models/User')
 const { filterUpdates } = require('../utils/utils')
 
 const createSet = async (req, res) => {
-  const { name, language, words, favorite, definition, ownerId } = req.body
+  const { name, language, words, favorite, description, ownerId } = req.body
 
   try {
     const user = await User.findById(ownerId)
@@ -12,7 +12,7 @@ const createSet = async (req, res) => {
       language,
       words,
       favorite,
-      definition,
+      description,
       ownerId
     })
     User.findByIdAndUpdate(user._id, { $push: { sets: set._id }}).exec()

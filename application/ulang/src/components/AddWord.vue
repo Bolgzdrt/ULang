@@ -57,12 +57,14 @@
       </div>
     </div>
     <div class="setList">
-      <p>Sets to add to</p>
-      <div class="row" v-for="set in sets" :key="set._id">
-        <input type="checkbox" value="set.selected" v-model="set.selected">
-        <div class="name">{{ set.name }}</div>
-        <div class="length">{{ set.length }}</div>
-        <div class="desc">{{ set.description }}</div>
+      <p class="titleP">Sets to add to</p>
+      <div class="rowContainer">
+        <div class="row" v-for="set in sets" :key="set._id">
+          <input type="checkbox" value="set.selected" v-model="set.selected">
+          <div class="name"><p>{{ set.name }}</p></div>
+          <div class="length"><p>{{ set.words.length }} words</p></div>
+          <div class="desc"><p>{{ set.description }}</p></div>
+        </div>
       </div>
     </div>
     <div class="buttonBox">
@@ -72,7 +74,7 @@
     <transition name="modalFade" v-if="anotherWordModal">
       <div class="modalBackdrop">
         <div class="modal">
-          <p>Add another word?</p>
+          <p class="titleP">Add another word?</p>
           <div class="buttonBox">
             <button class="cancelButton" @click="cancel">No</button>
             <button class="submitButton" @click="clear">Yes</button>
@@ -85,6 +87,7 @@
 
 <script>
 import { createWord } from '@/services/wordService'
+import { getSets } from '@/services/setService'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -98,12 +101,9 @@ export default {
       tableTitle: '',
       conjugationData: [{ title: '', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }],
       conjugationIndex: 0,
-      sets: [
-        {name: 'Animals', length: '{# of words}?', description: '{Description}', _id: "60259407e404812a00f2b030", selected: false},
-        {name: 'Test', length: '{# of words}?', description: '{Description}', _id: 2, selected: false},
-        {name: 'Food', length: '{# of words}?', description: '{Description}', _id: 3, selected: false}
-      ],
-      anotherWordModal: false
+      sets: [],
+      anotherWordModal: false,
+      fromRoute: ''
     }
   },
   methods: {
@@ -114,7 +114,7 @@ export default {
         word: this.translation,
         description: this.definition,
         partOfSpeech: this.partOfSpeech,
-        ownerId: "601461de23055a43508ffca6",
+        ownerId: this.getUserId(),
         conjugationData: this.conjugationData,
         language: 'FR'
       };
@@ -150,9 +150,14 @@ export default {
         this.conjugationIndex--
       }
     },
+    // TODO: do this
     cancel() {
       // this should return the user to the page they came from, not sure how yet
-      console.log("retern from whence you came")
+      if (this.fromRoute) {
+        this.$router.push(this.fromRoute)
+      } else  {
+        this.$router.push({name: "Home"})
+      }
     },
     clear() {
       this.english = ''
@@ -168,15 +173,25 @@ export default {
         this.sets[i].selected = false
       }
     }
+  },
+  created() {
+    getSets(this.getUserId(), "FR").then(({sets}) => {
+      this.sets = sets.map(set => ({ ...set, selected: false }))
+    })
+  },
+  beforeRouteEnter(to, from, next) {
+    this.fromRoute = from
+    next()
   }
 }
 </script>
 
 <style scoped>
 .addWord {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: grid;
+  grid-template-rows: 2fr minmax(10%, 60%) 1fr;
+  grid-template-columns: minmax(100%, 100%);
+  gap: 3rem 0;
   padding: 3%;
   height: 100%;
 }
@@ -205,10 +220,17 @@ export default {
 }
 
 .setList {
-  margin-top: 3%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  height: 100%;
+  max-height: 100%;
+}
+
+.rowContainer {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .row {
@@ -242,11 +264,16 @@ export default {
   width: 8em;
 }
 
-.row > .description {
-  justify-self: stretch;
+.row > .desc {
+  width: 70%;
 }
 
-p {
+.desc p {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.titleP {
   margin-bottom: 1%;
   font-size: 2em;
 }
@@ -345,10 +372,6 @@ select:hover {
   user-select: none;
 }
 
-.buttonBox {
-  margin-top: 3%;
-}
-
 button {
   height: 43px;
   width: 145px;
@@ -402,7 +425,12 @@ button:hover {
   overflow-x: auto;
   display: flex;
   flex-direction: column;
-  padding: 3%;
+  justify-content: space-evenly;
+  padding: 1rem;
   border-radius: 5px;
+  width: 25%;
+  min-width: 350px;
+  height: 15%;
+  min-height: 150px;
 }
 </style>

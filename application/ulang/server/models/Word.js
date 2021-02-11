@@ -22,7 +22,7 @@ const wordSchema = new mongoose.Schema(
     notes: {
       type: String
     },
-    description: {
+    definition: {
       type: String
     },
     conjugationIds: {
