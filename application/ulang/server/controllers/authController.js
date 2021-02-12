@@ -1,5 +1,7 @@
 const User = require('../models/User')
+const Set = require('../models/Set')
 const jwt = require('jsonwebtoken')
+const { languageCodes } = require('../utils/utils')
 
 // handle errors
 const handleErrors = (err) => {
@@ -38,10 +40,22 @@ const createToken = (id) => {
 }
 
 const signup = async (req, res) => {
-  const { email, username, password } = req.body
+  const { email, username, password, primaryLanguage } = req.body
 
   try {
-    const user = await User.create({ email, username, password })
+    const lang = languageCodes[primaryLanguage]
+    const user = await User.create({
+      email,
+      username,
+      password,
+      languages: lang
+    })
+    const newSet = await Set.create({
+      name: `${primaryLanguage.charAt(0).toUpperCase() + primaryLanguage.slice(1)} Dictionary`,
+      language: lang,
+      ownerId: user._id
+    })
+    User.findByIdAndUpdate(user._id, { sets: [ newSet._id ]}, { new: true })
     const token = createToken(user._id)
     res.cookie('jwt', token, { /* httpOnly: true, */ maxAge: maxAge * 1000 })
     res.status(201).json({

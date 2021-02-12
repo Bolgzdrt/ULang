@@ -25,6 +25,7 @@
 <script>
 import DropDown from '@/assets/svgs/dropdown.vue'
 import FlagSVGs from '@/assets/svgs/flags/flagSVGs.vue'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'LanguageSelector',
@@ -46,7 +47,8 @@ export default {
     },
     clickedLang(lang) {
       console.log(lang)
-    }
+    },
+    ...mapActions('settings', ['getUserLanguages'])
   },
   created() {
     // Get languages studyed

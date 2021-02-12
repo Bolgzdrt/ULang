@@ -48,6 +48,7 @@
           </div>
         </div>
       </section>
+      <input type="submit" style="display: none;" />
       <button class="submit-button">Submit</button>
     </form>
   </div>
@@ -152,8 +153,8 @@ export default {
   height: 55%;
   max-width: 600px;
   max-height: 700px;
-  min-height: 250px;
-  min-width: 180px;
+  min-height: 450px;
+  min-width: 400px;
   position: relative;
   padding: 1.5rem 2rem;
   background: var(--white);
@@ -237,14 +238,16 @@ export default {
 
 .submit-button {
   display: inline-block;
-  padding: 10px 50px ;
+  padding: 10px;
   background: var(--purple);
   border: none;
   border-radius: 10px;
   color: var(--white);
   font-size: 1.25em;
+  outline: none;
   transition: all 100ms ease-out;
   cursor: pointer;
+  width: 30%;
 }
 
 .signup-content button:hover,
@@ -254,10 +257,6 @@ export default {
 
 .signup-content button:active{
   background-color: var(--accent-red);
-}
-
-.signup form button {
-  width: 30%;
 }
 
 .error {

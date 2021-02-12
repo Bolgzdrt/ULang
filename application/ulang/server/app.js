@@ -44,7 +44,7 @@ mongoose
   .then(() => app.listen(PORT, () => console.log(`Listening on port ${PORT}`)))
   .catch((err) => console.error(err))
 
-app.all('*', checkUser)
+// app.all('*', checkUser)
 app.use(authRouter)
 app.use('/set', requireAuth, setRouter)
 app.use('/word', requireAuth, wordRouter)
