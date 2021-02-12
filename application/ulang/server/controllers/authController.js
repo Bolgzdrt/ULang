@@ -40,7 +40,10 @@ const createToken = (id) => {
 }
 
 const signup = async (req, res) => {
-  const { email, username, password, primaryLanguage } = req.body
+  let { email, username, password, primaryLanguage } = req.body
+  if (!primaryLanguage) {
+    primaryLanguage = 'french'
+  }
 
   try {
     const lang = languageCodes[primaryLanguage]
