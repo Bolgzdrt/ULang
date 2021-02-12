@@ -14,7 +14,7 @@
               v-model="username"
               required
             />
-            <label for="username">Username</label>
+            <label for="username" :class="shouldStay('username')">Username</label>
             <p class="error">{{ usernameError }}</p>
           </div>
         </div>
@@ -27,7 +27,7 @@
               v-model="password"
               required
             />
-            <label for="password">Password</label>
+            <label for="password" :class="shouStay('password')">Password</label>
             <p class="error">{{ passwordError }}</p>
           </div>
         </div>
@@ -71,6 +71,9 @@ export default {
       this.emailError = ''
       this.passwordError = ''
       this.usernameError = ''
+    },
+    shouldStay(label) {
+      return this[label] ? 'label' : null
     }
   },
   watch: {
@@ -127,7 +130,7 @@ export default {
   padding: 1.5rem 2rem;
 }
 
-.login-header{
+.login-header {
   font-size: 1.75rem;
 }
 
@@ -165,7 +168,8 @@ export default {
 }
 
 .inputbox-content input:focus ~ label,
-.login-content .inputbox-content input:valid ~ label {
+.inputbox-content input:valid ~ label,
+.label-up {
   color: var(--purple);
   transform: translateY(-20px);
   font-size: 0.825em;
