@@ -20,7 +20,8 @@
       </svg>
       <div class="nav-drop-down" v-if="clicked">
         <div><router-link :to="{ name: 'CreateWord' }">New Word</router-link></div>
-        <div><router-link :to="{ name: 'CreateSet' }">New Set</router-link></div>
+        <!-- <div><router-link :to="{ name: 'CreateSet' }">New Set</router-link></div> -->
+        <div><p>New Set</p></div>
       </div>
     </div>
   </div>

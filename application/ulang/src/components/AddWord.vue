@@ -92,6 +92,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'AddWord',
+  props: ['fromRoute'],
   data() {
     return {
       english: '',
@@ -103,7 +104,6 @@ export default {
       conjugationIndex: 0,
       sets: [],
       anotherWordModal: false,
-      fromRoute: ''
     }
   },
   methods: {
@@ -179,10 +179,6 @@ export default {
       this.sets = sets.map(set => ({ ...set, selected: false }))
     })
   },
-  beforeRouteEnter(to, from, next) {
-    this.fromRoute = from
-    next()
-  }
 }
 </script>
 

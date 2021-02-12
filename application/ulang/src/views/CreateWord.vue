@@ -1,7 +1,7 @@
 <template>
   <div class="createWord">
     <div class="box">
-      <AddWord />
+      <AddWord :fromRoute="fromRoute" />
     </div>
   </div>
 </template>
@@ -11,7 +11,17 @@ import AddWord from '@/components/AddWord.vue'
 
 export default {
   name: 'CreateWord',
-  components: { AddWord }
+  components: { AddWord },
+  data() {
+    return {
+      fromRoute: ''
+    }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.fromRoute = from
+    })
+  }
 }
 </script>
 
