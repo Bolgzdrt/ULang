@@ -18,7 +18,7 @@
       />
     </svg>
     <div class="nav-drop-down" v-if="clicked">
-      <div><p>New Word</p></div>
+      <div><p @click="newWord">New Word</p></div>
       <div><p>New Set</p></div>
     </div>
   </div>
@@ -35,6 +35,9 @@ export default {
   methods: {
     onAddClick(e) {
       this.clicked = !this.clicked
+    },
+    newWord() {
+      this.$router.push({name: "CreateWord"})
     }
   }
 }
