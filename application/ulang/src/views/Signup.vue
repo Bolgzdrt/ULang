@@ -14,7 +14,7 @@
               v-model="email"
               required
             />
-            <label for="email">Email</label>
+            <label for="email" :class="shouldStay('email')">Email</label>
             <p class="error">{{ emailError }}</p>
           </div>
         </div>
@@ -28,7 +28,7 @@
               pattern="^(?=.{4,20}$)(?![.])(?!.*[.]{2})[a-zA-Z0-9.]+(?<![.])$"
               required
             />
-            <label for="username">Username</label>
+            <label for="username" :class="shouldStay('username')">Username</label>
             <p class="error">{{ usernameError }}</p>
           </div>
         </div>
@@ -43,7 +43,7 @@
               v-model="password"
               required
             />
-            <label for="password">Password</label>
+            <label for="password" :class="shouldStay('password')">Password</label>
             <p class="error">{{ passwordError }}</p>
           </div>
         </div>
@@ -106,6 +106,9 @@ export default {
       this.emailError = ''
       this.passwordError = ''
       this.usernameError = ''
+    },
+    shouldStay(label) {
+      return this[label] ? 'label-up' : null
     }
   }
 }
@@ -195,7 +198,9 @@ export default {
   -webkit-appearance: none;
 }
 
-.signup-content .inputbox-content input:focus ~ label, .signup-content .inputbox-content input:valid ~ label {
+.inputbox-content input:focus ~ label,
+.inputbox-content input:valid ~ label,
+.label-up {
   color: var(--purple);
   transform: translateY(-20px);
   font-size: 0.825em;
