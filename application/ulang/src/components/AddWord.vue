@@ -2,7 +2,7 @@
   <div class="addWord">
     <div class="onlyWord">
       <div class="default">
-        <p>Add a new word</p>
+        <p class="titleP">Add a new word</p>
         <div class="field">
           <input type="text" id="english" placeholder="Enter a word..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a word...'" v-model="english" class="wordInput"><br>
           <label for="english" class="required wordEntryLabel">English Word</label>
@@ -57,7 +57,12 @@
       </div>
     </div>
     <div class="setList">
-      <p class="titleP">Sets to add to</p>
+      <div class="blockLine">
+        <p class="titleP">Select sets to include word</p>
+        <Tooltip text="Use the checkbox to select any sets the word should be added to. No selection will only add to user dictionary.">
+          <div class="helpButton">?</div>
+        </Tooltip>
+      </div>
       <div class="rowContainer">
         <div class="row" v-for="set in sets" :key="set._id">
           <input type="checkbox" value="set.selected" v-model="set.selected">
@@ -89,9 +94,11 @@
 import { createWord } from '@/services/wordService'
 import { getSets } from '@/services/setService'
 import { mapGetters } from 'vuex'
+import Tooltip from '@/components/Tooltip.vue'
 
 export default {
   name: 'AddWord',
+  components: { Tooltip },
   data() {
     return {
       english: '',
@@ -274,7 +281,6 @@ export default {
 }
 
 .titleP {
-  margin-bottom: 1%;
   font-size: 2em;
 }
 
@@ -432,5 +438,28 @@ button:hover {
   min-width: 350px;
   height: 15%;
   min-height: 150px;
+}
+
+.helpButton {
+  background: #ccc;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.blockLine {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.blockLine > p {
+  padding-right: 10px;
 }
 </style>
