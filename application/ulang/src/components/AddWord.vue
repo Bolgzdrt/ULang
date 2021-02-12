@@ -168,7 +168,7 @@ export default {
       this.conjugationData = [{ title: '', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }]
       this.conjugationIndex = 0
       this.anotherWordModal = false
-      var i = 0
+      let i = 0
       for (i = 0; i < this.sets.length; i++) {
         this.sets[i].selected = false
       }
