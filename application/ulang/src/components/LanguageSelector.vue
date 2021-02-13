@@ -2,22 +2,22 @@
   <div id="lang-selector">
     <div class="lang-container" @click="dropdownClick">
       <div id="outside-click-element" v-click-outside="hideDropdown">
-        <FlagSVGs :language="languageCodes[primaryLanguage]" height="16" />
+        <FlagSVGs :language="primaryLanguage" height="16" />
         <div class="dropdown_arrow">
           <DropDown height="50" />
           <div class="lang-selector-dropdown" v-if="dropdownClicked">
             <!-- Languages and flags and stuff -->
             <div class="languages-list">
-              <div
-                class="language-item"
-                @click="clickedLang(lang)"
-                v-for="(lang, index) in studiedLanguages"
-                :key="index"
-              >
-                <FlagSVGs :language="lang" height="16" />
-                <span>
-                  {{ lang.charAt(0).toUpperCase() + lang.slice(1) }}
-                </span>
+              <div class="language-item-container" @click="clickedLang(lang)"
+                  v-for="(lang, index) in studiedLanguages"
+                  :key="index">
+                <div :class="getBorderClass(index)">
+                  <FlagSVGs :language="lang" height="16" />
+                  <span>
+                    {{ lang.charAt(0).toUpperCase() + lang.slice(1) }}
+                  </span>
+                  <!-- TODO: Create an "Add another language to study" button that goes to a new page -->
+                </div>
               </div>
             </div>
           </div>
@@ -42,8 +42,7 @@ export default {
       language: '',
       dropdownClicked: false,
       studiedLanguages: [],
-      primaryLanguage: 'fr',
-      languageCodes
+      primaryLanguage: 'fr'
     }
   },
   methods: {
@@ -56,17 +55,21 @@ export default {
     clickedLang(lang) {
       console.log(lang)
     },
+    getBorderClass(index) {
+      return index === this.studiedLanguages.length-1
+        ? 'language-item no-border'
+        : 'language-item'
+    },
     ...mapActions('settings', ['getUserLanguages']),
     ...mapGetters('auth', ['getUserInfo'])
   },
   created() {
     // Get languages studyed
     // TEMP
-    this.studiedLanguages = ['french', 'spanish']
     this.getUserLanguages(this.getUserInfo()?.userId)
       .then((res) => {
         this.studiedLanguages = res.languages.map(lang => languageCodes[lang])
-        this.primaryLanguage = res.primaryLanguage
+        this.primaryLanguage = languageCodes[res.primaryLanguage]
       })
       .catch((err) => console.error(err))
   }
@@ -118,12 +121,25 @@ export default {
 }
 
 .languages-list {
-  width: 90%;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+}
+
+.language-item-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.language-item-container:hover {
+  background-color: #e0e0e0;
 }
 
 .languages-list .language-item {
@@ -132,7 +148,7 @@ export default {
   justify-content: flex-start;
   font-size: 1.25rem;
   border-bottom: 1px solid var(--gray);
-  width: 100%;
+  width: 90%;
   height: 100%;
   padding: 0.5rem 0 0.5rem 1rem;
 }
@@ -141,7 +157,7 @@ export default {
   margin-left: 0.75rem;
 }
 
-.language-item:last-of-type {
-  border-bottom: none;
+.no-border {
+  border: none !important;
 }
 </style>

@@ -97,6 +97,7 @@ export default {
 
 <style scoped>
 @import '../assets/styles/utils.css';
+
 nav {
   display: flex;
   align-items: center;
@@ -185,5 +186,6 @@ nav .nav-items {
   text-align: left;
   text-decoration: none;
   color: #2c3e50;
+  padding: 0 0.5em;
 }
 </style>

@@ -86,6 +86,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0 0.5em;
 }
 
 .nav-drop-down div:hover {
