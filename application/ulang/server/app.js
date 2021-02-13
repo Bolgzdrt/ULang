@@ -39,7 +39,8 @@ mongoose
   .connect(dbUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false
   })
   .then(() => app.listen(PORT, () => console.log(`Listening on port ${PORT}`)))
   .catch((err) => console.error(err))

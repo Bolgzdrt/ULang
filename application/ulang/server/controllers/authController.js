@@ -1,7 +1,7 @@
 const User = require('../models/User')
 const Set = require('../models/Set')
 const jwt = require('jsonwebtoken')
-const { languageCodes } = require('../utils/utils')
+const { languageCodes, capitalizeWord } = require('../utils/utils')
 
 // handle errors
 const handleErrors = (err) => {
@@ -51,14 +51,15 @@ const signup = async (req, res) => {
       email,
       username,
       password,
-      languagesStudying: [lang]
+      languagesStudying: [lang],
+      primaryLanguage: lang
     })
     const newSet = await Set.create({
-      name: `${primaryLanguage.charAt(0).toUpperCase() + primaryLanguage.slice(1)} Dictionary`,
+      name: `${capitalizeWord(primaryLanguage)} Dictionary`,
       language: lang,
       ownerId: user._id
     })
-    User.findByIdAndUpdate(user._id, { sets: [ newSet._id ]}, { new: true }, (err, user) => {})
+    User.findByIdAndUpdate(user._id, { sets: [ newSet._id ]}, { new: true, useFindAndModify: false }, (err, user) => {})
     const token = createToken(user._id)
     res.cookie('jwt', token, { /* httpOnly: true, */ maxAge: maxAge * 1000 })
     res.status(201).json({

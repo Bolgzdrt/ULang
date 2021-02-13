@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import { getUserLanguages } from '@/services/userService'
 
 const state = {
@@ -13,7 +12,7 @@ const getters = {
 const actions = {
   getUserLanguages: async ({ commit }, userId) => {
     const res = await getUserLanguages(userId)
-    return res.data
+    return res
   }
 }
 

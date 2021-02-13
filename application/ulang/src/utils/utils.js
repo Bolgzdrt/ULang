@@ -1,14 +1,14 @@
 import Vue from 'vue'
 
 export const languageCodes = {
-  FR: 'french',
-  SP: 'spanish',
-  IT: 'italian',
-  GE: 'german',
-  PO: 'portuguese',
-  SW: 'swedish',
-  DU: 'dutch',
-  RO: 'romanian'
+  fr: 'french',
+  es: 'spanish',
+  it: 'italian',
+  de: 'german',
+  pt: 'portuguese',
+  sv: 'swedish',
+  nl: 'dutch',
+  ro: 'romanian'
 }
 
 export const languages = [

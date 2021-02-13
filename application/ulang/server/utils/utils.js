@@ -6,12 +6,16 @@ module.exports.filterUpdates = (inputs) =>
   )
 
 module.exports.languageCodes = {
-  french: 'FR',
-  spanish: 'SP',
-  italian: 'IT',
-  german: 'GE',
-  portuguese: 'PO',
-  swedish: 'SW',
-  dutch: 'DU',
-  romanian: 'RO'
+  french: 'fr',
+  spanish: 'es',
+  italian: 'it',
+  german: 'de',
+  portuguese: 'pt',
+  swedish: 'sv',
+  dutch: 'nl',
+  romanian: 'ro'
+}
+
+module.exports.capitalizeWord = (word) => {
+  return word.charAt(0).toUpperCase() + word.slice(1)
 }

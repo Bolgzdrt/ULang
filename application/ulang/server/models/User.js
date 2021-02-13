@@ -38,6 +38,11 @@ const userSchema = new mongoose.Schema(
       type: ['String'],
       required: [true, 'Must be studying at least one language'],
       default: languageCodes.french
+    },
+    primaryLanguage: {
+      type: String,
+      required: true,
+      default: languageCodes.french
     }
   },
   {

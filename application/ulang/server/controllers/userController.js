@@ -1,6 +1,6 @@
 const User = require('../models/User')
 const Set = require('../models/Set')
-const { languageCodes } = require('../utils/utils')
+const { languageCodes, capitalizeWord } = require('../utils/utils')
 
 const followUser = async (req, res) => {
   // The id of the person to follow
@@ -13,7 +13,7 @@ const followUser = async (req, res) => {
       {
         friendsList: [...user.friendsList, followUserId]
       },
-      { new: true }
+      { new: true, useFindAndModify: false }
     )
     res.status(200).json({
       success: true
@@ -40,7 +40,7 @@ const unfollowUser = async (req, res) => {
       {
         friendsList: newFriendsList
       },
-      { new: true }
+      { new: true, useFindAndModify: false }
     )
     res.status(200).json({
       success: true,
@@ -77,11 +77,13 @@ const getUserInfo = async (req, res) => {
 
 const getUserLanguages = async (req, res) => {
   const { id } = req.params
+
   try {
     const user = await User.findById(id)
     res.status(200).json({
       success: true,
-      languages: user.languagesStudying
+      languages: user.languagesStudying,
+      primaryLanguage: user.primaryLanguage
     })
   } catch (err) {
     console.log(err)
@@ -101,17 +103,21 @@ const addLanguagesToUser = async (req, res) => {
     languagesToAdd.forEach(async (language) => {
       // Create a new dictionary and add it to the user's set list
       const newSet = await Set.create({
-        name: `${language} dictionary`,
+        name: `${capitalizeWord(language)} dictionary`,
         language: languageCodes[language],
         ownerId: id
       })
 
-      User.findByIdAndUpdate(id, {
-        $push: {
-          languagesStudying: languageCodes[language],
-          sets: newSet._id
-        }
-      }).exec()
+      User.findByIdAndUpdate(
+        id,
+        {
+          $push: {
+            languagesStudying: languageCodes[language],
+            sets: newSet._id
+          }
+        },
+        { useFindAndModify: false }
+      ).exec()
 
       res.status(200).json({
         success: true,

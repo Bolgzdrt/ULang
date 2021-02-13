@@ -2,16 +2,21 @@
   <div id="lang-selector">
     <div class="lang-container" @click="dropdownClick">
       <div id="outside-click-element" v-click-outside="hideDropdown">
-        <FlagSVGs language="french" height="16" />
+        <FlagSVGs :language="languageCodes[primaryLanguage]" height="16" />
         <div class="dropdown_arrow">
           <DropDown height="50" />
           <div class="lang-selector-dropdown" v-if="dropdownClicked">
             <!-- Languages and flags and stuff -->
             <div class="languages-list">
-              <div class="language-item" @click="clickedLang(lang)" v-for="(lang, index) in studiedLanguages" :key="index">
+              <div
+                class="language-item"
+                @click="clickedLang(lang)"
+                v-for="(lang, index) in studiedLanguages"
+                :key="index"
+              >
                 <FlagSVGs :language="lang" height="16" />
                 <span>
-                  {{ lang.charAt(0).toUpperCase() + lang.slice(1)}}
+                  {{ lang.charAt(0).toUpperCase() + lang.slice(1) }}
                 </span>
               </div>
             </div>
@@ -25,7 +30,8 @@
 <script>
 import DropDown from '@/assets/svgs/dropdown.vue'
 import FlagSVGs from '@/assets/svgs/flags/flagSVGs.vue'
-import { mapActions } from 'vuex'
+import { languageCodes } from '@/utils/utils'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'LanguageSelector',
@@ -35,7 +41,9 @@ export default {
       flag: '',
       language: '',
       dropdownClicked: false,
-      studiedLanguages: []
+      studiedLanguages: [],
+      primaryLanguage: 'fr',
+      languageCodes
     }
   },
   methods: {
@@ -48,12 +56,19 @@ export default {
     clickedLang(lang) {
       console.log(lang)
     },
-    ...mapActions('settings', ['getUserLanguages'])
+    ...mapActions('settings', ['getUserLanguages']),
+    ...mapGetters('auth', ['getUserInfo'])
   },
   created() {
     // Get languages studyed
     // TEMP
     this.studiedLanguages = ['french', 'spanish']
+    this.getUserLanguages(this.getUserInfo()?.userId)
+      .then((res) => {
+        this.studiedLanguages = res.languages.map(lang => languageCodes[lang])
+        this.primaryLanguage = res.primaryLanguage
+      })
+      .catch((err) => console.error(err))
   }
 }
 </script>

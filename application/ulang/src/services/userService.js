@@ -6,6 +6,6 @@ export const getUserInfo = async (userId) => {
 }
 
 export const getUserLanguages = async (userId) => {
-  const res = await axios.got(`user/getUserLangugaes/${userId}`)
+  const res = await axios.get(`user/getUserLanguages/${userId}`)
   return res.data
 }
