@@ -11,6 +11,7 @@
           <input type="text" id="translation" placeholder="Enter the translation..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter the translation...'" v-model="translation" class="wordInput"><br>
           <label for="translation" class="required wordEntryLabel">Translation</label>
         </div>
+        <AccentButtons @buttonClicked="appendChar" language="FR"/>
         <div class="field">
           <input type="text" id="definition" placeholder="Enter a definition for your word..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a definition for your word...'" v-model="definition" class="wordInput"><br>
           <label for="definition" class="wordEntryLabel">Definition</label>
@@ -95,10 +96,11 @@ import { createWord } from '@/services/wordService'
 import { getSets } from '@/services/setService'
 import { mapGetters } from 'vuex'
 import Tooltip from '@/components/Tooltip.vue'
+import AccentButtons from '@/components/AccentButtons.vue'
 
 export default {
   name: 'AddWord',
-  components: { Tooltip },
+  components: { Tooltip, AccentButtons },
   data() {
     return {
       english: '',
@@ -156,6 +158,9 @@ export default {
       if (this.conjugationIndex > 0) {
         this.conjugationIndex--
       }
+    },
+    appendChar(char){
+      this.translation += char;
     },
     // TODO: do this
     cancel() {
@@ -435,7 +440,7 @@ button:hover {
   padding: 1rem;
   border-radius: 5px;
   width: 25%;
-  min-width: 350px;
+  min-width: 380px;
   height: 15%;
   min-height: 150px;
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="accentButtons">
-    <div v-for="(char, index) in accents" :key="index" @click="$emit('buttonClicked', char)">
+    <div v-for="(char, index) in displayed" :key="index" @click="$emit('buttonClicked', char)">
       <p>{{ char }}</p>
     </div>
   </div>
@@ -12,8 +12,33 @@ export default {
   props: ['language'],
   data() {
     return {
-      // accents: [{lower:'á', upper:'Á'}, 'é', 'í', 'ñ', 'ó', 'ú', 'ü', 'ù', 'û', 'ÿ', 'à', 'â', 'æ', 'ç', 'è', 'ê', 'ë', 'ï', 'î', 'ô', 'œ', 'ä', 'ö', 'ß', 'ì', 'ò', 'ã', 'õ', '¿', '¡']
-      accents: ['á', 'é', 'í', 'ñ', 'ó', 'ú', 'ü', 'ù', 'û', 'ÿ', 'à', 'â', 'æ', 'ç', 'è', 'ê', 'ë', 'ï', 'î', 'ô', 'œ', 'ä', 'ö', 'ß', 'ì', 'ò', 'ã', 'õ', '¿', '¡']
+      french: ['á', 'â', 'æ', 'ç', 'è', 'ê', 'ë', 'ï', 'î', 'ô', 'œ', 'ù', 'û', 'ü', 'ÿ'],
+      spanish: ['á', 'é', 'í', 'ñ', 'ó', 'ú', 'ü'],
+      portuguese: ['ã', 'á', 'à', 'â', 'ç', 'é', 'ê', 'í', 'õ', 'ó', 'ô', 'ú', 'ü'],
+      italian: ['à', 'è', 'é', 'ì', 'ò', 'ó', 'ù'],
+      german: ['ä', 'ö', 'ü', 'ß'],
+      romanian: ['ă', 'â', 'î', 'ș', 'ş', 'ț', 'ţ'],
+      swedish: ['ä', 'å', 'é', 'ö'],
+      displayed: []
+    }
+  },
+  created() {
+    if (this.language === "FR") {
+      this.displayed = this.french
+    } else if (this.language === "ES") {
+      this.displayed = this.spanish
+    } else if (this.language === "PT") {
+      this.displayed = this.portuguese
+    } else if (this.language === "IT") {
+      this.displayed = this.italian
+    } else if (this.language === "DE") {
+      this.displayed = this.german
+    } else if (this.language === "RO") {
+      this.displayed = this.romanian
+    } else if (this.language === "SV") {
+      this.displayed = this.swedish
+    } else {
+      this.displayed = []
     }
   }
 }
@@ -23,8 +48,10 @@ export default {
 .accentButtons {
   display: flex;
   flex-direction: row;
-  width: 80%;
-  height: 30%;
+}
+
+div {
+  margin-right: 1%;
 }
 
 p {
@@ -33,7 +60,6 @@ p {
   height: 30px;
   width: 30px;
   line-height: 30px;
+  cursor: pointer;
 }
-
-
 </style>
