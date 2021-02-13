@@ -1,6 +1,6 @@
 <template>
   <div id="flags-container">
-    <div v-if="flag === 'FR'" id="france">
+    <div v-if="language === 'french'" id="france">
       <svg xmlns="http://www.w3.org/2000/svg" :height="height" :width="width" viewBox="0 0 640 480">
         <g fill-rule="evenodd" stroke-width="1pt">
           <path fill="#f0f0f0" d="M0 0h640v480H0z"/>
@@ -20,7 +20,7 @@
         </metadata>
       </svg>
     </div>
-    <div v-if="flag === 'GE'" id="germany">
+    <div v-if="language === 'german'" id="germany">
       <svg xmlns="http://www.w3.org/2000/svg" :height="height" :width="width" viewBox="0 0 640 480">
         <g fill-rule="evenodd" stroke-width="1pt" transform="scale(1.25 .9375)">
           <path fill="#ffce00" d="M0 320h640v160.002H0z"/>
@@ -40,7 +40,7 @@
         </metadata>
       </svg>
     </div>
-    <div v-if="flag === 'IT'" id="italy">
+    <div v-if="language === 'italian'" id="italy">
       <svg xmlns="http://www.w3.org/2000/svg" :height="height" :width="width" viewBox="0 0 640 480">
         <g fill-rule="evenodd" stroke-width="1pt">
           <path fill="#f0f0f0" d="M0 0h640v479.997H0z"/>
@@ -60,7 +60,7 @@
         </metadata>
       </svg>
     </div>
-    <div v-if="flag === 'DU'" id="netherlands">
+    <div v-if="language === 'dutch'" id="netherlands">
       <svg xmlns="http://www.w3.org/2000/svg" :height="height" :width="width" viewBox="0 0 640 480">
         <g fill-rule="evenodd" stroke-width="1pt" transform="scale(1.25 .9375)">
           <rect rx="0" ry="0" height="509.76" width="512" fill="#f0f0f0"/>
@@ -80,7 +80,7 @@
         </metadata>
       </svg>
     </div>
-    <div v-if="flag === 'PO'" id="portugal">
+    <div v-if="language === 'portuguese'" id="portugal">
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" :height="height" :width="width" viewBox="0 0 640 480">
         <path fill="red" d="M256 0h384v480H256z"/>
         <path fill="#060" d="M0 0h256v480H0z"/>
@@ -150,7 +150,7 @@
         </metadata>
       </svg>
     </div>
-    <div v-if="flag === 'RO'" id="romania">
+    <div v-if="language === 'romanian'" id="romania">
       <svg xmlns="http://www.w3.org/2000/svg" :height="height" :width="width" viewBox="0 0 640 480" >
         <g fill-rule="evenodd" stroke-width="1pt">
           <path fill="#00319c" d="M0 0h213.333v480H0z"/>
@@ -170,7 +170,7 @@
         </metadata>
       </svg>
     </div>
-    <div v-if="flag === 'SP'" id="spain">
+    <div v-if="language === 'spanish'" id="spain">
       <svg xmlns="http://www.w3.org/2000/svg" :height="height" :width="width" viewBox="0 0 640 480">
         <path fill="#c60b1e" d="M0 0h640v480H0z"/>
         <path fill="#ffc400" d="M0 120h640v240H0z"/>
@@ -764,7 +764,7 @@
         </metadata>
       </svg>
     </div>
-    <div v-if="flag === 'SW'" id="sweden">
+    <div v-if="language === 'swedish'" id="sweden">
       <svg xmlns="http://www.w3.org/2000/svg" :height="height" :width="width" viewBox="0 0 640 480">
         <defs>
           <clipPath id="a">
@@ -797,15 +797,9 @@
 </template>
 
 <script>
-  import { languageCodes } from '@/utils/utils'
     export default {
-        name: 'flagSVGs',
-        props: ['height', 'width', 'language'],
-        computed: {
-          flag() {
-            return languageCodes[this.language]
-          }
-        }
+      name: 'flagSVGs',
+      props: ['height', 'width', 'language'],
     }
 </script>
 

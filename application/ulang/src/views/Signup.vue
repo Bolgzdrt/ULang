@@ -47,6 +47,16 @@
             <p class="error">{{ passwordError }}</p>
           </div>
         </div>
+        <div class="inputbox">
+          <div class="language-selector">
+            <FlagSVGs :language="primaryLanguage" height="32" />
+            <select name="primaryLanguage" id="languageSelect" v-model="primaryLanguage" >
+              <option v-for="(lang, index) in languages" :key="index" :selected="lang === 'french' ? 'selected' : null" :value="lang">
+                {{ lang.charAt(0).toUpperCase() + lang.slice(1) }}
+              </option>
+            </select>
+          </div>
+        </div>
       </section>
       <input type="submit" style="display: none;" />
       <button class="submit-button">Submit</button>
@@ -56,9 +66,12 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
+import { languageCodes, languages } from '@/utils/utils'
+import FlagSVGs from '@/assets/svgs/flags/flagSVGs'
 
 export default {
   name: 'Signup',
+  components: { FlagSVGs },
   data() {
     return {
       email: '',
@@ -66,7 +79,10 @@ export default {
       password: '',
       emailError: '',
       usernameError: '',
-      passwordError: ''
+      passwordError: '',
+      languageCodes,
+      languages,
+      primaryLanguage: 'french'
     }
   },
   watch: {
@@ -90,7 +106,7 @@ export default {
       e.preventDefault()
       this.resetErrors()
       // this.loading = true // start some loading spinner thing
-      this.signUp(this.password)
+      this.signUp(this.password, this.primaryLanguage)
         .then(() => {
           this.$router.push({ name: 'Home' })
         })
@@ -263,5 +279,23 @@ export default {
   color: red;
   font-size: 0.75rem;
   text-align: left;
+}
+
+select {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid var(--gray);
+  font-size: 1.25em;
+  outline: none;
+}
+
+.language-selector {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.language-selector select {
+  margin-left: 1rem;
 }
 </style>

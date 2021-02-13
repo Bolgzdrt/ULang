@@ -17,7 +17,7 @@
         </div>
         <div class="field">
           <select id="partOfSpeech" v-model="partOfSpeech">
-            <option value="">--Select an option--</option>
+            <option value="" disabled>--Select an option--</option>
             <option value="noun">Noun</option>
             <option value="verb" selected>Verb</option>
             <option value="adjective">Adjective</option>

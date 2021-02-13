@@ -1,15 +1,26 @@
 import Vue from 'vue'
 
 export const languageCodes = {
-  french: 'FR',
-  spanish: 'SP',
-  italian: 'IT',
-  german: 'GE',
-  portuguese: 'PO',
-  swedish: 'SW',
-  dutch: 'DU',
-  romanian: 'RO'
+  FR: 'french',
+  SP: 'spanish',
+  IT: 'italian',
+  GE: 'german',
+  PO: 'portuguese',
+  SW: 'swedish',
+  DU: 'dutch',
+  RO: 'romanian'
 }
+
+export const languages = [
+  'french',
+  'spanish',
+  'italian',
+  'german',
+  'portuguese',
+  'swedish',
+  'dutch',
+  'romanian'
+]
 
 Vue.directive('click-outside', {
   bind: function(el, binding, vnode) {
