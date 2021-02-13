@@ -15,7 +15,7 @@ const createSet = async (req, res) => {
       description,
       ownerId
     })
-    User.findByIdAndUpdate(user._id, { $push: { sets: set._id }}).exec()
+    User.findByIdAndUpdate(user._id, { $push: { sets: set._id }}, { useFindAndModify: false }).exec()
     res.status(201).json({
       success: true,
       id: set._id
@@ -77,10 +77,10 @@ const toggleFavorite = async (req, res) => {
 
   try {
     const set = await Set.findById(id)
-    await set.findByIdAndUpdate(
+    await Set.findByIdAndUpdate(
       id,
       { favorite: !set.favorite },
-      { new: true }
+      { new: true, useFindAndModify: false }
     )
     res.status(200).json({
       success: true,
@@ -108,7 +108,7 @@ const updateSet = async (req, res) => {
 
   const updates = filterUpdates(inputs)
   try {
-    const updatedSet = await Set.findByIdAndUpdate(id, updates, { new: true })
+    const updatedSet = await Set.findByIdAndUpdate(id, updates, { new: true, useFindAndModify: false })
     res.status(200).json({
       success: true,
       set: updatedSet

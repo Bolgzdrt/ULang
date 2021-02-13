@@ -27,11 +27,12 @@
               v-model="password"
               required
             />
-            <label for="password" :class="shouStay('password')">Password</label>
+            <label for="password" :class="shouldStay('password')">Password</label>
             <p class="error">{{ passwordError }}</p>
           </div>
         </div>
       </section>
+      <input type="submit" style="display: none;">
       <button class="submit-button">Submit</button>
     </form>
   </div>
@@ -121,8 +122,8 @@ export default {
   top: 10%;
   width: 40%;
   height: 40%;
-  min-height: 250px;
-  min-width: 180px;
+  min-height: 300px;
+  min-width: 450px;
   max-width: 600px;
   max-height: 500px;
   position: relative;
@@ -202,15 +203,16 @@ export default {
 
 .submit-button {
   display: inline-block;
-  padding: 10px 50px;
+  padding: 10px;
   background:var(--purple);
   border: none;
   border-radius: 10px;
-  color:var(--white);
+  color: var(--white);
   font-size: 1.25em;
   outline: none;
   transition: all 100ms ease-out;
   cursor: pointer;
+  width: 30%;
 }
 
 .login-content button:hover,

@@ -26,8 +26,9 @@ const actions = {
     commit('setUserId', userId)
     return
   },
-  signUp: async ({ commit }, password) => {
-    const { userId } = await signup(state.email, state.username, password)
+  signUp: async ({ commit }, dependencies) => {
+    const { password, primaryLanguage } = dependencies
+    const { userId } = await signup({ email: state.email, username: state.username, password, primaryLanguage })
     commit('setUserId', userId)
     return
   },

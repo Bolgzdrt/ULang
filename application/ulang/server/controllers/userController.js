@@ -1,4 +1,6 @@
 const User = require('../models/User')
+const Set = require('../models/Set')
+const { languageCodes, capitalizeWord } = require('../utils/utils')
 
 const followUser = async (req, res) => {
   // The id of the person to follow
@@ -11,7 +13,7 @@ const followUser = async (req, res) => {
       {
         friendsList: [...user.friendsList, followUserId]
       },
-      { new: true }
+      { new: true, useFindAndModify: false }
     )
     res.status(200).json({
       success: true
@@ -38,7 +40,7 @@ const unfollowUser = async (req, res) => {
       {
         friendsList: newFriendsList
       },
-      { new: true }
+      { new: true, useFindAndModify: false }
     )
     res.status(200).json({
       success: true,
@@ -73,8 +75,68 @@ const getUserInfo = async (req, res) => {
   }
 }
 
+const getUserLanguages = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const user = await User.findById(id)
+    res.status(200).json({
+      success: true,
+      languages: user.languagesStudying,
+      primaryLanguage: user.primaryLanguage
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
+const addLanguagesToUser = async (req, res) => {
+  const { id } = req.params
+  // Send this as "french," "spanish," etc.
+  const { languagesToAdd } = req.body
+
+  try {
+    languagesToAdd.forEach(async (language) => {
+      // Create a new dictionary and add it to the user's set list
+      const newSet = await Set.create({
+        name: `${capitalizeWord(language)} dictionary`,
+        language: languageCodes[language],
+        ownerId: id
+      })
+
+      User.findByIdAndUpdate(
+        id,
+        {
+          $push: {
+            languagesStudying: languageCodes[language],
+            sets: newSet._id
+          }
+        },
+        { useFindAndModify: false }
+      ).exec()
+
+      res.status(200).json({
+        success: true,
+        message: `New Language${languagesToAdd.length > 1 ? 's' : ''} added.`
+      })
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
 module.exports = {
   followUser,
   unfollowUser,
-  getUserInfo
+  getUserInfo,
+  getUserLanguages,
+  addLanguagesToUser
 }

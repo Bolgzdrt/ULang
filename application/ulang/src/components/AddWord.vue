@@ -17,7 +17,7 @@
         </div>
         <div class="field">
           <select id="partOfSpeech" v-model="partOfSpeech">
-            <option value="">--Select an option--</option>
+            <option value="" disabled>--Select an option--</option>
             <option value="noun">Noun</option>
             <option value="verb" selected>Verb</option>
             <option value="adjective">Adjective</option>
@@ -92,6 +92,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'AddWord',
+  props: ['fromRoute'],
   data() {
     return {
       english: '',
@@ -103,7 +104,6 @@ export default {
       conjugationIndex: 0,
       sets: [],
       anotherWordModal: false,
-      fromRoute: ''
     }
   },
   methods: {
@@ -168,7 +168,7 @@ export default {
       this.conjugationData = [{ title: '', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }]
       this.conjugationIndex = 0
       this.anotherWordModal = false
-      var i = 0
+      let i = 0
       for (i = 0; i < this.sets.length; i++) {
         this.sets[i].selected = false
       }
@@ -179,10 +179,6 @@ export default {
       this.sets = sets.map(set => ({ ...set, selected: false }))
     })
   },
-  beforeRouteEnter(to, from, next) {
-    this.fromRoute = from
-    next()
-  }
 }
 </script>
 

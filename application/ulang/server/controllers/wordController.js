@@ -90,7 +90,8 @@ const updateWord = async (req, res) => {
   const updates = filterUpdates(inputs)
   try {
     const updatedWord = await Word.findByIdAndUpdate(args._id, updates, {
-      new: true
+      new: true,
+      useFindAndModify: false
     })
     res.status(200).json({
       success: true,
