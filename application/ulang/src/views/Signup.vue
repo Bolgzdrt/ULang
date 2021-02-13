@@ -106,7 +106,7 @@ export default {
       e.preventDefault()
       this.resetErrors()
       // this.loading = true // start some loading spinner thing
-      this.signUp(this.password, this.primaryLanguage)
+      this.signUp({ password: this.password, primaryLanguage: this.primaryLanguage })
         .then(() => {
           this.$router.push({ name: 'Home' })
         })

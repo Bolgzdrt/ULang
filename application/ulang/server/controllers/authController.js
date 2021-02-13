@@ -51,14 +51,14 @@ const signup = async (req, res) => {
       email,
       username,
       password,
-      languages: lang
+      languagesStudying: [lang]
     })
     const newSet = await Set.create({
       name: `${primaryLanguage.charAt(0).toUpperCase() + primaryLanguage.slice(1)} Dictionary`,
       language: lang,
       ownerId: user._id
     })
-    User.findByIdAndUpdate(user._id, { sets: [ newSet._id ]}, { new: true })
+    User.findByIdAndUpdate(user._id, { sets: [ newSet._id ]}, { new: true }, (err, user) => {})
     const token = createToken(user._id)
     res.cookie('jwt', token, { /* httpOnly: true, */ maxAge: maxAge * 1000 })
     res.status(201).json({
