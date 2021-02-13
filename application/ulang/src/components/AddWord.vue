@@ -64,6 +64,7 @@
           <div class="helpButton">?</div>
         </Tooltip>
       </div>
+      <!-- make own component -->
       <div class="rowContainer">
         <div class="row" v-for="set in sets" :key="set._id">
           <input type="checkbox" value="set.selected" v-model="set.selected">
@@ -77,6 +78,7 @@
       <button class="cancelButton" @click="cancel">Cancel</button>
       <button class="submitButton" @click="submit">Add</button>
     </div>
+    <!-- make own component -->
     <transition name="modalFade" v-if="anotherWordModal">
       <div class="modalBackdrop">
         <div class="modal">
@@ -446,7 +448,7 @@ button:hover {
 }
 
 .helpButton {
-  background: #ccc;
+  background: #e0e0e0;
   border-radius: 50%;
   width: 1.5rem;
   height: 1.5rem;

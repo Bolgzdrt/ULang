@@ -25,7 +25,7 @@ export default {
 }
 
 .tooltip-box:hover .tooltip{
-  opacity: 1;
+  display: block;
 }
 
 .tooltip { 
@@ -36,11 +36,10 @@ export default {
   bottom: 125%;
   left: 50%;
   margin-left: -85px;
-  opacity: 0;
-  transition: opacity .5s;
   position: absolute;
   z-index: 1;
   background: #bfdbf7;
+  display: none;
 }
 
 .text::after {
