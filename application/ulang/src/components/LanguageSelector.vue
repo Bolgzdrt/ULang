@@ -2,7 +2,7 @@
   <div id="lang-selector">
     <div class="lang-container" @click="dropdownClick">
       <div id="outside-click-element" v-click-outside="hideDropdown">
-        <FlagSVGs :language="primaryLanguage" height="16" />
+        <FlagSVGs :language="currentLanguage" height="16" />
         <div class="dropdown_arrow">
           <DropDown height="50" />
           <div class="lang-selector-dropdown" v-if="dropdownClicked">
@@ -31,7 +31,7 @@
 import DropDown from '@/assets/svgs/dropdown.vue'
 import FlagSVGs from '@/assets/svgs/flags/flagSVGs.vue'
 import { languageCodes } from '@/utils/utils'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'LanguageSelector',
@@ -42,10 +42,13 @@ export default {
       language: '',
       dropdownClicked: false,
       studiedLanguages: [],
-      primaryLanguage: 'fr'
+      currentLanguage: 'fr'
     }
   },
   methods: {
+    ...mapActions('settings', ['getUserLanguages']),
+    ...mapMutations('settings', ['setLanguage']),
+    ...mapGetters('auth', ['getUserInfo']),
     dropdownClick() {
       this.dropdownClicked = !this.dropdownClicked
     },
@@ -53,23 +56,21 @@ export default {
       this.dropdownClicked = false
     },
     clickedLang(lang) {
-      console.log(lang)
+      this.currentLanguage = lang
+      this.setLanguage(lang)
+      // Possibly this.$emit('languageChange', lang) to trigger update to app.vue
     },
     getBorderClass(index) {
       return index === this.studiedLanguages.length-1
         ? 'language-item no-border'
         : 'language-item'
     },
-    ...mapActions('settings', ['getUserLanguages']),
-    ...mapGetters('auth', ['getUserInfo'])
   },
   created() {
-    // Get languages studyed
-    // TEMP
     this.getUserLanguages(this.getUserInfo()?.userId)
       .then((res) => {
         this.studiedLanguages = res.languages.map(lang => languageCodes[lang])
-        this.primaryLanguage = languageCodes[res.primaryLanguage]
+        this.currentLanguage = languageCodes[res.primaryLanguage]
       })
       .catch((err) => console.error(err))
   }
