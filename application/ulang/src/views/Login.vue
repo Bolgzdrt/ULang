@@ -14,7 +14,7 @@
               v-model="username"
               required
             />
-            <label for="username">Username</label>
+            <label for="username" :class="shouldStay('username')">Username</label>
             <p class="error">{{ usernameError }}</p>
           </div>
         </div>
@@ -27,11 +27,12 @@
               v-model="password"
               required
             />
-            <label for="password">Password</label>
+            <label for="password" :class="shouldStay('password')">Password</label>
             <p class="error">{{ passwordError }}</p>
           </div>
         </div>
       </section>
+      <input type="submit" style="display: none;">
       <button class="submit-button">Submit</button>
     </form>
   </div>
@@ -71,6 +72,9 @@ export default {
       this.emailError = ''
       this.passwordError = ''
       this.usernameError = ''
+    },
+    shouldStay(label) {
+      return this[label] ? 'label' : null
     }
   },
   watch: {
@@ -118,8 +122,8 @@ export default {
   top: 10%;
   width: 40%;
   height: 40%;
-  min-height: 250px;
-  min-width: 180px;
+  min-height: 300px;
+  min-width: 450px;
   max-width: 600px;
   max-height: 500px;
   position: relative;
@@ -127,7 +131,7 @@ export default {
   padding: 1.5rem 2rem;
 }
 
-.login-header{
+.login-header {
   font-size: 1.75rem;
 }
 
@@ -165,7 +169,8 @@ export default {
 }
 
 .inputbox-content input:focus ~ label,
-.login-content .inputbox-content input:valid ~ label {
+.inputbox-content input:valid ~ label,
+.label-up {
   color: var(--purple);
   transform: translateY(-20px);
   font-size: 0.825em;
@@ -198,15 +203,16 @@ export default {
 
 .submit-button {
   display: inline-block;
-  padding: 10px 50px;
+  padding: 10px;
   background:var(--purple);
   border: none;
   border-radius: 10px;
-  color:var(--white);
+  color: var(--white);
   font-size: 1.25em;
   outline: none;
   transition: all 100ms ease-out;
   cursor: pointer;
+  width: 30%;
 }
 
 .login-content button:hover,
