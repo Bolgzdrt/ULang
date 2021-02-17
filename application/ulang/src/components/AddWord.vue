@@ -2,7 +2,7 @@
   <div class="addWord">
     <div class="onlyWord">
       <div class="default">
-        <p>Add a new word</p>
+        <p class="titleP">Add a new word</p>
         <div class="field">
           <input type="text" id="english" placeholder="Enter a word..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a word...'" v-model="english" class="wordInput"><br>
           <label for="english" class="required wordEntryLabel">English Word</label>
@@ -11,6 +11,7 @@
           <input type="text" id="translation" placeholder="Enter the translation..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter the translation...'" v-model="translation" class="wordInput"><br>
           <label for="translation" class="required wordEntryLabel">Translation</label>
         </div>
+        <AccentButtons @buttonClicked="appendChar" language="FR"/>
         <div class="field">
           <input type="text" id="definition" placeholder="Enter a definition for your word..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a definition for your word...'" v-model="definition" class="wordInput"><br>
           <label for="definition" class="wordEntryLabel">Definition</label>
@@ -57,7 +58,13 @@
       </div>
     </div>
     <div class="setList">
-      <p class="titleP">Sets to add to</p>
+      <div class="blockLine">
+        <p class="titleP">Select sets to include word</p>
+        <Tooltip text="Use the checkbox to select any sets the word should be added to. No selection will only add to user dictionary.">
+          <div class="helpButton">?</div>
+        </Tooltip>
+      </div>
+      <!-- make own component -->
       <div class="rowContainer">
         <div class="row" v-for="set in sets" :key="set._id">
           <input type="checkbox" value="set.selected" v-model="set.selected">
@@ -71,6 +78,7 @@
       <button class="cancelButton" @click="cancel">Cancel</button>
       <button class="submitButton" @click="submit">Add</button>
     </div>
+    <!-- make own component -->
     <transition name="modalFade" v-if="anotherWordModal">
       <div class="modalBackdrop">
         <div class="modal">
@@ -89,9 +97,12 @@
 import { createWord } from '@/services/wordService'
 import { getSets } from '@/services/setService'
 import { mapGetters } from 'vuex'
+import Tooltip from '@/components/Tooltip.vue'
+import AccentButtons from '@/components/AccentButtons.vue'
 
 export default {
   name: 'AddWord',
+  components: { Tooltip, AccentButtons },
   props: ['fromRoute'],
   data() {
     return {
@@ -149,6 +160,9 @@ export default {
       if (this.conjugationIndex > 0) {
         this.conjugationIndex--
       }
+    },
+    appendChar(char){
+      this.translation += char;
     },
     // TODO: do this
     cancel() {
@@ -270,7 +284,6 @@ export default {
 }
 
 .titleP {
-  margin-bottom: 1%;
   font-size: 2em;
 }
 
@@ -425,8 +438,31 @@ button:hover {
   padding: 1rem;
   border-radius: 5px;
   width: 25%;
-  min-width: 350px;
+  min-width: 380px;
   height: 15%;
   min-height: 150px;
+}
+
+.helpButton {
+  background: #e0e0e0;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.blockLine {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.blockLine > p {
+  padding-right: 10px;
 }
 </style>
