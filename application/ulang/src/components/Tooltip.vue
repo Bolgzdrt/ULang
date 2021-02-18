@@ -30,7 +30,7 @@ export default {
 
 .tooltip { 
   text-align: center;
-  padding: 5px 0;
+  padding: 5px 5px;
   border-radius: 2px;
   width: 170px;
   bottom: 125%;

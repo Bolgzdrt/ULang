@@ -9,6 +9,7 @@ import Settings from '../views/Settings.vue'
 import FlashCards from '../views/FlashCards.vue'
 import Learn from '../views/Learn.vue'
 import CreateWord from '../views/CreateWord.vue'
+import CreateSet from '../views/CreateSet.vue'
 
 Vue.use(VueRouter)
 
@@ -58,6 +59,11 @@ const routes = [
     path: '/createWord',
     name: 'CreateWord',
     component: CreateWord
+  },
+  {
+    path: '/createSet',
+    name: 'CreateSet',
+    component: CreateSet
   }
 ]
 
