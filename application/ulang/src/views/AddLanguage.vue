@@ -5,7 +5,7 @@
       <div class="language-selection-container">
         <!-- Why this is neeeded.. I do not know. But, unless it is loaded before the svg, the swedish flag alone will not appear on firefox. And only the Swedish flag. -->
         <Sweden height="0" style="display: none;" />
-        <div class="language" v-for="lang in languages" :key="lang.language">
+        <div :class="getLanguageClass(lang)" v-for="lang in languages" :key="lang.language" @click="radioButton(lang)">
           <FlagSVGs :language="lang.language" height="54" />
           <p>{{ lang.language }}</p>
         </div>
@@ -33,8 +33,31 @@ export default {
     }
   },
   methods: {
-    radioButton() {
+    radioButton({ language, selected }) {
+      this.langSelected = true
+      if (selected) {
+        this.languages.forEach(lang => {
+          if (lang.selected) {
+            lang.selected = false
+          }
+        })
+        this.langSelected = false
+        return
+      }
 
+      this.languages.forEach(lang => {
+        if (lang.selected) {
+          lang.selected = false
+        }
+        if (lang.language === language) {
+          lang.selected = true
+        }
+      })
+    },
+    getLanguageClass(lang) {
+      return lang.selected
+        ? 'language selected'
+        : 'language'
     }
   },
   created() {
