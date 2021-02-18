@@ -17,7 +17,7 @@
                 <div class="language-item">
                   <FlagSVGs :language="lang" height="16" />
                   <span>
-                    {{ lang.charAt(0).toUpperCase() + lang.slice(1) }}
+                    {{ lang }}
                   </span>
                 </div>
               </div>
@@ -183,6 +183,7 @@ export default {
 
 .languages-list span {
   margin-left: 0.75rem;
+  text-transform: capitalize;
 }
 
 .no-border {

@@ -12,7 +12,7 @@ const getters = {
 const actions = {
   getUserLanguages: async ({ commit }, userId) => {
     const res = await getUserLanguages(userId)
-    commit('language', res.primaryLanguage)
+    commit('setLanguage', res.primaryLanguage)
     return res
   }
 }
