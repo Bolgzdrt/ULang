@@ -8,8 +8,19 @@ export const languageCodes = {
   pt: 'portuguese',
   sv: 'swedish',
   nl: 'dutch',
-  ro: 'romanian'
+  ro: 'romanian',
 }
+
+export const languageIds = [
+  'fr',
+  'es',
+  'it',
+  'de',
+  'pt',
+  'sv',
+  'nl',
+  'ro',
+]
 
 export const languages = [
   'french',
@@ -19,7 +30,7 @@ export const languages = [
   'portuguese',
   'swedish',
   'dutch',
-  'romanian'
+  'romanian',
 ]
 
 Vue.directive('click-outside', {

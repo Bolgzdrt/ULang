@@ -10,6 +10,7 @@ import FlashCards from '../views/FlashCards.vue'
 import Learn from '../views/Learn.vue'
 import Game from '../views/Game.vue'
 import CreateWord from '../views/CreateWord.vue'
+import AddLanguage from '../views/AddLanguage.vue'
 
 Vue.use(VueRouter)
 
@@ -64,6 +65,11 @@ const routes = [
     path: '/createWord',
     name: 'CreateWord',
     component: CreateWord
+  },
+  {
+    path: '/addLanguage',
+    name: 'AddLanguage',
+    component: AddLanguage
   }
 ]
 
