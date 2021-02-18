@@ -6,13 +6,16 @@
         <!-- Why this is neeeded.. I do not know. But, unless it is loaded before the svg, the swedish flag alone will not appear on firefox. And only the Swedish flag. -->
         <Sweden height="0" style="display: none;" />
         <div :class="getLanguageClass(lang)" v-for="lang in languages" :key="lang.language" @click="radioButton(lang)">
+          <div v-if="lang.existingLang" class="checkmark">
+            <Checkmark />
+          </div>
           <FlagSVGs :language="lang.language" height="54" />
           <p>{{ lang.language }}</p>
         </div>
       </div>
-      <div v-if="langSelected" class="buttons">
-        <button class="btn cancel">Cancel</button>
-        <button class="btn confirm">Confirm</button>
+      <div class="buttons">
+        <button class="btn cancel" @click="exit">Cancel</button>
+        <button class="btn confirm" @click="confirm" :disabled="!langSelected">Confirm</button>
       </div>
     </div>
   </div>
@@ -21,18 +24,23 @@
 <script>
 import FlagSVGs from '@/assets/svgs/flags/flagSVGs.vue'
 import Sweden from '@/assets/svgs/flags/sweden.vue'
-import { languages as langList } from '@/utils/utils'
+import Checkmark from '@/assets/svgs/checkmark.vue'
+import { languageIds, languageCodes } from '@/utils/utils'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'AddLanguage',
-  components: { FlagSVGs, Sweden },
+  components: { FlagSVGs, Sweden, Checkmark },
   data() {
     return {
       languages: [],
-      langSelected: false
+      langSelected: false,
+      existingLangs: [],
+      fromRoute: '',
     }
   },
   methods: {
+    ...mapActions('settings', ['getUserLanguages']),
     radioButton({ language, selected }) {
       this.langSelected = true
       if (selected) {
@@ -58,15 +66,36 @@ export default {
       return lang.selected
         ? 'language selected'
         : 'language'
+    },
+    confirm() {
+      console.log('confirm')
+    },
+    exit() {
+      if (this.fromRoute) {
+        this.$router.push(this.fromRoute, () => { this.$router.push({ name: 'Home' })})
+      } else {
+        this.$router.push({ name: 'Home' })
+      }
     }
   },
-  created() {
-    this.languages = langList.map(lang => {
-      return {
-        language: lang,
-        selected: false
-      }
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.fromRoute = from
     })
+  },
+  created() {
+    this.getUserLanguages(this.$store.getters['auth/getUserId'])
+      .then((res) => {
+        // TODO: Change this when I get rid of the language ids
+        this.languages = languageIds.map(lang => {
+          return {
+            language: languageCodes[lang],
+            selected: false,
+            existingLang: res.languages.includes(lang)
+          }
+        })
+      })
+      .catch(err => console.error(err))
   }
 }
 </script>
@@ -107,8 +136,9 @@ h1 {
 }
 
 .language {
+  position: relative;
   width: 15%;
-  min-width: 125px;
+  min-width: 150px;
   height: 175px;
   display: flex;
   flex-direction: column;
@@ -125,6 +155,12 @@ h1 {
   margin-top: 0.75rem;
   font-size: 1.25rem;
   text-transform: capitalize;
+}
+
+.checkmark {
+  position: absolute;
+  top: 8px;
+  right: 8px;
 }
 
 .buttons {
@@ -154,6 +190,11 @@ h1 {
 .confirm {
   background: var(--purple);
   color: var(--white);
+}
+
+.confirm:disabled {
+  background-color: #8f86cf;
+  cursor: auto;
 }
 
 .selected {
