@@ -112,7 +112,7 @@ export default {
       conjugationData: [{ title: '', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }],
       conjugationIndex: 0,
       sets: [],
-      anotherWordModal: false,
+      anotherWordModal: false
     }
   },
   methods: {

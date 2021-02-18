@@ -38,6 +38,17 @@
       <button class="cancelButton" @click="cancel">Cancel</button>
       <button class="submitButton" @click="submit">Create</button>
     </div>
+    <transition name="modalFade" v-if="addWordModal">
+      <div class="modalBackdrop">
+        <div class="modal">
+          <p class="titleP">Add new words for this set?</p>
+          <div class="buttonBox">
+            <button class="cancelButton" @click="cancel">No</button>
+            <button class="submitButton" @click="addRedirect">Yes</button>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -57,6 +68,7 @@ export default {
       description: '',
       quickAcess: false,
       filter: '',
+      addWordModal: false,
       words: [
         {word: 'diamant', english: 'diamond', definition: 'hard gem', selected: false},
         {word: 'diamant', english: 'diamond', definition: 'hard gem', selected: false},
@@ -67,7 +79,34 @@ export default {
   methods: {
     ...mapGetters('auth', ['getUserId']),
     submit() {
-      
+      // const requestPayload = {
+      //   english: this.english,
+      //   word: this.translation,
+      //   description: this.definition,
+      //   partOfSpeech: this.partOfSpeech,
+      //   ownerId: this.getUserId(),
+      //   conjugationData: this.conjugationData,
+      //   language: 'FR'
+      // };
+      // const setIds = this.sets.reduce((acc, curr) => {
+      //   if (curr.selected) {
+      //     return [...acc, curr._id]
+      //   } else {
+      //     return acc
+      //   }
+      // },
+      // []
+      // );
+      // requestPayload["setIds"] = setIds
+      // createWord(requestPayload).then(data => {
+      //   this.anotherWordModal = true;
+      // }).catch(err => {
+      //   console.log(err);
+      // });
+      this.addWordModal = true
+    },
+    addRedirect() {
+      console.log("haha funny")
     },
     cancel() {
       if (this.fromRoute) {
@@ -267,5 +306,33 @@ button:hover {
 
 .cancelButton:hover {
   background: #d9d9d9;
+}
+
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.modal {
+  background: #FFFFFF;
+  box-shadow: 2px 2px 20px 1px;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 1rem;
+  border-radius: 5px;
+  width: 25%;
+  min-width: 445px;
+  height: 15%;
+  min-height: 150px;
 }
 </style>
