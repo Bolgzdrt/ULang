@@ -3,17 +3,18 @@
     <div class="default">
       <p class="titleP">Create a New Set</p>
       <div class="field">
-        <input type="text" id="name" placeholder="Enter a name..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a name...'" v-model="name" class="inputField"><br>
+        <input type="text" id="name" placeholder="Enter a name..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a name...'" v-model="name" class="inputField" value=""><br>
         <label for="name" class="required inputFieldLabel">Set Name</label>
+        <p class="error" v-if="requiredError">Set must have a name</p>
       </div>
       <div class="field">
         <input type="text" id="description" placeholder="Enter a description..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a description...'" v-model="description" class="inputField"><br>
-        <label for="description" class="required inputFieldLabel">Set Description</label>
+        <label for="description" class="inputFieldLabel">Set Description</label>
       </div>
       <div class="checkField">
-        <bolt :selected="quickAcess" />
+        <Bolt :selected="quickAccess" />
         <label for="">Add Set to Quick Access?</label>
-        <input type="checkbox" value="quickAcess" v-model="quickAcess" class="checkBox">
+        <input type="checkbox" value="quickAccess" v-model="quickAccess" class="checkBox">
       </div>
     </div>
     <div class="wordList">
@@ -24,10 +25,10 @@
         </Tooltip>
       </div>
       <div class="filterField">
-        <input type="text" id="filter" placeholder="Filter words..." onfocus="this.placeholder=''" onblur="this.placeholder='Filter words...'" v-model="filter" class="inputField"><br>
+        <input type="text" id="filter" placeholder="Filter words..." onfocus="this.placeholder=''" onblur="this.placeholder='Filter words...'" v-model="filter" value="" @input="filterList" class="inputField"><br>
       </div>
       <div class="rowContainer">
-        <div class="row" v-for="word in words" :key="word._id">
+        <div class="row" v-for="word in filteredWords" :key="word._id">
           <input type="checkbox" value="word.selected" v-model="word.selected">
           <div class="word"><p>{{ word.english }} / {{ word.word }}</p></div>
           <div class="definition"><p>{{ word.definition }}</p></div>
@@ -44,7 +45,7 @@
           <p class="titleP">Add new words for this set?</p>
           <div class="buttonBox">
             <button class="cancelButton" @click="cancel">No</button>
-            <button class="submitButton" @click="addRedirect">Yes</button>
+            <router-link :to="{ name: 'CreateWord' }"><button class="submitButton">Yes</button></router-link>
           </div>
         </div>
       </div>
@@ -54,59 +55,57 @@
 
 <script>
 import { createSet } from '@/services/setService'
+import { getWords } from '@/services/wordService'
 import { mapGetters } from 'vuex'
-import bolt from '@/assets/svgs/bolt.vue'
+import Bolt from '@/assets/svgs/bolt.vue'
 import Tooltip from '@/components/Tooltip.vue'
 
 export default {
   name: 'AddSet',
-  components: { bolt, Tooltip },
+  components: { Bolt, Tooltip },
   props: ['fromRoute'],
   data() {
     return {
       name: '',
       description: '',
-      quickAcess: false,
+      quickAccess: false,
       filter: '',
       addWordModal: false,
-      words: [
-        {word: 'diamant', english: 'diamond', definition: 'hard gem', selected: false},
-        {word: 'diamant', english: 'diamond', definition: 'hard gem', selected: false},
-        {word: 'diamant', english: 'diamond', definition: 'hard gem', selected: false}
-      ]
+      words: [],
+      filteredWords: [],
+      requiredError: false
     }
   },
   methods: {
     ...mapGetters('auth', ['getUserId']),
-    submit() {
-      // const requestPayload = {
-      //   english: this.english,
-      //   word: this.translation,
-      //   description: this.definition,
-      //   partOfSpeech: this.partOfSpeech,
-      //   ownerId: this.getUserId(),
-      //   conjugationData: this.conjugationData,
-      //   language: 'FR'
-      // };
-      // const setIds = this.sets.reduce((acc, curr) => {
-      //   if (curr.selected) {
-      //     return [...acc, curr._id]
-      //   } else {
-      //     return acc
-      //   }
-      // },
-      // []
-      // );
-      // requestPayload["setIds"] = setIds
-      // createWord(requestPayload).then(data => {
-      //   this.anotherWordModal = true;
-      // }).catch(err => {
-      //   console.log(err);
-      // });
-      this.addWordModal = true
+    filterList() {
+      this.filteredWords = this.words.filter(word => word.english.includes(this.filter) || word.word.includes(this.filter))
     },
-    addRedirect() {
-      console.log("haha funny")
+    submit() {
+      const requestPayload = {
+        name: this.name,
+        description: this.description,
+        ownerId: this.getUserId(),
+        quickAccess: this.quickAccess,
+        language: 'fr'
+      };
+      const wordIds = this.filteredWords.reduce((acc, curr) => {
+        if (curr.selected) {
+          return [...acc, curr._id]
+        } else {
+          return acc
+        }
+      },
+      []
+      );
+      requestPayload["words"] = wordIds
+      createSet(requestPayload).then(data => {
+        this.addWordModal = true;
+      }).catch(err => {
+        console.log(err);
+        const errorMsg = err.message
+        this.requiredError = errorMsg
+      });
     },
     cancel() {
       if (this.fromRoute) {
@@ -115,7 +114,13 @@ export default {
         this.$router.push({name: "Home"})
       }
     }
-  }
+  },
+  created() {
+    getWords(this.getUserId(), "fr").then(({words}) => {
+      this.words = words.map(set => ({ ...set, selected: false }))
+      this.filteredWords = this.words
+    })
+  },
 }
 </script>
 
@@ -334,5 +339,10 @@ button:hover {
   min-width: 445px;
   height: 15%;
   min-height: 150px;
+}
+
+.error {
+  color: red;
+  float: left;
 }
 </style>
