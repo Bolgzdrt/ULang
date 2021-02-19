@@ -6,10 +6,12 @@
         <div class="field">
           <input type="text" id="english" placeholder="Enter a word..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a word...'" v-model="english" class="wordInput"><br>
           <label for="english" class="required wordEntryLabel">English Word</label>
+          <p class="error" v-if="requiredErrorEng">Word must have an english translation</p>
         </div>
         <div class="field">
           <input type="text" id="translation" placeholder="Enter the translation..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter the translation...'" v-model="translation" class="wordInput"><br>
           <label for="translation" class="required wordEntryLabel">Translation</label>
+          <p class="error" v-if="requiredErrorTrans">Word must have a translation</p>
         </div>
         <AccentButtons @buttonClicked="appendChar" language="FR"/>
         <div class="field">
@@ -29,6 +31,7 @@
             <option value="interjection">Interjection</option>
           </select><br>
           <label for="partOfSpeech" class="required wordEntryLabel">Part of speech</label>
+          <p class="error" v-if="requiredErrorPoS">Word must have a selected part of speech</p>
         </div>
       </div>
       <div class="tables" v-if="partOfSpeech === 'verb'">
@@ -64,7 +67,6 @@
           <div class="helpButton">?</div>
         </Tooltip>
       </div>
-      <!-- make own component -->
       <div class="rowContainer">
         <div class="row" v-for="set in sets" :key="set._id">
           <input type="checkbox" value="set.selected" v-model="set.selected">
@@ -78,7 +80,6 @@
       <button class="cancelButton" @click="cancel">Cancel</button>
       <button class="submitButton" @click="submit">Add</button>
     </div>
-    <!-- make own component -->
     <transition name="modalFade" v-if="anotherWordModal">
       <div class="modalBackdrop">
         <div class="modal">
@@ -110,27 +111,40 @@ export default {
       translation: '',
       definition: '',
       partOfSpeech: '',
-      tableTitle: '',
-      conjugationData: [{ title: '', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }],
+      conjugationData: [{ title: 'Table 1', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }],
       conjugationIndex: 0,
       sets: [],
       anotherWordModal: false,
+      requiredErrorEng: '',
+      requiredErrorTrans: '',
+      requiredErrorPoS: ''
     }
   },
   methods: {
     ...mapGetters('auth', ['getUserId']),
     submit() {
-      const requestPayload = {
-        english: this.english,
-        word: this.translation,
-        description: this.definition,
-        partOfSpeech: this.partOfSpeech,
-        ownerId: this.getUserId(),
-        conjugationData: this.conjugationData,
-        language: 'FR'
-      };
+      let requestPayload
+      if (this.conjugationIndex == 0) {
+        requestPayload = {
+          english: this.english,
+          word: this.translation,
+          description: this.definition,
+          partOfSpeech: this.partOfSpeech,
+          ownerId: this.getUserId(),
+          language: 'fr'
+        };
+      } else {
+        requestPayload = {
+          english: this.english,
+          word: this.translation,
+          description: this.definition,
+          partOfSpeech: this.partOfSpeech,
+          ownerId: this.getUserId(),
+          conjugationData: this.conjugationData,
+          language: 'fr'
+        };
+      }
       const setIds = this.sets.reduce((acc, curr) => {
-        
         if (curr.selected) {
           return [...acc, curr._id]
         } else {
@@ -144,14 +158,19 @@ export default {
         this.anotherWordModal = true;
       }).catch(err => {
         console.log(err);
+        this.requiredErrorEng = err.message
+        this.requiredErrorTrans = err.message
+        this.requiredErrorPoS = err.message
+        this.conjugationData = [{ title: 'Table 1', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }]
       });
-      this.anotherWordModal = true
     },
     nextClick() {
       if (this.conjugationIndex === this.conjugationData.length -1) {
         // going with topleft, middleleft, etc. cus they don't always mean the same thing from language to langauge.
         this.conjugationData.push({ title: '', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' })
         this.conjugationIndex++
+        if (!this.conjugationData[this.conjugationIndex].title)
+          this.conjugationData[this.conjugationIndex].title = 'Table ' + (this.conjugationIndex + 1)
       } else {
         this.conjugationIndex++
       }
@@ -164,9 +183,7 @@ export default {
     appendChar(char){
       this.translation += char;
     },
-    // TODO: do this
     cancel() {
-      // this should return the user to the page they came from, not sure how yet
       if (this.fromRoute) {
         this.$router.push(this.fromRoute)
       } else  {
@@ -178,18 +195,20 @@ export default {
       this.translation = ''
       this.definition = ''
       this.partOfSpeech = ''
-      this.tableTitle = ''
-      this.conjugationData = [{ title: '', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }]
+      this.conjugationData = [{ title: 'Table 1', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }]
       this.conjugationIndex = 0
       this.anotherWordModal = false
       let i = 0
       for (i = 0; i < this.sets.length; i++) {
         this.sets[i].selected = false
       }
+      this.requiredErrorEng = ''
+      this.requiredErrorTrans = ''
+      this.requiredErrorPoS = ''
     }
   },
   created() {
-    getSets(this.getUserId(), "FR").then(({sets}) => {
+    getSets(this.getUserId(), "fr").then(({sets}) => {
       this.sets = sets.map(set => ({ ...set, selected: false }))
     })
   },
@@ -259,6 +278,7 @@ export default {
   position: relative;
   width: 1.3em;
   height: 1.3em;
+  cursor: pointer;
 }
 
 .row > div {
@@ -464,5 +484,10 @@ button:hover {
 
 .blockLine > p {
   padding-right: 10px;
+}
+
+.error {
+  color: red;
+  float: left;
 }
 </style>
