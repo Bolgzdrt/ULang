@@ -121,7 +121,6 @@ export default {
       this.filteredWords = this.words
     }).catch(err => {
       console.log(err.response.data.error)
-      this.words = []
     })
   },
 }
