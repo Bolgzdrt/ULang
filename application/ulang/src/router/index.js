@@ -10,6 +10,9 @@ import FlashCards from '../views/FlashCards.vue'
 import Learn from '../views/Learn.vue'
 import CreateWord from '../views/CreateWord.vue'
 import CreateSet from '../views/CreateSet.vue'
+import Vocabulary from '../views/Vocabulary.vue'
+import Conjugations from '../views/Conjugations.vue'
+import Pronunciations from '../views/Pronunciations.vue'
 
 Vue.use(VueRouter)
 
@@ -64,7 +67,23 @@ const routes = [
     path: '/createSet',
     name: 'CreateSet',
     component: CreateSet
+  },
+  {
+    path: '/vocabulary',
+    name: 'Vocabulary',
+    component: Vocabulary
+  },
+  {
+    path: '/conjugations',
+    name: 'Conjugations',
+    component: Conjugations
+  },
+  {
+    path: '/pronunciations',
+    name: 'Pronunciations',
+    component: Pronunciations
   }
+  
 ]
 
 const router = new VueRouter({
