@@ -1,11 +1,11 @@
-import axios from 'axios'
-
-const baseUrl =
-  process.env.NODE_ENV === 'production'
-    ? 'productionURL'
-    : `http://localhost:8081`
+import axios from '@/axios'
 
 export const createWord = async (wordObject) => {
-  const res = await axios.post(`${baseUrl}/word/createWord`, wordObject)
+  const res = await axios.post(`word/createWord`, wordObject)
+  return res.data
+}
+
+export const getWords = async (userId, language) => {
+  const res = await axios.get(`word/getWords/${userId}/${language}`)
   return res.data
 }

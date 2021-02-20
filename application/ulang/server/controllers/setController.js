@@ -3,19 +3,21 @@ const User = require('../models/User')
 const { filterUpdates } = require('../utils/utils')
 
 const createSet = async (req, res) => {
-  const { name, language, words, favorite, description, ownerId } = req.body
-
+  const { name, language, words, description, ownerId, quickAccess } = req.body
   try {
     const user = await User.findById(ownerId)
     const set = await Set.create({
       name,
       language,
       words,
-      favorite,
       description,
       ownerId
     })
-    User.findByIdAndUpdate(user._id, { $push: { sets: set._id }}, { useFindAndModify: false }).exec()
+    if (quickAccess) {
+      User.findByIdAndUpdate(user._id, { $push: { sets: set._id, quickAccess: set._id }}, { useFindAndModify: false }).exec()
+    } else {
+      User.findByIdAndUpdate(user._id, { $push: { sets: set._id }}, { useFindAndModify: false }).exec()
+    }
     res.status(201).json({
       success: true,
       id: set._id

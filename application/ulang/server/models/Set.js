@@ -13,11 +13,6 @@ const setSchema = new mongoose.Schema(
     words: {
       type: [String] // List of IDs of words
     },
-    favorite: {
-      type: Boolean,
-      required: true,
-      default: false
-    },
     description: {
       type: String
     },
@@ -25,7 +20,6 @@ const setSchema = new mongoose.Schema(
       type: String,
       required: true
     }
-    // highScores: {} // ??
   },
   {
     collection: 'set',
