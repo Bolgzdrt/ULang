@@ -25,7 +25,7 @@
 import FlagSVGs from '@/assets/svgs/flags/flagSVGs.vue'
 import Sweden from '@/assets/svgs/flags/sweden.vue'
 import Checkmark from '@/assets/svgs/checkmark.vue'
-import { languageIds, languageCodes } from '@/utils/utils'
+import { languages } from '@/utils/utils'
 import { mapActions } from 'vuex'
 
 export default {
@@ -35,13 +35,16 @@ export default {
     return {
       languages: [],
       langSelected: false,
-      existingLangs: [],
       fromRoute: '',
+      selectedLanguage: ''
     }
   },
   methods: {
-    ...mapActions('settings', ['getUserLanguages']),
-    radioButton({ language, selected }) {
+    ...mapActions('settings', ['getUserLanguages', 'addLanguage']),
+    radioButton({ language, selected, existingLang }) {
+      if (existingLang) {
+        return
+      }
       this.langSelected = true
       if (selected) {
         this.languages.forEach(lang => {
@@ -50,6 +53,7 @@ export default {
           }
         })
         this.langSelected = false
+        this.selectedLanguage = ''
         return
       }
 
@@ -61,6 +65,7 @@ export default {
           lang.selected = true
         }
       })
+      this.selectedLanguage = language
     },
     getLanguageClass(lang) {
       return lang.selected
@@ -68,13 +73,20 @@ export default {
         : 'language'
     },
     confirm() {
-      console.log('confirm')
+      this.addLanguage({
+        userId: this.$store.getters['auth/getUserId'],
+        language: this.selectedLanguage
+      })
+        .then(() => {
+          this.exit()
+        })
+        .catch(err => console.error(err))
     },
     exit() {
       if (this.fromRoute) {
-        this.$router.push(this.fromRoute, () => { this.$router.push({ name: 'Home' })})
+        this.$router.push(this.fromRoute, () => { this.$router.push({ name: 'Home' }, () => {})})
       } else {
-        this.$router.push({ name: 'Home' })
+        this.$router.push({ name: 'Home' }, () => {})
       }
     }
   },
@@ -87,9 +99,9 @@ export default {
     this.getUserLanguages(this.$store.getters['auth/getUserId'])
       .then((res) => {
         // TODO: Change this when I get rid of the language ids
-        this.languages = languageIds.map(lang => {
+        this.languages = languages.map(lang => {
           return {
-            language: languageCodes[lang],
+            language: lang,
             selected: false,
             existingLang: res.languages.includes(lang)
           }
@@ -151,6 +163,10 @@ h1 {
   cursor: pointer;
 }
 
+.language:hover {
+  background-color: #f0f0f0;
+}
+
 .language p {
   margin-top: 0.75rem;
   font-size: 1.25rem;
@@ -198,6 +214,7 @@ h1 {
 }
 
 .selected {
-  background-color: rgb(188, 236, 255);
+  /* Gave important so that it overrides the hover state */
+  background-color: rgb(188, 236, 255) !important;
 }
 </style>

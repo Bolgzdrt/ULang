@@ -1,6 +1,6 @@
 const User = require('../models/User')
 const Set = require('../models/Set')
-const { languageCodes, capitalizeWord } = require('../utils/utils')
+const { capitalizeWord } = require('../utils/utils')
 
 const followUser = async (req, res) => {
   // The id of the person to follow
@@ -95,6 +95,7 @@ const getUserLanguages = async (req, res) => {
 }
 
 const addLanguagesToUser = async (req, res) => {
+  console.log('addLanguagesToUser')
   const { id } = req.params
   // Send this as "french," "spanish," etc.
   const { languagesToAdd } = req.body
@@ -104,7 +105,7 @@ const addLanguagesToUser = async (req, res) => {
       // Create a new dictionary and add it to the user's set list
       const newSet = await Set.create({
         name: `${capitalizeWord(language)} dictionary`,
-        language: languageCodes[language],
+        language: language,
         ownerId: id
       })
 
@@ -112,7 +113,7 @@ const addLanguagesToUser = async (req, res) => {
         id,
         {
           $push: {
-            languagesStudying: languageCodes[language],
+            languagesStudying: language,
             sets: newSet._id
           }
         },

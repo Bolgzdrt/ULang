@@ -116,7 +116,7 @@ export default {
         partOfSpeech: this.partOfSpeech,
         ownerId: this.getUserId(),
         conjugationData: this.conjugationData,
-        language: 'FR'
+        language: 'fr'
       };
       const setIds = this.sets.reduce((acc, curr) => {
         

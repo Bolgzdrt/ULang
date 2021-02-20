@@ -12,7 +12,7 @@ const createWord = async (req, res) => {
       return newConj._id
     });
     const conjugationIds = await Promise.all(conjIds)
-    
+
     const newWord = await Word.create({
       word,
       language,

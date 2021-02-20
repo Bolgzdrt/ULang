@@ -27,11 +27,11 @@ export default {
         { name: 'Name Name', pic: 'NN' },
         { name: 'Place Holder', pic: 'PH' }
       ],
-      userId: ''
+      userId: '',
     }
   },
   methods: {
-    ...mapGetters('auth', ['getUserId'])
+    ...mapGetters('auth', ['getUserId']),
   },
   updated() {
     if (!['Welcome', 'Login', 'Signup'].includes(this.$route.name)) {

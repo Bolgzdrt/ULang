@@ -2,7 +2,7 @@
   <div id="lang-selector">
     <div class="lang-container" @click="dropdownClick">
       <div id="outside-click-element" v-click-outside="hideDropdown">
-        <FlagSVGs :language="currentLanguage" height="16" />
+        <FlagSVGs :language="language" height="16" />
         <div class="dropdown_arrow">
           <DropDown height="50" />
           <div class="lang-selector-dropdown" v-if="dropdownClicked">
@@ -11,7 +11,7 @@
               <div
                 class="language-item-container"
                 @click="clickedLang(lang)"
-                v-for="(lang, index) in studiedLanguages"
+                v-for="(lang, index) in languages"
                 :key="index"
               >
                 <div class="language-item">
@@ -54,7 +54,7 @@
 <script>
 import DropDown from '@/assets/svgs/dropdown.vue'
 import FlagSVGs from '@/assets/svgs/flags/flagSVGs.vue'
-import { languageCodes } from '@/utils/utils'
+import { arrayCompare } from '@/utils/utils'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {
@@ -63,16 +63,24 @@ export default {
   data() {
     return {
       flag: '',
-      language: '',
       dropdownClicked: false,
-      studiedLanguages: [],
-      currentLanguage: 'fr'
+      // studiedLanguages: [],
+      // currentLanguage: 'french'
+    }
+  },
+  computed: {
+    language() {
+      return this.$store.state.settings.language
+    },
+    languages() {
+      return this.$store.state.settings.studiedLanguages
     }
   },
   methods: {
     ...mapActions('settings', ['getUserLanguages']),
     ...mapMutations('settings', ['setLanguage']),
     ...mapGetters('auth', ['getUserInfo']),
+    ...mapGetters('settings', ['getLanguage', 'getLanguages']),
     dropdownClick() {
       this.dropdownClicked = !this.dropdownClicked
     },
@@ -82,10 +90,10 @@ export default {
     clickedLang(lang) {
       this.currentLanguage = lang
       this.setLanguage(lang)
-      // Possibly this.$emit('languageChange', lang) to trigger update to app.vue
+      this.$emit('setLanguage')
     },
     getBorderClass(index) {
-      return index === this.studiedLanguages.length - 1
+      return index === this.languages.length - 1
         ? 'language-item no-border'
         : 'language-item'
     },
@@ -94,13 +102,11 @@ export default {
     }
   },
   created() {
+    // TODO: See if this can be moved to App.vue or somewhere else just to initialize this data
     this.getUserLanguages(this.getUserInfo()?.userId)
-      .then((res) => {
-        this.studiedLanguages = res.languages.map((lang) => languageCodes[lang])
-        this.currentLanguage = languageCodes[res.primaryLanguage]
-      })
+      .then(() => {/* Got the languages to use in the computed properties */})
       .catch((err) => console.error(err))
-  }
+  },
 }
 </script>
 

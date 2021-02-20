@@ -1,4 +1,4 @@
-import { getUserLanguages } from '@/services/userService'
+import { getUserLanguages, addLanguageToUser } from '@/services/userService'
 
 const state = {
   language: '',
@@ -6,7 +6,9 @@ const state = {
 }
 
 const getters = {
-  getLanguage: () => state.language,
+  getLanguage: () => {
+    return state.language || localStorage.getItem('language')
+  },
   getLanguages: () => state.studiedLanguages
 }
 
@@ -17,6 +19,12 @@ const actions = {
     commit('setLanguage', res.primaryLanguage)
     commit('setStudiedLanguages', res.languages)
     return res
+  },
+  addLanguage: async ({ commit }, payload) => {
+    const res = await addLanguageToUser(payload)
+    commit('addLanguage', payload.language)
+    commit('setLanguage', payload.language)
+    return res
   }
 }
 
@@ -24,9 +32,13 @@ const actions = {
 const mutations = {
   setLanguage: (state, lang) => {
     state.language = lang
+    localStorage.setItem('language', lang)
   },
   setStudiedLanguages: (state, languages) => {
     state.studiedLanguages = languages
+  },
+  addLanguage: (state, lang) => {
+    state.studiedLanguages.push(lang)
   }
 }
 
