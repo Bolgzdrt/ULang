@@ -4,9 +4,14 @@
     <hr>
     <div class="pageLinks">
       <router-link :to="{ name: 'FlashCards' }">Flash Cards</router-link>
-      <a href="#">Learn</a>
-      <a href="#">Game</a>
-      <a href="#">Pronunciation</a>
+      <router-link :to="{ name: 'Vocabulary' }">Vocabulary</router-link>
+      <router-link :to="{ name: 'Conjugations' }">Conjugations</router-link>
+      <router-link :to="{ name: 'Pronunciations' }">Pronunciations</router-link>
+    </div>
+    <hr>
+    <div class="pageLinks">
+      <router-link :to="{ name: 'CreateSet' }">New Set</router-link>
+      <router-link :to="{ name: 'CreateWord' }">New Word</router-link>
     </div>
     <hr>
     <a href="#">Friends</a>
