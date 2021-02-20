@@ -7,7 +7,7 @@ const state = {
 
 const getters = {
   getLanguage: () => {
-    return state.language || localStorage.getItem('language')
+    return state.language || window.localStorage.getItem('language')
   },
   getLanguages: () => state.studiedLanguages
 }
@@ -16,7 +16,12 @@ const getters = {
 const actions = {
   getUserLanguages: async ({ commit }, userId) => {
     const res = await getUserLanguages(userId)
-    commit('setLanguage', res.primaryLanguage)
+    const storedLang = getters.getLanguage()
+    if (!storedLang) {
+      commit('setLanguage', res.primaryLanguage)
+    } else {
+      commit('setLanguage', storedLang)
+    }
     commit('setStudiedLanguages', res.languages)
     return res
   },
@@ -32,7 +37,7 @@ const actions = {
 const mutations = {
   setLanguage: (state, lang) => {
     state.language = lang
-    localStorage.setItem('language', lang)
+    window.localStorage.setItem('language', lang)
   },
   setStudiedLanguages: (state, languages) => {
     state.studiedLanguages = languages
