@@ -797,15 +797,14 @@
 </template>
 
 <script>
-    export default {
-      name: 'flagSVGs',
-      props: ['height', 'width', 'language'],
-    }
+  export default {
+    name: 'flagSVGs',
+    props: ['height', 'width', 'language'],
+  }
 </script>
 
 <style scoped>
 #flags-container {
-  height: 100%;
   display: flex;
   justify-content: center;
 }

@@ -9,6 +9,7 @@ import Settings from '../views/Settings.vue'
 import FlashCards from '../views/FlashCards.vue'
 import Learn from '../views/Learn.vue'
 import CreateWord from '../views/CreateWord.vue'
+import AddLanguage from '../views/AddLanguage.vue'
 import CreateSet from '../views/CreateSet.vue'
 import Vocabulary from '../views/Vocabulary.vue'
 import Conjugations from '../views/Conjugations.vue'
@@ -62,6 +63,11 @@ const routes = [
     path: '/createWord',
     name: 'CreateWord',
     component: CreateWord
+  },
+  {
+    path: '/addLanguage',
+    name: 'AddLanguage',
+    component: AddLanguage
   },
   {
     path: '/createSet',
