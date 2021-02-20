@@ -60,24 +60,7 @@ export default {
     }
   },
   created() {
-    //this.displayed = this[this.language].lower
-    if (this.language === "FR") {
-      this.displayed = this.french.lower
-    } else if (this.language === "ES") {
-      this.displayed = this.spanish.lower
-    } else if (this.language === "PT") {
-      this.displayed = this.portuguese.lower
-    } else if (this.language === "IT") {
-      this.displayed = this.italian.lower
-    } else if (this.language === "DE") {
-      this.displayed = this.german.lower
-    } else if (this.language === "RO") {
-      this.displayed = this.romanian.lower
-    } else if (this.language === "SV") {
-      this.displayed = this.swedish.lower
-    } else {
-      this.displayed = []
-    }
+    this.displayed = this[this.language].lower
   }
 }
 </script>

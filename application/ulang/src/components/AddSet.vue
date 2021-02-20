@@ -87,7 +87,7 @@ export default {
         description: this.description,
         ownerId: this.getUserId(),
         quickAccess: this.quickAccess,
-        language: 'fr'
+        language: 'french'
       };
       const wordIds = this.filteredWords.reduce((acc, curr) => {
         if (curr.selected) {
@@ -116,9 +116,12 @@ export default {
     }
   },
   created() {
-    getWords(this.getUserId(), "fr").then(({words}) => {
+    getWords(this.getUserId(), "french").then(({ words }) => {
       this.words = words.map(set => ({ ...set, selected: false }))
       this.filteredWords = this.words
+    }).catch(err => {
+      console.log(err.response.data.error)
+      this.words = []
     })
   },
 }
