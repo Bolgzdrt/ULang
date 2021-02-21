@@ -9,11 +9,11 @@
             <!-- TODO: Do the moving label thing -->
             <div class="name-input input-group">
               <input type="text" name="first" id="first" class="setting-input">
-              <label for="first">First Name</label>
+              <label class="settings-input-label" for="first">First Name</label>
             </div>
             <div class="name-input input-group">
               <input type="text" name="last" id="last" class="setting-input">
-              <label for="last">Last Name</label>
+              <label class="settings-input-label" for="last">Last Name</label>
             </div>
           </div>
         </section>
@@ -28,19 +28,46 @@
           </div>
           <div id="login-details">
             <p class="subsetting-title title">Login Details</p>
-            <div class="login-details-content content">
-              <p id="updateEmailHeader">Update Your Email Address</p>
+            <div class="update-email-content content">
+              <p id="updateEmailHeader" class="login-details-headers">Update Your Email Address</p>
               <p id="currentEmail">Your email is currently TODO@email</p>
               <div class="email-input input-group">
                 <input type="text" name="newemail" id="newemail" class="setting-input">
-                <label for="newemail">New Email</label>
+                <label class="settings-input-label" for="newemail">New Email</label>
               </div>
               <div class="email-input input-group">
                 <input type="text" name="changeEmailPassword" id="changeEmailPassword" class="setting-input">
-                <label for="changeEmailPassword">Your Password</label>
+                <label class="settings-input-label" for="changeEmailPassword">Your Password</label>
               </div>
               <button id="emailButton" class="btn submit-btn">Submit</button>
             </div>
+            <div class="change-password-content content">
+              <p id="changePasswordHeader" class="login-details-headers">Change Your Password</p>
+              <div class="password-input input-group">
+                <input type="text" name="currentPassword" id="currentPassword" class="setting-input">
+                <label class="settings-input-label" for="currentPassword">CurrentPassword</label>
+              </div>
+              <div class="password-input input-group">
+                <input type="text" name="newPassword" id="newPassword" class="setting-input">
+                <label class="settings-input-label" for="newPassword">New Password</label>
+              </div>
+              <div class="password-input input-group">
+                <input type="text" name="confirmNewPassword" id="confirmNewPassword" class="setting-input">
+                <label class="settings-input-label" for="confirmNewPassword">Confirm New Password</label>
+              </div>
+              <button id="passwordButton" class="btn submit-btn">Submit</button>
+            </div>
+          </div>
+        </section>
+        <section class="delete-account">
+          <p class="setting-title title">Delete Account</p>
+          <div class="delete-account-content content">
+            <p>Permanently Delete {Username}</p>
+            <div class="delete-account-input input-group">
+              <input type="text" name="deletePassword" id="deletePassword" class="setting-input">
+              <label class="settings-input-label" for="deletePassword">Confirm with Password</label>
+            </div>
+            <button id="deleteAccountButton" class="btn delete-btn">Delete Account</button>
           </div>
         </section>
       </div>
@@ -90,7 +117,8 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center
+  align-items: center;
+  overflow-y: auto;
 }
 .settings-content {
   width: 50%;
@@ -140,13 +168,14 @@ export default {
   text-align: left;
   margin: 0.5rem 0;
 }
-.profile .name-input label {
+.settings-input-label {
 }
 .setting-input {
   width: 100%;
   padding: 0.25rem 0.5rem;
   border: none;
   border-bottom: 1px solid var(--gray);
+  margin-bottom: 0.3rem;
 }
 .account {
  width: 100%;
@@ -163,14 +192,15 @@ export default {
   padding: 0 0.5rem;
   font-size: 1.1rem;
 }
-.login-details-content {
+.update-email-content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
-.login-details-content #updateEmailHeader {
+.login-details-headers {
   font-size: 1.5rem;
   text-align: left;
+  padding-bottom: 1rem;
 }
 .btn {
   padding: 0.5rem 2rem;
@@ -185,5 +215,23 @@ export default {
 }
 #emailButton {
   margin-top: 0.5rem;
+}
+.delete-account {
+  width: 100%;
+}
+.delete-account-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+.delete-account-content p {
+  font-size: 1.1rem;
+}
+.delete-account-input {
+  padding-bottom: 1rem;
+}
+.delete-btn {
+  background-color: var(--accent-red);
 }
 </style>
