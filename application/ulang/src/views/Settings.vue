@@ -8,13 +8,14 @@
             <NameCircle :initials="initials" background="#7666D8" :radius="4" />
             <!-- TODO: Do the moving label thing -->
             <div class="name-input input-group">
-              <input type="text" name="first" id="first" class="setting-input">
+              <input type="text" name="first" id="first" class="setting-input" v-model="fname">
               <label class="settings-input-label" for="first">First Name</label>
             </div>
             <div class="name-input input-group">
-              <input type="text" name="last" id="last" class="setting-input">
+              <input type="text" name="last" id="last" class="setting-input" v-model="lname">
               <label class="settings-input-label" for="last">Last Name</label>
             </div>
+            <button id="nameButton" class="btn submit-btn" @click="changeEmail">Submit</button>
           </div>
         </section>
         <section class="account">
@@ -32,30 +33,30 @@
               <p id="updateEmailHeader" class="login-details-headers">Update Your Email Address</p>
               <p id="currentEmail">Your email is currently TODO@email</p>
               <div class="email-input input-group">
-                <input type="text" name="newemail" id="newemail" class="setting-input">
+                <input type="email" name="newemail" id="newemail" class="setting-input" v-model="newEmail">
                 <label class="settings-input-label" for="newemail">New Email</label>
               </div>
               <div class="email-input input-group">
-                <input type="text" name="changeEmailPassword" id="changeEmailPassword" class="setting-input">
+                <input type="password" name="changeEmailPassword" id="changeEmailPassword" class="setting-input" v-model="newEmailPassword">
                 <label class="settings-input-label" for="changeEmailPassword">Your Password</label>
               </div>
-              <button id="emailButton" class="btn submit-btn">Submit</button>
+              <button id="emailButton" class="btn submit-btn" @click="changeEmail">Submit</button>
             </div>
             <div class="change-password-content content">
               <p id="changePasswordHeader" class="login-details-headers">Change Your Password</p>
               <div class="password-input input-group">
-                <input type="text" name="currentPassword" id="currentPassword" class="setting-input">
+                <input type="text" name="currentPassword" id="currentPassword" class="setting-input" v-model="currentPassword">
                 <label class="settings-input-label" for="currentPassword">CurrentPassword</label>
               </div>
               <div class="password-input input-group">
-                <input type="text" name="newPassword" id="newPassword" class="setting-input">
+                <input type="text" name="newPassword" id="newPassword" class="setting-input" v-model="newPassword">
                 <label class="settings-input-label" for="newPassword">New Password</label>
               </div>
               <div class="password-input input-group">
-                <input type="text" name="confirmNewPassword" id="confirmNewPassword" class="setting-input">
+                <input type="text" name="confirmNewPassword" id="confirmNewPassword" class="setting-input" v-model="confirmNewPassword">
                 <label class="settings-input-label" for="confirmNewPassword">Confirm New Password</label>
               </div>
-              <button id="passwordButton" class="btn submit-btn">Submit</button>
+              <button id="passwordButton" class="btn submit-btn" @click="changePassword">Submit</button>
             </div>
           </div>
         </section>
@@ -64,10 +65,10 @@
           <div class="delete-account-content content">
             <p>Permanently Delete {Username}</p>
             <div class="delete-account-input input-group">
-              <input type="text" name="deletePassword" id="deletePassword" class="setting-input">
+              <input type="password" name="deletePassword" id="deletePassword" class="setting-input" v-model="confirmDeletePassword">
               <label class="settings-input-label" for="deletePassword">Confirm with Password</label>
             </div>
-            <button id="deleteAccountButton" class="btn delete-btn">Delete Account</button>
+            <button id="deleteAccountButton" class="btn delete-btn" @click="deleteAccount">Delete Account</button>
           </div>
         </section>
       </div>
@@ -85,12 +86,32 @@ export default {
   components: { NameCircle },
   data() {
     return {
-      initials: ''
+      initials: '',
+      fname: '',
+      lname: '',
+      newEmail: '',
+      newEmailPassword: '',
+      currentPassword: '',
+      newPassword: '',
+      confirmNewPassword: '',
+      confirmDeletePassword: '',
     }
   },
   methods: {
     ...mapActions('auth', ['getUserInfo']),
-    ...mapGetters('auth', ['getUserId'])
+    ...mapGetters('auth', ['getUserId']),
+    changeName() {
+      console.log('change name')
+    },
+    changeEmail() {
+      console.log('change email')
+    },
+    changePassword() {
+      console.log('change password')
+    },
+    deleteAccount() {
+      console.log('deleteAccount')
+    },
   },
   created() {
     this.getUserInfo(this.getUserId())
@@ -143,6 +164,10 @@ export default {
   align-items: center;
   width: 100%;
   padding-top: 0;
+}
+.profile-content #nameButton {
+  align-self: flex-start;
+  margin-top: 0.5rem;
 }
 .circle {
   width: 5rem;
