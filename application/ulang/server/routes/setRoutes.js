@@ -11,6 +11,7 @@ router.post('/createSet', setController.createSet)
  */
 router.get('/getSetsOfLang/:id/:lang', setController.getAllSetsOfLanguage)
 router.get('/getSet/:id', setController.getSetById)
+router.get('/getWordsInSet/:id', setController.getWordsInSet)
 router.put('/updateSet/:id', setController.updateSet)
 router.put('/toggleFavorite/:id', setController.toggleFavorite)
 router.delete('/deleteSet/:id', setController.deleteSet)

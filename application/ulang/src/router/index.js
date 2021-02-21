@@ -6,6 +6,7 @@ import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import Profile from '../views/Profile.vue'
 import Settings from '../views/Settings.vue'
+import FlashCardsSettings from '../views/FlashCardsSettings.vue'
 import FlashCards from '../views/FlashCards.vue'
 import Learn from '../views/Learn.vue'
 import CreateWord from '../views/CreateWord.vue'
@@ -49,9 +50,16 @@ const routes = [
     component: Settings
   },
   {
-    path: '/flashCards',
+    path: '/flashCardsSettings',
+    name: 'FlashCardsSettings',
+    component: FlashCardsSettings,
+    props: true
+  },
+  {
+    path: '/flashCards/:id/:setting',
     name: 'FlashCards',
-    component: FlashCards
+    component: FlashCards,
+    props: true
   },
   {
     path: '/learn',

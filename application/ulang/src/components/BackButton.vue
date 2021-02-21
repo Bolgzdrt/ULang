@@ -1,7 +1,7 @@
 <template>
-  <div class="backButton">
+  <div class="backButton" @click="back">
     <Back />
-    <div>Back to sets</div>
+    <div>Back to settings</div>
   </div>
 </template>
 
@@ -10,7 +10,17 @@ import Back from '@/assets/svgs/back.vue'
 
 export default {
   name: 'BackButton',
-  components: { Back }
+  components: { Back },
+  props: ['fromRoute'],
+  methods: {
+    back() {
+      if (this.fromRoute) {
+        this.$router.push(this.fromRoute)
+      } else  {
+        this.$router.push({name: "Home"})
+      }
+    }
+  }
 }
 </script>
 
@@ -24,6 +34,9 @@ export default {
   left: 260px;
   font-size: 28px;
   cursor: pointer;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .backButton div {
