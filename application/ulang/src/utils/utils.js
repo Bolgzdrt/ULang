@@ -11,6 +11,17 @@ export const languages = [
   'romanian'
 ]
 
+export const getInitials = (data) => {
+  const { firstName, lastName, username } = data
+  let initials
+  if (firstName && lastName) {
+    initials = `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`
+  } else {
+    initials = username[0].toUpperCase()
+  }
+  return initials
+}
+
 export const arrayCompare = (_arr1, _arr2) => {
   if (
     !Array.isArray(_arr1) ||

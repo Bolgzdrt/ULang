@@ -28,6 +28,7 @@ import Plus from '@/assets/svgs/plus.vue'
 import NameCircle from '@/components/NameCircle.vue'
 import LanguageSelector from '@/components/LanguageSelector.vue'
 import { mapMutations, mapActions } from 'vuex'
+import { getInitials } from '@/utils/utils'
 
 export default {
   name: 'Navbar',
@@ -80,12 +81,7 @@ export default {
     if (!this.initials && this.userId) {
       this.getUserInfo(this.userId)
         .then((info) => {
-          const { firstName, lastName, username } = info
-          if (firstName && lastName) {
-            this.initials = `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`
-          } else {
-            this.initials = username[0].toUpperCase()
-          }
+          this.initials = getInitials(info)
         })
         .catch((err) => {
           console.error(err)
