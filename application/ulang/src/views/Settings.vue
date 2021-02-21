@@ -145,11 +145,11 @@ export default {
   padding-top: 0;
 }
 .circle {
-  width: 4rem;
-  height: 4rem;
+  width: 5rem;
+  height: 5rem;
   background-color: var(--purple);
   color: #fff;
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   margin: 0 0 1rem;
 }
 .title {
