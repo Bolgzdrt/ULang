@@ -58,6 +58,7 @@
                   class="setting-input"
                   v-model="newEmail"
                 />
+                <p class="error" id="newEmailError" v-if="errors.newEmailErrorMessage">{{ errors.newEmailErrorMessage }}</p>
                 <label class="settings-input-label" for="newemail"
                   >New Email</label
                 >
@@ -70,6 +71,7 @@
                   class="setting-input"
                   v-model="newEmailPassword"
                 />
+                <p class="error" id="newEmailPasswordError" v-if="errors.newEmailPasswordErrorMessage">{{ errors.newEmailPasswordErrorMessage }}</p>
                 <label class="settings-input-label" for="changeEmailPassword"
                   >Your Password</label
                 >
@@ -94,6 +96,7 @@
                   class="setting-input"
                   v-model="currentPassword"
                 />
+                <p class="error" id="currentPasswordError" v-if="errors.currentPasswordErrorMessage">{{ errors.currentPasswordErrorMessage }}</p>
                 <label class="settings-input-label" for="currentPassword"
                   >CurrentPassword</label
                 >
@@ -106,6 +109,7 @@
                   class="setting-input"
                   v-model="newPassword"
                 />
+                <p class="error" id="newPasswordError" v-if="errors.newPasswordErrorMessage">{{ errors.newPasswordErrorMessage }}</p>
                 <label
                   class="settings-input-label"
                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
@@ -121,6 +125,7 @@
                   class="setting-input"
                   v-model="confirmNewPassword"
                 />
+                <p class="error" id="confirmNewPasswordError" v-if="errors.confirmNewPasswordErrorMessage">{{ errors.confirmNewPasswordErrorMessage }}</p>
                 <label
                   class="settings-input-label"
                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
@@ -150,6 +155,7 @@
                 class="setting-input"
                 v-model="confirmDeletePassword"
               />
+              <p class="error" id="deleteAccountPasswordError" v-if="errors.deleteAccountPasswordErrorMessage">{{ errors.deleteAccountPasswordErrorMessage }}</p>
               <label class="settings-input-label" for="deletePassword"
                 >Confirm with Password</label
               >
@@ -189,7 +195,15 @@ export default {
       currentPassword: '',
       newPassword: '',
       confirmNewPassword: '',
-      confirmDeletePassword: ''
+      confirmDeletePassword: '',
+      errors: {
+        newEmailErrorMessage: '',
+        newEmailPasswordErrorMessage: '',
+        currentPasswordErrorMessage: '',
+        newPasswordErrorMessage: '',
+        confirmNewPasswordErrorMessage: '',
+        deleteAccountPasswordErrorMessage: '',
+      }
     }
   },
   methods: {
@@ -211,10 +225,21 @@ export default {
         .catch((err) => console.error(err.message))
     },
     changeEmail() {
-      if (!this.newEmail || !this.newEmailPassword || this.newEmail === this.email) {
-        // TODO: make error messages below the inputs
-        return
+      this.resetErrorMessages(['newEmailErrorMessage', 'newEmailPasswordErrorMessage'])
+      let error = false
+      if (!this.newEmail) {
+        this.errors.newEmailErrorMessage = 'Must provide a new email'
+        error = true
       }
+      if (!this.newEmailPassword || this.newEmail === this.email) {
+        this.errors.newEmailPasswordErrorMessage = 'Must enter account password to change email'
+        error = true
+      }
+      if (this.newEmail === this.email) {
+        this.errors.newEmailErrorMessage = 'New email cannot be the same'
+        error = true
+      }
+      if (error) return
       const userId = this.getUserId()
       const info = { email: this.newEmail, password: this.newEmailPassword }
       this.changeUserEmail({ userId, info })
@@ -222,7 +247,10 @@ export default {
           this.email = email
           this.resetData(['email'])
         })
-        .catch((err) => console.error(err.message))
+        .catch((err) => {
+          console.error(err.message)
+          // TODO: check if password invalid error to set error message
+        })
     },
     changePassword() {
       if (
@@ -257,6 +285,9 @@ export default {
     },
     resetData(data) {
       data.forEach((d) => (this[d] = ''))
+    },
+    resetErrorMessages(errors) {
+      errors.forEach((e) => this.errors[e] = '')
     }
   },
   created() {
@@ -409,5 +440,9 @@ export default {
 }
 .delete-btn {
   background-color: var(--accent-red);
+}
+.error {
+  font-size: 0.75rem;
+  color: red;
 }
 </style>
