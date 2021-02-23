@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const { isEmail } = require('validator')
 const bcrypt = require('bcrypt')
-const { languageCodes } = require('../utils/utils')
 
 const userSchema = new mongoose.Schema(
   {
@@ -43,12 +42,12 @@ const userSchema = new mongoose.Schema(
     languagesStudying: {
       type: ['String'],
       required: [true, 'Must be studying at least one language'],
-      default: languageCodes.french
+      default: 'french'
     },
     primaryLanguage: {
       type: String,
       required: true,
-      default: languageCodes.french
+      default: 'french'
     }
   },
   {

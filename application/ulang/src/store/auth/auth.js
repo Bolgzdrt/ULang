@@ -10,8 +10,8 @@ const state = {
 
 const getters = {
   getUserInfo: () => ({
-    username: state.username || localStorage.getItem('username'),
-    email: state.email || localStorage.getItem('email'),
+    username: state.username || window.localStorage.getItem('username'),
+    email: state.email || window.localStorage.getItem('email'),
     userId: state.userId || Vue.$cookies.get('userId')
   }),
   getUserId: () => {
@@ -41,11 +41,11 @@ const actions = {
 const mutations = {
   setEmail: (state, email) => {
     state.email = email
-    localStorage.setItem('email', email)
+    window.localStorage.setItem('email', email)
   },
   setUsername: (state, username) => {
     state.username = username
-    localStorage.setItem('username', username)
+    window.localStorage.setItem('username', username)
   },
   setUserId: (state, userId) => {
     state.userId = userId
@@ -55,8 +55,9 @@ const mutations = {
     state.email = ''
     state.username = ''
     state.userId = ''
-    localStorage.removeItem('email')
-    localStorage.removeItem('username')
+    window.localStorage.removeItem('email')
+    window.localStorage.removeItem('username')
+    window.localStorage.removeItem('language')
     Vue.$cookies.remove('userId')
   }
 }

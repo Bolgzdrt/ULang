@@ -64,7 +64,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"Test Set\",\n    \"language\": \"FR\",\n    \"words\": [],\n    \"favorite\": false,\n    \"description\": \"My first test set of Spanish words\",\n    \"ownerId\": \"userIdGoesHere\"\n}",
+					"raw": "{\n    \"name\": \"Test Set\",\n    \"language\": \"french\",\n    \"words\": [],\n    \"favorite\": false,\n    \"description\": \"My first test set of Spanish words\",\n    \"ownerId\": \"userIdGoesHere\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -90,7 +90,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{ulang_endpoint}}/set/getSetsOfLang/6018b2d8dd170b0deae92663/FR",
+					"raw": "{{ulang_endpoint}}/set/getSetsOfLang/6018b2d8dd170b0deae92663/french",
 					"host": [
 						"{{ulang_endpoint}}"
 					],
@@ -98,7 +98,7 @@
 						"set",
 						"getSetsOfLang",
 						"6018b2d8dd170b0deae92663",
-						"FR"
+						"french"
 					]
 				}
 			},

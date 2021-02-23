@@ -19,8 +19,8 @@
         />
       </svg>
       <div class="nav-drop-down" v-if="clicked">
-        <div><router-link :to="{ name: 'CreateWord' }">New Word</router-link></div>
-        <div><router-link :to="{ name: 'CreateSet' }">New Set</router-link></div>
+        <div @click="navigate('CreateWord')"><p>New Word</p></div>
+        <div @click="navigate('CreateSet')"><p>New Set</p></div>
       </div>
     </div>
   </div>
@@ -40,6 +40,9 @@ export default {
     },
     hideDropdown() {
       this.clicked = false
+    },
+    navigate(to) {
+      this.$router.push({ name: to }, () => {})
     }
   }
 }
@@ -92,8 +95,7 @@ export default {
   background: #ccc;
 }
 
-.nav-drop-down p,
-.nav-drop-down a {
+.nav-drop-down p {
   width: 100%;
   text-align: left;
   text-decoration: none;

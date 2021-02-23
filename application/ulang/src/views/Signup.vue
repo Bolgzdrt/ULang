@@ -66,7 +66,7 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
-import { languageCodes, languages } from '@/utils/utils'
+import { languages } from '@/utils/utils'
 import FlagSVGs from '@/assets/svgs/flags/flagSVGs'
 
 export default {
@@ -80,7 +80,6 @@ export default {
       emailError: '',
       usernameError: '',
       passwordError: '',
-      languageCodes,
       languages,
       primaryLanguage: 'french'
     }
