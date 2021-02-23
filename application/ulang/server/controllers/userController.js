@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const Set = require('../models/Set')
 const { capitalizeWord } = require('../utils/utils')
+const bcrypt = require('bcrypt')
 
 const followUser = async (req, res) => {
   // The id of the person to follow
@@ -60,11 +61,13 @@ const getUserInfo = async (req, res) => {
 
   try {
     const user = await User.findById(id)
+    console.log(user)
     res.status(200).json({
       firstName: user.firstName || '',
       lastName: user.lastName || '',
       email: user.email,
-      username: user.username
+      username: user.username,
+      createdDate: user.createdAt
     })
   } catch (err) {
     console.log(err)
@@ -136,12 +139,7 @@ const addLanguagesToUser = async (req, res) => {
 
 const updateUserInfo = async (req, res) => {
   const { id } = req.params
-  const updates = ({
-    email,
-    password,
-    firstName,
-    lastName,
-  } = req.body)
+  const updates = ({ email, password, firstName, lastName } = req.body)
 
   try {
     // const updates = filterUpdates(inputs)
@@ -158,11 +156,67 @@ const updateUserInfo = async (req, res) => {
   }
 }
 
+const changeEmail = async (req, res) => {
+  const { id } = req.params
+  const { email, password } = req.body
+  try {
+    const user = await User.findById(id)
+    const success = await bcrypt.compare(password, user.password)
+    if (success) {
+      const updatedUser = await User.findByIdAndUpdate(id, { email }, { new: true })
+      res.status(200).json({
+        success: true,
+        user: updatedUser
+      })
+    } else {
+      res.status(400).json({
+        success: false,
+        message: 'Password incorrect'
+      })
+    }
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
+const changePassword = async (req, res) => {
+  const { id } = req.params
+  const { oldPassword, newPassword } = req.body
+  try {
+    const user = await User.findById(id)
+    const success = await bcrypt.compare(oldPassword, user.password)
+    if (success) {
+      const salt = await bcrypt.genSalt()
+      const password = await bcrypt.hash(newPassword, salt)
+      await User.findByIdAndUpdate(id, { password }, { new: true })
+      res.status(200).json({
+        success: true,
+        message: 'Password Successfully Updated'
+      })
+    } else {
+      res.status(400).json({
+        success: false,
+        message: 'Password incorrect'
+      })
+    }
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
 module.exports = {
   followUser,
   unfollowUser,
   getUserInfo,
   getUserLanguages,
   addLanguagesToUser,
-  updateUserInfo
+  updateUserInfo,
+  changeEmail,
+  changePassword,
 }

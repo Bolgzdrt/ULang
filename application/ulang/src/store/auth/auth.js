@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { login, signup } from '../../services/authService'
-import { getUserInfo, updateUser } from '../../services/userService'
+import { getUserInfo, updateUser, changeEmail, changePassword } from '../../services/userService'
 
 const state = {
   userId: '',
@@ -40,8 +40,18 @@ const actions = {
   updateUserInfo: async ({}, updates) => {
     const { userId, info } = updates
     const res = await updateUser(userId, info)
-    console.log(res);
     return res.user
+  },
+  changeUserEmail: async({ commit }, updates) => {
+    const { userId, info } = updates
+    const res = await changeEmail(userId, info)
+    commit('setEmail', info.email)
+    return res.user
+  },
+  changeUserPassword: async({}, updates) => {
+    const { userId, info } = updates
+    const res = await changePassword(userId, info)
+    return res.message
   }
 }
 
