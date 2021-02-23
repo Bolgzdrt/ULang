@@ -248,8 +248,11 @@ export default {
           this.resetData(['email'])
         })
         .catch((err) => {
-          console.error(err.message)
-          // TODO: check if password invalid error to set error message
+          console.error(err.response.data.message)
+          // TODO: Test with an invalid email
+          if (err.response.data.message === 'Password incorrect') {
+            this.errors.newEmailPasswordErrorMessage = 'Password incorrect'
+          }
         })
     },
     changePassword() {
