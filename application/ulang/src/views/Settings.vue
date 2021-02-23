@@ -231,7 +231,7 @@ export default {
         this.errors.newEmailErrorMessage = 'Must provide a new email'
         error = true
       }
-      if (!this.newEmailPassword || this.newEmail === this.email) {
+      if (!this.newEmailPassword) {
         this.errors.newEmailPasswordErrorMessage = 'Must enter account password to change email'
         error = true
       }
