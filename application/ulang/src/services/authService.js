@@ -1,7 +1,6 @@
 import axios from '@/axios'
 
 export const login = async (username, password) => {
-  console.log(password);
   const res = await axios.post('login', {
     username,
     password
