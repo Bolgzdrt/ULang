@@ -134,10 +134,35 @@ const addLanguagesToUser = async (req, res) => {
   }
 }
 
+const updateUserInfo = async (req, res) => {
+  const { id } = req.params
+  const updates = ({
+    email,
+    password,
+    firstName,
+    lastName,
+  } = req.body)
+
+  try {
+    // const updates = filterUpdates(inputs)
+    const user = await User.findByIdAndUpdate(id, updates, { new: true })
+    res.status(200).json({
+      success: true,
+      user
+    })
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
 module.exports = {
   followUser,
   unfollowUser,
   getUserInfo,
   getUserLanguages,
-  addLanguagesToUser
+  addLanguagesToUser,
+  updateUserInfo
 }

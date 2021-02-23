@@ -16,3 +16,8 @@ export const addLanguageToUser = async ({ userId, language }) => {
   })
   return res.data
 }
+
+export const updateUser = async (userId, updatePayload) => {
+  const res = await axios.put(`user/updateUserInfo/${userId}`, updatePayload)
+  return res.data
+}

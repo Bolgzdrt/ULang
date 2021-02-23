@@ -8,6 +8,7 @@ router.post('/unfollowUser', userController.unfollowUser)
 router.get('/getUserInfo/:id', userController.getUserInfo)
 router.get('/getUserLanguages/:id', userController.getUserLanguages)
 router.post('/addLanguagesToUser/:id', userController.addLanguagesToUser)
+router.put('/updateUserInfo/:id', userController.updateUserInfo)
 
 module.exports = {
   userRouter: router

@@ -8,14 +8,14 @@
             <NameCircle :initials="initials" background="#7666D8" :radius="4" />
             <!-- TODO: Do the moving label thing -->
             <div class="name-input input-group">
-              <input type="text" name="first" id="first" class="setting-input" v-model="fname">
+              <input type="text" name="first" id="first" class="setting-input" v-model="firstName">
               <label class="settings-input-label" for="first">First Name</label>
             </div>
             <div class="name-input input-group">
-              <input type="text" name="last" id="last" class="setting-input" v-model="lname">
+              <input type="text" name="last" id="last" class="setting-input" v-model="lastName">
               <label class="settings-input-label" for="last">Last Name</label>
             </div>
-            <button id="nameButton" class="btn submit-btn" @click="changeEmail">Submit</button>
+            <button id="nameButton" class="btn submit-btn" @click="changeName">Submit</button>
           </div>
         </section>
         <section class="account">
@@ -31,7 +31,7 @@
             <p class="subsetting-title title">Login Details</p>
             <div class="update-email-content content">
               <p id="updateEmailHeader" class="login-details-headers">Update Your Email Address</p>
-              <p id="currentEmail">Your email is currently TODO@email</p>
+              <p id="currentEmail">Your email is currently <strong>{{ email || 'email not found' }}</strong></p>
               <div class="email-input input-group">
                 <input type="email" name="newemail" id="newemail" class="setting-input" v-model="newEmail">
                 <label class="settings-input-label" for="newemail">New Email</label>
@@ -79,16 +79,17 @@
 <script>
 import NameCircle from '@/components/NameCircle.vue'
 import { getInitials } from '@/utils/utils'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'Settings',
   components: { NameCircle },
   data() {
     return {
+      email: '',
       initials: '',
-      fname: '',
-      lname: '',
+      firstName: '',
+      lastName: '',
       newEmail: '',
       newEmailPassword: '',
       currentPassword: '',
@@ -98,10 +99,21 @@ export default {
     }
   },
   methods: {
-    ...mapActions('auth', ['getUserInfo']),
+    ...mapActions('auth', ['getUserInfo', 'updateUserInfo']),
     ...mapGetters('auth', ['getUserId']),
+    ...mapMutations('auth', ['setName']),
     changeName() {
-      console.log('change name')
+      const userId = this.getUserId()
+      const info = {
+        firstName: this.firstName,
+        lastName: this.lastName
+      }
+      this.updateUserInfo({ userId, info })
+        .then(({ firstName, lastName }) => {
+          this.setName({ firstName, lastName })
+          this.initials = getInitials({ firstName, lastName })
+        })
+        .catch(err => console.error(err.message))
     },
     changeEmail() {
       console.log('change email')
@@ -117,6 +129,7 @@ export default {
     this.getUserInfo(this.getUserId())
       .then((res) => {
         this.initials = getInitials(res)
+        this.email = res.email
       })
       .catch((err) => console.error(err.response.data.error))
   }
@@ -185,6 +198,9 @@ export default {
   font-weight: bold;
   padding-bottom: 0.5rem;
 }
+.account .setting-title {
+  padding-top: 0.5rem;
+}
 .subsetting-title {
   font-size: 1.5rem;
 }
@@ -193,14 +209,13 @@ export default {
   text-align: left;
   margin: 0.5rem 0;
 }
-.settings-input-label {
-}
 .setting-input {
   width: 100%;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem;
   border: none;
   border-bottom: 1px solid var(--gray);
   margin-bottom: 0.3rem;
+  font-size: 1.15rem;
 }
 .account {
  width: 100%;
@@ -234,6 +249,7 @@ export default {
   border-radius: 6px;
   justify-self: flex-start;
   font-size: 1.1rem;
+  cursor: pointer;
 }
 .submit-btn {
   background: var(--purple);

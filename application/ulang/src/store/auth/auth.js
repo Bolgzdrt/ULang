@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import { login, signup } from '../../services/authService'
-import { getUserInfo } from '../../services/userService'
+import { getUserInfo, updateUser } from '../../services/userService'
 
 const state = {
   userId: '',
   username: '',
   email: '',
+  firstName: '',
+  lastName: '',
 }
 
 const getters = {
@@ -34,6 +36,12 @@ const actions = {
   },
   getUserInfo: async ({}, userId) => {
     return await getUserInfo(userId)
+  },
+  updateUserInfo: async ({}, updates) => {
+    const { userId, info } = updates
+    const res = await updateUser(userId, info)
+    console.log(res);
+    return res.user
   }
 }
 
@@ -50,6 +58,10 @@ const mutations = {
   setUserId: (state, userId) => {
     state.userId = userId
     Vue.$cookies.set('userId', userId)
+  },
+  setName: (state, { firstName, lastName }) => {
+    state.firstName = firstName || ''
+    state.lastName = lastName || ''
   },
   logout: (state) => {
     state.email = ''
