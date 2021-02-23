@@ -54,7 +54,6 @@
 <script>
 import DropDown from '@/assets/svgs/dropdown.vue'
 import FlagSVGs from '@/assets/svgs/flags/flagSVGs.vue'
-import { arrayCompare } from '@/utils/utils'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 export default {

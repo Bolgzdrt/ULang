@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar :userId="userId" @logout="() => userId = ''" />
+    <Navbar />
     <section class="main-container">
       <Sidebar v-if="userId" :friends="friends" />
       <router-view class="defaultPage" :key="$route.fullPath" />
@@ -11,7 +11,6 @@
 <script>
 import Navbar from '@/components/Navbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
-import { mapGetters } from 'vuex'
 
 export default {
   name: 'App',
@@ -21,26 +20,20 @@ export default {
   },
   data() {
     return {
+      // TODO: Move this into the friends component.
       // friends place holder
       friends: [
         { name: 'Joe Schmo', pic: 'JS' },
         { name: 'Name Name', pic: 'NN' },
         { name: 'Place Holder', pic: 'PH' }
       ],
-      userId: '',
     }
   },
-  methods: {
-    ...mapGetters('auth', ['getUserId']),
-  },
-  updated() {
-    if (!['Welcome', 'Login', 'Signup'].includes(this.$route.name)) {
-      this.userId = this.getUserId()
+  computed: {
+    userId() {
+      return this.$store.state.auth.userId
     }
   },
-  mounted() {
-    this.userId = this.getUserId()
-  }
 }
 </script>
 

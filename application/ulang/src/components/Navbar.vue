@@ -38,11 +38,15 @@ export default {
     Logo,
     LanguageSelector
   },
-  props: ['userId'],
   data() {
     return {
       clicked: false,
       initials: ''
+    }
+  },
+  computed: {
+    userId() {
+      return this.$store.state.auth.userId
     }
   },
   methods: {
@@ -60,7 +64,6 @@ export default {
     triggerLogout() {
       this.logout()
       this.$router.push({ name: 'Welcome' })
-      this.$emit('logout')
     },
     logoClick() {
       if (this.userId) {

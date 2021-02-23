@@ -61,7 +61,6 @@ const getUserInfo = async (req, res) => {
 
   try {
     const user = await User.findById(id)
-    console.log(user)
     res.status(200).json({
       firstName: user.firstName || '',
       lastName: user.lastName || '',
@@ -202,7 +201,34 @@ const changePassword = async (req, res) => {
         message: 'Password incorrect'
       })
     }
-  } catch (error) {
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
+const deleteAccount = async (req, res) => {
+  const { id } = req.params
+  const { password } = req.body
+  console.log(id, password)
+  try {
+    const user = await User.findById(id)
+    const success = await bcrypt.compare(password, user.password)
+    if (success) {
+      await User.findByIdAndDelete(id)
+      res.status(200).json({
+        success: true,
+        message: 'Account Successfully Deleted'
+      })
+    } else {
+      res.status(200).json({
+        success: false,
+        message: 'Password incorrect'
+      })
+    }
+  } catch (err) {
     res.status(400).json({
       success: false,
       error: err.message
@@ -219,4 +245,5 @@ module.exports = {
   updateUserInfo,
   changeEmail,
   changePassword,
+  deleteAccount,
 }

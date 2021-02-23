@@ -172,6 +172,7 @@
 import NameCircle from '@/components/NameCircle.vue'
 import { getInitials } from '@/utils/utils'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { deleteAccount } from '@/services/userService'
 
 export default {
   name: 'Settings',
@@ -194,7 +195,7 @@ export default {
   methods: {
     ...mapActions('auth', ['getUserInfo', 'updateUserInfo', 'changeUserEmail', 'changeUserPassword']),
     ...mapGetters('auth', ['getUserId']),
-    ...mapMutations('auth', ['setName']),
+    ...mapMutations('auth', ['setName', 'logout']),
     changeName() {
       const userId = this.getUserId()
       const info = {
@@ -210,6 +211,10 @@ export default {
         .catch((err) => console.error(err.message))
     },
     changeEmail() {
+      if (!this.newEmail || !this.newEmailPassword || this.newEmail === this.email) {
+        // TODO: make error messages below the inputs
+        return
+      }
       const userId = this.getUserId()
       const info = { email: this.newEmail, password: this.newEmailPassword }
       this.changeUserEmail({ userId, info })
@@ -220,7 +225,6 @@ export default {
         .catch((err) => console.error(err.message))
     },
     changePassword() {
-      const userId = this.getUserId()
       if (
         !this.currentPassword ||
         !this.newPassword ||
@@ -229,6 +233,7 @@ export default {
         // TODO: make error messages below the inputs
         return
       }
+      const userId = this.getUserId()
       const info = {
         oldPassword: this.currentPassword,
         newPassword: this.newPassword
@@ -238,7 +243,17 @@ export default {
       })
     },
     deleteAccount() {
-      console.log('deleteAccount')
+      if (!this.confirmDeletePassword) {
+        // TODO: make error message below input
+        return
+      }
+      const userId = this.getUserId()
+      deleteAccount(userId, this.confirmDeletePassword)
+        .then(() => {
+          this.logout()
+          this.$router.push({ name: 'Welcome' })
+        })
+        .catch(err => console.error(err.message))
     },
     resetData(data) {
       data.forEach((d) => (this[d] = ''))

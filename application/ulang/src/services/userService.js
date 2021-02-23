@@ -34,3 +34,8 @@ export const changePassword = async (userId, passwordUpdatePayload) => {
   )
   return res.data
 }
+
+export const deleteAccount = async (userId, password) => {
+  const res = await axios.delete(`user/deleteAccount/${userId}`, { data: { password } })
+  return res.data
+}
