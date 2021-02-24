@@ -27,7 +27,7 @@ import Logo from '@/assets/svgs/logo.vue'
 import Plus from '@/assets/svgs/plus.vue'
 import NameCircle from '@/components/NameCircle.vue'
 import LanguageSelector from '@/components/LanguageSelector.vue'
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
 import { getInitials } from '@/utils/utils'
 
 export default {
@@ -41,17 +41,20 @@ export default {
   data() {
     return {
       clicked: false,
-      initials: ''
     }
   },
   computed: {
     userId() {
-      return this.$store.state.auth.userId
+      return this.getUserId()
+    },
+    initials() {
+      return getInitials(this.getUserInfo())
     }
   },
   methods: {
     ...mapMutations('auth', ['logout']),
     ...mapActions('auth', ['getUserInfo']),
+    ...mapGetters('auth', ['getUserInfo', 'getUserId']),
     getClass() {
       return {
         'logged-in-nav': this.userId,
@@ -80,17 +83,17 @@ export default {
       this.clicked = false
     }
   },
-  updated() {
-    if (!this.initials && this.userId) {
-      this.getUserInfo(this.userId)
-        .then((info) => {
-          this.initials = getInitials(info)
-        })
-        .catch((err) => {
-          console.error(err)
-        })
-    }
-  }
+  // updated() {
+  //   if (!this.initials) {
+  //     this.getUserInfo(this.userId)
+  //       .then((info) => {
+  //         this.initials = getInitials(info)
+  //       })
+  //       .catch((err) => {
+  //         console.error(err)
+  //       })
+  //   }
+  // }
 }
 </script>
 

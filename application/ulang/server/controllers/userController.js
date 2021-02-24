@@ -62,8 +62,8 @@ const getUserInfo = async (req, res) => {
   try {
     const user = await User.findById(id)
     res.status(200).json({
-      firstName: user.firstName || '',
-      lastName: user.lastName || '',
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       username: user.username,
       createdDate: user.createdAt

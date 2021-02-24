@@ -31,9 +31,9 @@ export default {
   },
   computed: {
     userId() {
-      return this.$store.state.auth.userId
+      return this.$store.getters['auth/getUserId']
     }
-  },
+  }
 }
 </script>
 
