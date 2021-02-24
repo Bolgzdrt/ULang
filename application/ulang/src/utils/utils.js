@@ -11,6 +11,17 @@ export const languages = [
   'romanian'
 ]
 
+export const getInitials = (data) => {
+  const { firstName, lastName, username } = data
+  let initials
+  if (firstName && lastName) {
+    initials = `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`
+  } else {
+    initials = username[0].toUpperCase()
+  }
+  return initials
+}
+
 export const arrayCompare = (_arr1, _arr2) => {
   if (
     !Array.isArray(_arr1) ||
@@ -31,6 +42,16 @@ export const arrayCompare = (_arr1, _arr2) => {
   }
 
   return true
+}
+
+export const checkIfEmail = (email) => {
+  const regex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+  return regex.test(email)
+}
+
+export const checkIfValidPassword = (password) => {
+  const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/
+  return regex.test(password)
 }
 
 Vue.directive('click-outside', {

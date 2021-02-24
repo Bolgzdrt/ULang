@@ -27,7 +27,8 @@ import Logo from '@/assets/svgs/logo.vue'
 import Plus from '@/assets/svgs/plus.vue'
 import NameCircle from '@/components/NameCircle.vue'
 import LanguageSelector from '@/components/LanguageSelector.vue'
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
+import { getInitials } from '@/utils/utils'
 
 export default {
   name: 'Navbar',
@@ -37,16 +38,23 @@ export default {
     Logo,
     LanguageSelector
   },
-  props: ['userId'],
   data() {
     return {
       clicked: false,
-      initials: ''
+    }
+  },
+  computed: {
+    userId() {
+      return this.getUserId()
+    },
+    initials() {
+      return getInitials(this.getUserInfo())
     }
   },
   methods: {
     ...mapMutations('auth', ['logout']),
     ...mapActions('auth', ['getUserInfo']),
+    ...mapGetters('auth', ['getUserInfo', 'getUserId']),
     getClass() {
       return {
         'logged-in-nav': this.userId,
@@ -59,7 +67,6 @@ export default {
     triggerLogout() {
       this.logout()
       this.$router.push({ name: 'Welcome' })
-      this.$emit('logout')
     },
     logoClick() {
       if (this.userId) {
@@ -76,22 +83,17 @@ export default {
       this.clicked = false
     }
   },
-  updated() {
-    if (!this.initials && this.userId) {
-      this.getUserInfo(this.userId)
-        .then((info) => {
-          const { firstName, lastName, username } = info
-          if (firstName && lastName) {
-            this.initials = `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`
-          } else {
-            this.initials = username[0].toUpperCase()
-          }
-        })
-        .catch((err) => {
-          console.error(err)
-        })
-    }
-  }
+  // updated() {
+  //   if (!this.initials) {
+  //     this.getUserInfo(this.userId)
+  //       .then((info) => {
+  //         this.initials = getInitials(info)
+  //       })
+  //       .catch((err) => {
+  //         console.error(err)
+  //       })
+  //   }
+  // }
 }
 </script>
 
