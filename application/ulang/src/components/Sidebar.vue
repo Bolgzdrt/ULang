@@ -1,12 +1,17 @@
 <template>
   <div class="sidebar">
-    <a href="#">Home</a>
+    <router-link :to="{ name: 'Home' }">Home</router-link>
     <hr>
     <div class="pageLinks">
-      <a href="#">Flash Cards</a>
-      <a href="#">Learn</a>
-      <a href="#">Game</a>
-      <a href="#">Pronunciation</a>
+      <router-link :to="{ name: 'FlashCardsSettings' }">Flash Cards</router-link>
+      <router-link :to="{ name: 'LearnSettings' }">Vocabulary</router-link>
+      <router-link :to="{ name: 'Conjugations' }">Conjugations</router-link>
+      <router-link :to="{ name: 'Pronunciations' }">Pronunciations</router-link>
+    </div>
+    <hr>
+    <div class="pageLinks">
+      <router-link :to="{ name: 'CreateSet' }">New Set</router-link>
+      <router-link :to="{ name: 'CreateWord' }">New Word</router-link>
     </div>
     <hr>
     <a href="#">Friends</a>
@@ -29,11 +34,11 @@
 import NameCircle from '@/components/NameCircle.vue'
 
 export default {
+  name: "Sidebar",
+  props: ['friends'],
   components: {
     NameCircle
   },
-  props: ['friends'],
-  name: "Sidebar"
 }
 </script>
 

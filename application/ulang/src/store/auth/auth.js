@@ -1,44 +1,71 @@
 import Vue from 'vue'
 import { login, signup } from '../../services/authService'
-import { getUserInfo } from '../../services/userService'
+import {
+  getUserInfo,
+  updateUser,
+  changeEmail,
+  changePassword
+} from '../../services/userService'
 
 const state = {
-  token: '',
   userId: '',
   username: '',
   email: '',
+  firstName: '',
+  lastName: ''
 }
 
 const getters = {
   getUserInfo: () => ({
-    username: state.username || localStorage.getItem('username'),
-    email: state.email || localStorage.getItem('email'),
-    userId: state.userId || Vue.$cookies.get('userId')
+    username: state.username || window.localStorage.getItem('username'),
+    email: state.email || window.localStorage.getItem('email'),
+    userId: state.userId || Vue.$cookies.get('userId'),
+    firstName: state.firstName || window.localStorage.getItem('firstName'),
+    lastName: state.lastName || window.localStorage.getItem('lastName'),
   }),
   getUserId: () => {
-   return state.userId || Vue.$cookies.get('userId')
-  },
-  getToken: () => ({
-    token: state.token || Vue.$cookies.get('token')
-  }),
+    return state.userId || Vue.$cookies.get('userId')
+  }
 }
 
 // async
 const actions = {
   login: async ({ commit }, password) => {
-    const { token, userId } = await login(state.username, password)
-    commit('setToken', token)
-    commit('setUserId', userId)
+    const { _id, firstName, lastName, email } = await login(state.username, password)
+    commit('setUserId', _id)
+    commit('setEmail', email)
+    commit('setName', { firstName, lastName })
     return
   },
-  signUp: async ({ commit }, password) => {
-    const { token, userId } = await signup(state.email, state.username, password)
-    commit('setToken', token)
+  signUp: async ({ commit }, dependencies) => {
+    const { password, primaryLanguage } = dependencies
+    const { userId } = await signup({
+      email: state.email,
+      username: state.username,
+      password,
+      primaryLanguage
+    })
     commit('setUserId', userId)
     return
   },
   getUserInfo: async ({}, userId) => {
     return await getUserInfo(userId)
+  },
+  updateUserInfo: async ({}, updates) => {
+    const { userId, info } = updates
+    const res = await updateUser(userId, info)
+    return res.user
+  },
+  changeUserEmail: async ({ commit }, updates) => {
+    const { userId, info } = updates
+    const res = await changeEmail(userId, info)
+    commit('setEmail', info.email)
+    return res.user
+  },
+  changeUserPassword: async ({}, updates) => {
+    const { userId, info } = updates
+    const res = await changePassword(userId, info)
+    return res.message
   }
 }
 
@@ -46,29 +73,36 @@ const actions = {
 const mutations = {
   setEmail: (state, email) => {
     state.email = email
-    localStorage.setItem('email', email)
+    window.localStorage.setItem('email', email)
   },
   setUsername: (state, username) => {
     state.username = username
-    localStorage.setItem('username', username)
+    window.localStorage.setItem('username', username)
   },
   setUserId: (state, userId) => {
     state.userId = userId
     Vue.$cookies.set('userId', userId)
   },
-  setToken: (state, token) => {
-    state.token = token
-    Vue.$cookies.set('token', token)
+  setName: (state, { firstName, lastName }) => {
+    state.firstName = firstName || ''
+    state.lastName = lastName || ''
+    if (firstName)
+      window.localStorage.setItem('firstName', firstName)
+    if (lastName)
+      window.localStorage.setItem('lastName', lastName)
   },
   logout: (state) => {
     state.email = ''
     state.username = ''
     state.userId = ''
-    state.token = ''
-    localStorage.removeItem('email')
-    localStorage.removeItem('username')
+    state.firstName = ''
+    state.lastName = ''
+    window.localStorage.removeItem('email')
+    window.localStorage.removeItem('username')
+    window.localStorage.removeItem('language')
+    window.localStorage.removeItem('firstName')
+    window.localStorage.removeItem('lastName')
     Vue.$cookies.remove('userId')
-    Vue.$cookies.remove('token')
   }
 }
 
@@ -76,5 +110,5 @@ export default {
   state,
   getters,
   actions,
-  mutations,
+  mutations
 }

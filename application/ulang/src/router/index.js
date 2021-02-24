@@ -6,9 +6,16 @@ import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import Profile from '../views/Profile.vue'
 import Settings from '../views/Settings.vue'
+import FlashCardsSettings from '../views/FlashCardsSettings.vue'
 import FlashCards from '../views/FlashCards.vue'
+import LearnSettings from '../views/LearnSettings.vue'
 import Learn from '../views/Learn.vue'
-import Game from '../views/Game.vue'
+import CreateWord from '../views/CreateWord.vue'
+import AddLanguage from '../views/AddLanguage.vue'
+import CreateSet from '../views/CreateSet.vue'
+import Vocabulary from '../views/Vocabulary.vue'
+import Conjugations from '../views/Conjugations.vue'
+import Pronunciations from '../views/Pronunciations.vue'
 
 Vue.use(VueRouter)
 
@@ -45,29 +52,58 @@ const routes = [
     component: Settings
   },
   {
-    path: '/flashCards',
+    path: '/flashCardsSettings',
+    name: 'FlashCardsSettings',
+    component: FlashCardsSettings
+  },
+  {
+    path: '/flashCards/:id/:setting',
     name: 'FlashCards',
-    component: FlashCards
+    component: FlashCards,
+    props: true
   },
   {
-    path: '/learn',
+    path: '/learnSettings',
+    name: 'LearnSettings',
+    component: LearnSettings
+  },
+  {
+    path: '/learn/:id',
     name: 'Learn',
-    component: Learn
+    component: Learn,
+    props: true
   },
   {
-    path: '/game',
-    name: 'Game',
-    component: Game
+    path: '/createWord',
+    name: 'CreateWord',
+    component: CreateWord
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/addLanguage',
+    name: 'AddLanguage',
+    component: AddLanguage
+  },
+  {
+    path: '/createSet',
+    name: 'CreateSet',
+    component: CreateSet
+  },
+  {
+    path: '/vocabulary',
+    name: 'Vocabulary',
+    component: Vocabulary
+  },
+  {
+    path: '/conjugations',
+    name: 'Conjugations',
+    component: Conjugations
+  },
+  {
+    path: '/pronunciations',
+    name: 'Pronunciations',
+    component: Pronunciations
   }
+  
 ]
 
 const router = new VueRouter({
@@ -75,5 +111,24 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+/**
+ * This block will proctect any route other than Welcome, Login, and Signup
+ * from being accessed without a token.
+ *
+ * Commenting out for now for development testing purposes
+ */
+// router.beforeEach((to, from, next) => {
+//   if (!['Welcome', 'Login', 'Signup'].includes(to.name)) {
+//     if (!Vue.$cookies.get('token')) {
+//       console.log('No Token Found')
+//       router.replace('/ulang')
+//     } else {
+//       next()
+//     }
+//   } else {
+//     next()
+//   }
+// })
 
 export default router

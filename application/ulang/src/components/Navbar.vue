@@ -5,17 +5,18 @@
     </span>
     <div v-if="userId" class="nav-items">
       <Plus />
-      <!-- add down arrow. Also need to get SVGs for flags cus emojis don't work on windows 😑 -->
-      <div>🇫🇷</div>
+      <LanguageSelector />
       <div @click="onNameClick" id="user-container">
-        <NameCircle :initials="initials" />
-        <div class="nav-drop-down" v-if="clicked">
-          <router-link :to="{ name: 'Profile', params: { id: userId } }"
-            >Profile</router-link
-          >
-          <router-link :to="{ name: 'Settings' }">Settings</router-link>
-          <p @click="triggerLogout">Logout</p>
-        </div>
+        <span id="outside-element-click" v-click-outside="hideDropdown">
+          <NameCircle :initials="initials" />
+          <div class="nav-drop-down" v-if="clicked">
+            <router-link :to="{ name: 'Profile', params: { id: userId } }">
+              Profile
+            </router-link>
+            <router-link :to="{ name: 'Settings' }">Settings</router-link>
+            <p @click="triggerLogout">Logout</p>
+          </div>
+        </span>
       </div>
     </div>
   </nav>
@@ -25,25 +26,35 @@
 import Logo from '@/assets/svgs/logo.vue'
 import Plus from '@/assets/svgs/plus.vue'
 import NameCircle from '@/components/NameCircle.vue'
-import { mapMutations, mapActions } from 'vuex'
+import LanguageSelector from '@/components/LanguageSelector.vue'
+import { mapMutations, mapActions, mapGetters } from 'vuex'
+import { getInitials } from '@/utils/utils'
 
 export default {
   name: 'Navbar',
   components: {
     Plus,
     NameCircle,
-    Logo
+    Logo,
+    LanguageSelector
   },
-  props: ['userId'],
   data() {
     return {
       clicked: false,
-      initials: ''
+    }
+  },
+  computed: {
+    userId() {
+      return this.getUserId()
+    },
+    initials() {
+      return getInitials(this.getUserInfo())
     }
   },
   methods: {
     ...mapMutations('auth', ['logout']),
     ...mapActions('auth', ['getUserInfo']),
+    ...mapGetters('auth', ['getUserInfo', 'getUserId']),
     getClass() {
       return {
         'logged-in-nav': this.userId,
@@ -56,7 +67,6 @@ export default {
     triggerLogout() {
       this.logout()
       this.$router.push({ name: 'Welcome' })
-      this.$emit('logout')
     },
     logoClick() {
       if (this.userId) {
@@ -68,29 +78,28 @@ export default {
           this.$router.push({ name: 'Welcome' })
         }
       }
+    },
+    hideDropdown() {
+      this.clicked = false
     }
   },
-  updated() {
-    if (!this.initials && this.userId) {
-      this.getUserInfo(this.userId)
-        .then((info) => {
-          const { firstName, lastName, username } = info
-          if (firstName && lastName) {
-            this.initials = `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`
-          } else {
-            this.initials = username[0].toUpperCase()
-          }
-        })
-        .catch((err) => {
-          console.error(err)
-        })
-    }
-  }
+  // updated() {
+  //   if (!this.initials) {
+  //     this.getUserInfo(this.userId)
+  //       .then((info) => {
+  //         this.initials = getInitials(info)
+  //       })
+  //       .catch((err) => {
+  //         console.error(err)
+  //       })
+  //   }
+  // }
 }
 </script>
 
 <style scoped>
 @import '../assets/styles/utils.css';
+
 nav {
   display: flex;
   align-items: center;
@@ -109,6 +118,14 @@ nav {
 #logo {
   height: 100%;
   cursor: pointer;
+}
+
+#outside-element-click {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logged-out-nav {
@@ -171,5 +188,6 @@ nav .nav-items {
   text-align: left;
   text-decoration: none;
   color: #2c3e50;
+  padding: 0 0.5em;
 }
 </style>

@@ -1,5 +1,7 @@
 const User = require('../models/User')
+const Set = require('../models/Set')
 const jwt = require('jsonwebtoken')
+const { capitalizeWord } = require('../utils/utils')
 
 // handle errors
 const handleErrors = (err) => {
@@ -38,14 +40,29 @@ const createToken = (id) => {
 }
 
 const signup = async (req, res) => {
-  const { email, username, password } = req.body
+  let { email, username, password, primaryLanguage } = req.body
+  if (!primaryLanguage) {
+    primaryLanguage = 'french'
+  }
 
   try {
-    const user = await User.create({ email, username, password })
+    const lang = primaryLanguage
+    const user = await User.create({
+      email,
+      username,
+      password,
+      languagesStudying: [lang],
+      primaryLanguage: lang
+    })
+    const newSet = await Set.create({
+      name: `${capitalizeWord(lang)} Dictionary`,
+      language: lang,
+      ownerId: user._id
+    })
+    User.findByIdAndUpdate(user._id, { dictionaries: [ newSet._id ]}, { new: true, useFindAndModify: false }, (err, user) => {})
     const token = createToken(user._id)
     res.cookie('jwt', token, { /* httpOnly: true, */ maxAge: maxAge * 1000 })
     res.status(201).json({
-      token,
       success: true,
       userId: user._id
     })
@@ -67,8 +84,7 @@ const login = async (req, res) => {
     res.cookie('jwt', token, { /* httpOnly: true, */ maxAge: maxAge * 1000 })
     res.status(200).json({
       success: true,
-      token,
-      userId: user._id
+      user: user
     })
   } catch (err) {
     const errors = handleErrors(err)

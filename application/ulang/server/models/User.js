@@ -26,12 +26,28 @@ const userSchema = new mongoose.Schema(
     sets: {
       type: [String] // List of IDs of sets
     },
+    dictionaries: {
+      type: [String] // List of IDs of dictionary sets
+    },
+    quickAccess: {
+      type: [String] // List of IDs of sets for home page display
+    },
     // TODO: Maybe change this to a list of following and followers
     friendsList: {
       type: String // List of IDs of friends
     },
     recentList: {
       // type: [String] // TODO
+    },
+    languagesStudying: {
+      type: ['String'],
+      required: [true, 'Must be studying at least one language'],
+      default: 'french'
+    },
+    primaryLanguage: {
+      type: String,
+      required: true,
+      default: 'french'
     }
   },
   {

@@ -4,7 +4,7 @@ const wordSchema = new mongoose.Schema(
   {
     word: {
       type: String,
-      required: true
+      required: [true, 'Word must have a translation']
     },
     language: {
       type: String,
@@ -12,14 +12,21 @@ const wordSchema = new mongoose.Schema(
     },
     english: {
       type: String,
-      required: true
+      required: [true, 'Word must have an english translation']
     },
     // Noun, Verb, Adjective, etc.
     partOfSpeech: {
-      type: String
+      type: String,
+      required: [true, 'Word must have a selected part of speech']
     },
     notes: {
       type: String
+    },
+    definition: {
+      type: String
+    },
+    conjugationIds: {
+      type: [String]
     },
     ownerId: {
       type: String,

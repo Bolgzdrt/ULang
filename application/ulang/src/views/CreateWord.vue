@@ -1,0 +1,42 @@
+<template>
+  <div class="createWord">
+    <div class="box">
+      <AddWord :fromRoute="fromRoute" />
+    </div>
+  </div>
+</template>
+
+<script>
+import AddWord from '@/components/AddWord.vue'
+
+export default {
+  name: 'CreateWord',
+  components: { AddWord },
+  data() {
+    return {
+      fromRoute: ''
+    }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.fromRoute = from
+    })
+  }
+}
+</script>
+
+<style scoped>
+.createWord {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 2%;
+}
+
+.box {
+  background-color: white;
+  border-radius: 5px;
+  filter: drop-shadow(5px 5px 4px rgba(0, 0, 0, 0.3));
+  height: 100%;
+}
+</style>

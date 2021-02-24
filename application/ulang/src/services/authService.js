@@ -1,39 +1,16 @@
-import axios from 'axios'
-
-const baseUrl =
-  process.env.NODE_ENV === 'production'
-    ? 'productionURL'
-    : `http://localhost:8081`
+import axios from '@/axios'
 
 export const login = async (username, password) => {
-  const res = await axios.post(`${baseUrl}/login`, {
+  const res = await axios.post('login', {
     username,
     password
   })
-  const { token, userId } = res.data
-  return { token, userId }
+  const { user } = res.data
+  return user
 }
 
-export const signup = async (email, username, password) => {
-  const res = await axios.post(`${baseUrl}/signup`, {
-    email,
-    username,
-    password
-  })
-  const { token, userId } = res.data
-  return { token, userId }
-}
-
-export const logout = async () => {
-  try {
-    const res = await axios.get(`${baseUrl}/logout/:id`)
-    if (res.data.success) {
-      return true
-    } else {
-      console.error(res.data.errors)
-      return false
-    }
-  } catch (err) {
-    console.error(err)
-  }
+export const signup = async (payload) => {
+  const res = await axios.post('signup', payload)
+  const { userId } = res.data
+  return { userId }
 }

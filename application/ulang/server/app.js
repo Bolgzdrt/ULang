@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
-// const { requireAuth, checkUser } = require('./middleware/authMiddleware')
+const { requireAuth, checkUser } = require('./middleware/authMiddleware')
 
 const { authRouter } = require('./routes/authRoutes')
 const { setRouter } = require('./routes/setRoutes')
@@ -18,7 +18,19 @@ if (process.env.NODE_ENV !== 'production') {
 const app = express()
 
 app.use(express.json())
-app.use(cors())
+app.use(
+  cors(
+    {
+      origin: [
+        "http://localhost:8080",
+        "http://127.0.0.1",
+        // TODO: Wherever production is hosted
+      ],
+      credentials: true,
+      exposedHeaders: ['set-cookie']
+    }
+  )
+)
 app.use(cookieParser())
 
 const PORT = process.env.PORT || 8081
@@ -27,14 +39,14 @@ mongoose
   .connect(dbUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false
   })
   .then(() => app.listen(PORT, () => console.log(`Listening on port ${PORT}`)))
   .catch((err) => console.error(err))
 
-// app.get('*', checkUser)
-// app.all('/', requireAuth)
+// app.all('*', checkUser)
 app.use(authRouter)
-app.use('/set', setRouter)
-app.use('/word', wordRouter)
-app.use('/user', userRouter)
+app.use('/set', requireAuth, setRouter)
+app.use('/word', requireAuth, wordRouter)
+app.use('/user', requireAuth, userRouter)

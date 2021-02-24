@@ -12,7 +12,10 @@
     </div>
     <div id="flags">
       <span id="flag-container" v-for="(country, index) in countries" :key="index">
-        <FlagIcon :src="require(`@/assets/pngs/flags_large/icons8-${country}-100.png`)" :alt="country.charAt(0).toUpperCase() + country.slice(1)" />
+        <!-- Morally obligated link to source -->
+        <a target="_blank" href="https://icons8.com/icon/set/flags/color">
+          <FlagIcon :src="require(`@/assets/pngs/flags_large/icons8-${country}-100.png`)" :alt="country.charAt(0).toUpperCase() + country.slice(1)" />
+        </a>
       </span>
     </div>
   </div>
@@ -27,7 +30,7 @@ export default {
   components: { World, FlagIcon },
   data() {
     return {
-      countries: ['france', 'spain', 'germany', 'italy', 'portugal', 'switzerland', 'sweden', 'netherlands']
+      countries: ['france', 'spain', 'germany', 'italy', 'portugal', 'romania', 'sweden', 'netherlands']
     }
   }
 }
