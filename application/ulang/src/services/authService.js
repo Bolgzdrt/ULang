@@ -5,8 +5,8 @@ export const login = async (username, password) => {
     username,
     password
   })
-  const { userId } = res.data
-  return { userId }
+  const { user } = res.data
+  return user
 }
 
 export const signup = async (payload) => {
