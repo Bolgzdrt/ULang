@@ -3,12 +3,8 @@
     <div class="box">
       <p class="titleP">Flash Cards</p>
       <div class="field">
-        <p>Set:</p>
-        <select id="setSelect" v-model="setSelection" size="5">
-          <option v-for="set in sets" v-bind:value="set._id" :key="set._id">
-            {{ set.name }}
-          </option>
-        </select>
+        <p>Select Set:</p>
+        <FilterSelect :options="sets" @selected="setSelect" />
       </div>
       <div class="field">
         <p class="radioTitle">Face First Displayed:</p>
@@ -27,20 +23,19 @@
 </template>
 
 <script>
+import FilterSelect from '@/components/FilterSelect'
 import { mapGetters } from 'vuex'
 import { getSets } from '@/services/setService'
 
 export default {
   name: 'FlashCardsSettings',
+  components: { FilterSelect },
   data() {
     return {
       setSelection: '',
       languageGiven: '0',
       currentLanguage: 'French',
-      sets: [
-        {name: "test set", _id: "1"},
-        {name: "another test test set", _id: "2"},
-      ],
+      sets: [],
       fromRoute: ''
     }
   },
@@ -51,6 +46,9 @@ export default {
       if (setsSelection) {
         this.$router.push({name: "FlashCards", params: { id: this.setSelection, setting: this.languageGiven }})
       }
+    },
+    setSelect(value) {
+      this.setSelection = value
     }
   },
   created() {
@@ -172,20 +170,5 @@ button:hover {
 
 .submitButton:hover {
   background: #5b49d0;
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-  padding-right: 31px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-::-webkit-scrollbar-thumb {
-  background: #888;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
 }
 </style>
