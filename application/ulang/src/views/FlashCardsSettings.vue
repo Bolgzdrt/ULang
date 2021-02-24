@@ -34,7 +34,7 @@ export default {
     return {
       setSelection: '',
       languageGiven: '0',
-      currentLanguage: 'French',
+      currentLanguage: '',
       sets: [],
       fromRoute: ''
     }
@@ -47,7 +47,7 @@ export default {
     }
   },
   created() {
-    getSets(this.getUserId(), "fr").then(({sets}) => {
+    getSets(this.getUserId(), this.getLanguage()).then(({sets}) => {
       this.sets = sets
     })
     this.currentLanguage = this.getLanguage()

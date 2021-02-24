@@ -60,7 +60,8 @@ export default {
     }
   },
   created() {
-    this.displayed = this[this.language].lower
+    // this.displayed = this[this.language].lower
+    this.displayed = this['french'].lower
   }
 }
 </script>
@@ -69,10 +70,9 @@ export default {
 .accentButtons {
   display: flex;
   flex-direction: row;
-  width: 100%;
 }
 
-div {
+.accentButtons > div {
   margin-right: 1%;
 }
 

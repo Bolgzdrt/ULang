@@ -5,6 +5,7 @@
       <div class="field">
         <p>Select Set:</p>
         <FilterSelect :options="sets" @selected="setSelect" />
+        <p class="error" v-if="selectErr">Please select a set</p>
       </div>
       <div class="buttonBox">
         <router-link :to="{ name: 'Learn', params: { id: this.setSelection } }"><button class="submitButton">Start</button></router-link>
@@ -24,6 +25,7 @@ export default {
   data() {
     return {
       setSelection: '',
+      selectErr: false,
       sets: [],
       fromRoute: ''
     }
@@ -43,6 +45,14 @@ export default {
     next(vm => {
       vm.fromRoute = from
     })
+  },
+  beforeRouteLeave(to, from, next) {
+    if (!this.setSelection) {
+      next(false)
+      this.selectErr = true
+    } else {
+      next()
+    }
   }
 }
 </script>
@@ -74,21 +84,12 @@ export default {
   font-size: 2em;
 }
 
+.error {
+  color: red;
+}
+
 .selectDrop {
   height: 100px;
-}
-
-.field > select {
-  width: 60%;
-  border: 2px solid #000000;
-  background-color: transparent;
-  font-size: 1em;
-  outline: none;
-  border-radius: 5px;
-}
-
-.field > select:hover {
-  cursor: pointer;
 }
 
 .buttonBox {

@@ -191,20 +191,21 @@ export default {
       }
     },
     clear() {
-      this.english = ''
-      this.translation = ''
-      this.definition = ''
-      this.partOfSpeech = ''
-      this.conjugationData = [{ title: 'Table 1', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }]
-      this.conjugationIndex = 0
-      this.anotherWordModal = false
-      let i = 0
-      for (i = 0; i < this.sets.length; i++) {
-        this.sets[i].selected = false
-      }
-      this.requiredErrorEng = ''
-      this.requiredErrorTrans = ''
-      this.requiredErrorPoS = ''
+      // this.english = ''
+      // this.translation = ''
+      // this.definition = ''
+      // this.partOfSpeech = ''
+      // this.conjugationData = [{ title: 'Table 1', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }]
+      // this.conjugationIndex = 0
+      // this.anotherWordModal = false
+      // let i = 0
+      // for (i = 0; i < this.sets.length; i++) {
+      //   this.sets[i].selected = false
+      // }
+      // this.requiredErrorEng = ''
+      // this.requiredErrorTrans = ''
+      // this.requiredErrorPoS = ''
+      this.$router.go()
     }
   },
   created() {
