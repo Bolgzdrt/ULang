@@ -345,6 +345,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .container {
   background-color: var(--white);
   width: 100%;
@@ -354,6 +355,7 @@ export default {
   align-items: center;
   overflow-y: auto;
 }
+
 .settings-content {
   width: 50%;
   height: 100%;
@@ -361,6 +363,7 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+
 .profile {
   display: flex;
   flex-direction: column;
@@ -368,9 +371,11 @@ export default {
   position: relative;
   margin-top: 2rem;
 }
+
 .content {
   padding: 1rem 2rem 1rem;
 }
+
 .profile-content {
   display: flex;
   flex-direction: column;
@@ -378,10 +383,12 @@ export default {
   width: 100%;
   padding-top: 0;
 }
+
 .profile-content #nameButton {
   align-self: flex-start;
   margin-top: 0.5rem;
 }
+
 .circle {
   width: 5rem;
   height: 5rem;
@@ -390,25 +397,31 @@ export default {
   font-size: 2.75rem;
   margin: 0 0 1rem;
 }
+
 .title {
   text-align: left;
 }
+
 .setting-title {
   font-size: 2rem;
   font-weight: bold;
   padding-bottom: 0.5rem;
 }
+
 .account .setting-title {
   padding-top: 0.5rem;
 }
+
 .subsetting-title {
   font-size: 1.5rem;
 }
+
 .input-group {
   width: 100%;
   text-align: left;
   margin: 0.5rem 0;
 }
+
 .setting-input {
   width: 100%;
   padding: 0.25rem;
@@ -417,31 +430,38 @@ export default {
   margin-bottom: 0.3rem;
   font-size: 1.15rem;
 }
+
 .account {
   width: 100%;
 }
+
 #membership {
   width: 100%;
 }
+
 .membership-group {
   display: flex;
   align-items: center;
   padding-left: 1.5rem;
 }
+
 .membership-group p {
   padding: 0 0.5rem;
   font-size: 1.1rem;
 }
+
 .update-email-content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
+
 .login-details-headers {
   font-size: 1.5rem;
   text-align: left;
   padding-bottom: 1rem;
 }
+
 .btn {
   padding: 0.5rem 2rem;
   color: #fff;
@@ -451,30 +471,38 @@ export default {
   font-size: 1.1rem;
   cursor: pointer;
 }
+
 .submit-btn {
   background: var(--purple);
 }
+
 #emailButton {
   margin-top: 0.5rem;
 }
+
 .delete-account {
   width: 100%;
 }
+
 .delete-account-content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
 }
+
 .delete-account-content p {
   font-size: 1.1rem;
 }
+
 .delete-account-input {
   padding-bottom: 1rem;
 }
+
 .delete-btn {
   background-color: var(--accent-red);
 }
+
 .error {
   font-size: 0.75rem;
   color: red;
