@@ -100,15 +100,14 @@ const toggleFavorite = async (req, res) => {
 const updateSet = async (req, res) => {
   const { id } = req.params
   const args = req.body
-  const inputs = {
+  const updates = ({
     name: args.name,
     language: args.language,
     words: args.words,
     favorite: args.favorite,
     description: args.description
-  }
+  } = req.body)
 
-  const updates = filterUpdates(inputs)
   try {
     const updatedSet = await Set.findByIdAndUpdate(id, updates, { new: true, useFindAndModify: false })
     res.status(200).json({
