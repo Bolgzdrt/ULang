@@ -1,5 +1,8 @@
 const Set = require('../models/Set')
 const User = require('../models/User')
+const Word = require('../models/Word')
+const { filterUpdates } = require('../utils/utils')
+
 
 const createSet = async (req, res) => {
   const { name, language, words, description, ownerId, quickAccess } = req.body
@@ -57,6 +60,27 @@ const getSetById = async (req, res) => {
     res.status(200).json({
       success: true,
       set
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
+const getWordsInSet = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const set = await Set.findById(id)
+    const setWordIds = set.words
+    const wordPromises = setWordIds.map(word => Word.findById(word))
+    const words = await Promise.all(wordPromises)
+    res.status(200).json({
+      success: true,
+      words
     })
   } catch (err) {
     console.log(err)
@@ -143,6 +167,7 @@ module.exports = {
   createSet,
   getAllSetsOfLanguage,
   getSetById,
+  getWordsInSet,
   updateSet,
   toggleFavorite,
   deleteSet
