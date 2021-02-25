@@ -35,10 +35,18 @@ import NameCircle from '@/components/NameCircle.vue'
 
 export default {
   name: "Sidebar",
-  props: ['friends'],
   components: {
     NameCircle
   },
+  data() {
+    return {
+      friends: [
+        { name: 'Joe Schmo', pic: 'JS' },
+        { name: 'Name Name', pic: 'NN' },
+        { name: 'Place Holder', pic: 'PH' }
+      ],
+    }
+  }
 }
 </script>
 

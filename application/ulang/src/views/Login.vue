@@ -215,11 +215,6 @@ export default {
   width: 30%;
 }
 
-.login-content button:hover,
-.login-content button:focus {
-  transform: translateY(-1px);
-}
-
 .login-content button:active{
   background-color: var(--accent-red);
 }
