@@ -77,6 +77,7 @@ export default {
     }
   },
   methods: {
+    ...mapGetters('settings', ['getLanguage']),
     ...mapGetters('auth', ['getUserId']),
     filterList() {
       this.filteredWords = this.words.filter(word => word.english.includes(this.filter) || word.word.includes(this.filter))
@@ -87,7 +88,7 @@ export default {
         description: this.description,
         ownerId: this.getUserId(),
         quickAccess: this.quickAccess,
-        language: 'french'
+        language: this.getLanguage()
       };
       const wordIds = this.filteredWords.reduce((acc, curr) => {
         if (curr.selected) {
@@ -116,7 +117,7 @@ export default {
     }
   },
   created() {
-    getWords(this.getUserId(), "french").then(({ words }) => {
+    getWords(this.getUserId(), this.getLanguage()).then(({ words }) => {
       this.words = words.map(set => ({ ...set, selected: false }))
       this.filteredWords = this.words
     }).catch(err => {

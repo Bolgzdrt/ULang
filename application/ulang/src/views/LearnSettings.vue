@@ -1,22 +1,14 @@
 <template>
   <div class="flashSetting">
     <div class="box">
-      <p class="titleP">Flash Cards</p>
+      <p class="titleP">Learn Vocabulary</p>
       <div class="field">
         <p>Select Set:</p>
         <FilterSelect :options="sets" @selected="setSelect" />
-      </div>
-      <div class="field">
-        <p class="radioTitle">Face First Displayed:</p>
-        <input type="radio" v-model="languageGiven" id="en" value="0" class="radioBtn">
-        <label for="en" class="radioLabel">English</label>
-        <input type="radio" v-model="languageGiven" id="fl" value="1" class="radioBtn">
-        <label for="fl" class="radioLabel">{{ this.currentLanguage }}</label>
-        <input type="radio" v-model="languageGiven" id="rand" value="2" class="radioBtn">
-        <label for="rand" class="radioLabel">Random</label>
+        <p class="error" v-if="selectErr">Please select a set</p>
       </div>
       <div class="buttonBox">
-        <router-link :to="{ name: 'FlashCards', params: { id: this.setSelection, setting: this.languageGiven } }"><button class="submitButton">Start</button></router-link>
+        <button class="submitButton" @click="startClick">Start</button>
       </div>
     </div>
   </div>
@@ -28,13 +20,12 @@ import { mapGetters } from 'vuex'
 import { getSets } from '@/services/setService'
 
 export default {
-  name: 'FlashCardsSettings',
+  name: 'LearnSettings',
   components: { FilterSelect },
   data() {
     return {
       setSelection: '',
-      languageGiven: '0',
-      currentLanguage: '',
+      selectErr: false,
       sets: [],
       fromRoute: ''
     }
@@ -44,14 +35,19 @@ export default {
     ...mapGetters('auth', ['getUserId']),
     setSelect(value) {
       this.setSelection = value
+    },
+    startClick() {
+      if (!this.setSelection) {
+        this.selectErr = true
+      } else {
+        this.$router.push({ name: 'Learn', params: { id: this.setSelection } })
+      }
     }
   },
   created() {
     getSets(this.getUserId(), this.getLanguage()).then(({sets}) => {
       this.sets = sets
     })
-    this.currentLanguage = this.getLanguage()
-    this.currentLanguage = this.currentLanguage.charAt(0).toUpperCase() + this.currentLanguage.slice(1)
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -88,55 +84,12 @@ export default {
   font-size: 2em;
 }
 
+.error {
+  color: red;
+}
+
 .selectDrop {
   height: 100px;
-}
-
-.field > select {
-  width: 60%;
-  border: 2px solid #000000;
-  background-color: transparent;
-  font-size: 1em;
-  outline: none;
-  border-radius: 5px;
-}
-
-.field > select:hover {
-  cursor: pointer;
-}
-
-.radioTitle {
-  margin-bottom: 10px;
-}
-
-.radioBtn {
-  opacity: 0;
-  position: fixed;
-  width: 0;
-  margin: 5px;
-}
-
-.radioLabel {
-  height: 36px;
-  width: 145px;
-  border-radius: 5px;
-  font-size: 0.7em;
-  transition: 0.1s;
-  outline: none;
-  border: none;
-  padding: 10px 20px;
-  margin: 0 5px 0 5px;
-  background-color: #ccc;
-  color: black;
-}
-
-.radioLabel:hover {
-  cursor: pointer;
-}
-
-.radioBtn:checked + label {
-  background-color: var(--purple);
-  color: white;
 }
 
 .buttonBox {

@@ -10,7 +10,12 @@ export const createSet = async (setObject) => {
   return res.data
 }
 
-export const getWordsInSet = async (userId, language) => {
+export const getWordsInSet = async (userId) => {
   const res = await axios.get(`set/getWordsInSet/${userId}`)
+  return res.data
+}
+
+export const getSetById = async (userId) => {
+  const res = await axios.get(`set/getSet/${userId}`)
   return res.data
 }
