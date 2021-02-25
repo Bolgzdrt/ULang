@@ -8,7 +8,7 @@
         <p class="error" v-if="selectErr">Please select a set</p>
       </div>
       <div class="buttonBox">
-        <router-link :to="{ name: 'Learn', params: { id: this.setSelection } }"><button class="submitButton">Start</button></router-link>
+        <button class="submitButton" @click="startClick">Start</button>
       </div>
     </div>
   </div>
@@ -31,13 +31,21 @@ export default {
     }
   },
   methods: {
+    ...mapGetters('settings', ['getLanguage']),
     ...mapGetters('auth', ['getUserId']),
     setSelect(value) {
       this.setSelection = value
+    },
+    startClick() {
+      if (!this.setSelection) {
+        this.selectErr = true
+      } else {
+        this.$router.push({ name: 'Learn', params: { id: this.setSelection } })
+      }
     }
   },
   created() {
-    getSets(this.getUserId(), "fr").then(({sets}) => {
+    getSets(this.getUserId(), this.getLanguage()).then(({sets}) => {
       this.sets = sets
     })
   },
@@ -45,14 +53,6 @@ export default {
     next(vm => {
       vm.fromRoute = from
     })
-  },
-  beforeRouteLeave(to, from, next) {
-    if (!this.setSelection) {
-      next(false)
-      this.selectErr = true
-    } else {
-      next()
-    }
   }
 }
 </script>

@@ -4,8 +4,8 @@
     <SetProg v-bind:curr="index + 1" v-bind:total="total" v-bind:setName="setName"/>
     <div class="scene">
       <div class="card" @click="toggleCard" v-bind:class="{isFlipped: flipped}">
-        <div class="cardFace">{{ words[index].given === 0?words[index].english : words[index].word }}</div>
-        <div class="cardFace cardFaceBack">{{ words[index].given === 0?words[index].word : words[index].english }}</div>
+        <div class="cardFace">{{ words[index].given === "0"?words[index].english : words[index].word }}</div>
+        <div class="cardFace cardFaceBack">{{ words[index].given === "0"?words[index].word : words[index].english }}</div>
       </div>
     </div>
     <div class="nav">
@@ -19,7 +19,7 @@
 <script>
 import SetProg from '@/components/SetProg.vue'
 import BackButton from '@/components/BackButton.vue'
-import { getWordsInSet } from '@/services/setService'
+import { getWordsInSet, getSetById } from '@/services/setService'
 
 export default {
   name: 'FlashCards',
@@ -31,7 +31,7 @@ export default {
         english: '',
         word: ''
       }],
-      setName: 'Random Set',
+      setName: '',
       index: 0,
       total: 0,
       flipped: false
@@ -81,6 +81,9 @@ export default {
         } 
       })
       this.total = this.words.length;
+    })
+    getSetById(this.id).then(({set}) => {
+      this.setName = set.name
     })
   },
   beforeRouteEnter(to, from, next) {

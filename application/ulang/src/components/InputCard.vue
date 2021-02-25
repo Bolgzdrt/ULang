@@ -4,10 +4,26 @@
       <p>{{ this.word }}</p>
     </div>
     <div class="entry">
-      <input class="textBox" type="text" placeholder="Enter translation here..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter translation here...'" v-model="input">
+      <input class="textBox" type="text" placeholder="Enter translation here..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter translation here...'" v-model="input" @keyup.enter="correctCheck">
       <AccentButtons @buttonClicked="appendChar" />
+      <p class="error" v-if="entryErr">Please enter a translation</p>
     </div>
     <button class="submitButton" @click="correctCheck">Submit</button>
+    <transition name="modalFade" v-if="resultModal">
+      <div class="modalBackdrop">
+        <div class="modal">
+          <p class="correct" v-if="correct">Correct!</p>
+          <div class="incorrect" v-if="!correct">
+            <p class="result">Incorrect</p>
+            <p>The correct word is:</p>
+            <p>{{ translation }}</p>
+          </div>
+          <div class="buttonBox">
+            <button class="submitButton" @click="cont">Continue</button>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -21,7 +37,9 @@ export default {
   data() {
     return {
       input: '',
-      correct: false
+      correct: false,
+      entryErr: false,
+      resultModal: false
     }
   },
   methods: {
@@ -31,11 +49,20 @@ export default {
     correctCheck() {
       if (this.input) {
         if (this.input === this.translation) {
-          console.log("correct")
+          this.correct = true
+        } else {
+          this.correct = false
         }
+        this.resultModal = true
+        if (this.entryErr) {this.entryErr = false}
       } else {
-        console.log('incorrect')
+        this.entryErr = true
       }
+    },
+    cont() {
+      this.resultModal = false
+      this.input = ''
+      this.$emit('nextCard', this.correct)
     }
   }
 }
@@ -90,5 +117,56 @@ button:hover {
 
 .submitButton:hover {
   background: #5b49d0;
+}
+
+.error {
+  color: red;
+  font-size: 2em;
+  padding-top: 20px;
+}
+
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.modal {
+  background: #FFFFFF;
+  box-shadow: 2px 2px 20px 1px;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 1rem;
+  border-radius: 5px;
+  width: 12em;
+  min-width: 400px;
+  height: 5em;
+  min-height: 220px;
+}
+
+.modal > .buttonBox {
+  margin-top: 20px;
+}
+
+.correct {
+  font-size: 2em;
+  color: green;
+}
+
+.incorrect {
+  font-size: 2em;
+}
+
+.incorrect > .result {
+  color: red;
 }
 </style>

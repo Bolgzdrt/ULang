@@ -121,6 +121,7 @@ export default {
     }
   },
   methods: {
+    ...mapGetters('settings', ['getLanguage']),
     ...mapGetters('auth', ['getUserId']),
     submit() {
       let requestPayload
@@ -131,7 +132,7 @@ export default {
           description: this.definition,
           partOfSpeech: this.partOfSpeech,
           ownerId: this.getUserId(),
-          language: 'french' // TODO: make this pull from the global state
+          language: this.getLanguage()
         };
       } else {
         requestPayload = {
@@ -141,7 +142,7 @@ export default {
           partOfSpeech: this.partOfSpeech,
           ownerId: this.getUserId(),
           conjugationData: this.conjugationData,
-          language: 'french' // TODO: make this pull from the global state
+          language: this.getLanguage()
         };
       }
       const setIds = this.sets.reduce((acc, curr) => {
@@ -209,7 +210,7 @@ export default {
     }
   },
   created() {
-    getSets(this.getUserId(), "french").then(({sets}) => {
+    getSets(this.getUserId(), this.getLanguage()).then(({sets}) => {
       this.sets = sets.map(set => ({ ...set, selected: false }))
     })
   },
