@@ -2,7 +2,7 @@
   <div id="app">
     <Navbar />
     <section class="main-container">
-      <Sidebar v-if="userId" :friends="friends" />
+      <Sidebar v-if="userId" />
       <router-view class="defaultPage" :key="$route.fullPath" />
     </section>
   </div>
@@ -17,17 +17,6 @@ export default {
   components: {
     Navbar,
     Sidebar
-  },
-  data() {
-    return {
-      // TODO: Move this into the friends component.
-      // friends place holder
-      friends: [
-        { name: 'Joe Schmo', pic: 'JS' },
-        { name: 'Name Name', pic: 'NN' },
-        { name: 'Place Holder', pic: 'PH' }
-      ],
-    }
   },
   computed: {
     userId() {
