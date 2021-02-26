@@ -54,26 +54,27 @@ export default {
   background: var(--white);
   width: 100%;
   padding-top: .5em;
-  filter: drop-shadow(4px 4px 3px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, 0.3));
 }
 
 .set-info{
   display: inherit;
   flex-direction: column;
   align-items: baseline;
+  padding-left: 1em;
 }
 
 .set-owner{
-  font-size: 15px;
+  font-size: 16px;
   opacity: 50%;
 }
 
 .set-name{
-  font-size: 30px;
+  font-size: 32px;
 }
 
 .num-terms{
-  font-size: 22px;
+  font-size: 24px;
 }
 
 .buttons{

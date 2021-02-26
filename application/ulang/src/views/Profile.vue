@@ -5,7 +5,7 @@
       <div class="user-banner">
         <span class="banner-spacing"/>
         <NameCirclePurple class= "name-circle" :userId="userId" :initials="initials" />
-        <header class="username-header" id="username-header" >cmessmer135</header>
+        <header class="username-header" id="username-header" v-text="username"></header>
       </div>
       <div class="set-list-and-header">
         <div class="set-list-header">
@@ -65,19 +65,23 @@ export default {
         { name: 'Place Holder', pic: 'PH' }
       ],
       userId: 'arg',
-      sets: [{owner: 'dude', setname: 'set1', numterms: '20', favorite: Boolean(""), quickaccess: ""},
-      {owner: '', setname: 'set12', numterms: '200', favorite: "", quickaccess: ""}]
+      username: '',
+      sets: [{owner: 'dude', setname: 'set1', numterms: '20', favorite: '', quickaccess: ''},
+      {owner: '', setname: 'set12', numterms: '200', favorite: '', quickaccess: ''}]
     }
   },
-  computed: {
+  created() {
+    this.getName();
+  },
+  methods: {
     getName(){
       if(data.firstname)
       {
         if(data.lastname)
-          return data.firstname.concat(" ").concat(data.lastname);
-        return data.firstname;
+          username= data.firstname.concat(" ").concat(data.lastname);
+        username= data.firstname;
       }
-      return data.userId;
+      username= data.userId;
     },
     getSets(){
       var sets = [{owner: 'dude', setname: 'set1', numterms: '20'}]
@@ -167,6 +171,11 @@ export default {
 .list{
   list-style-type: none;
   width:100%;
+  padding: 4em;
+}
+
+li{
+  margin: 15px 0;
 }
 
 </style>
