@@ -21,7 +21,7 @@ export default {
   },
   data() {
     return {
-      isFilled: false,
+      isFilled: 'fill',
     };
   },
   methods: {

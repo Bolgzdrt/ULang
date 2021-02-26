@@ -12,8 +12,8 @@
       </div>
     </div>
     <div class="buttons">
-      <lightningbolt class="lightningbolt" v-bind:fill="false" />
-      <heart class="heart" v-bind:fill="false" />
+      <lightningbolt class="lightningbolt" v-bind:fill="quickaccess" />
+      <heart class="heart" v-bind:fill="favorite" />
     </div>
   </div>
 </template>
@@ -30,13 +30,17 @@ export default {
   props: {
     owner: String,
     setname: String,
-    numterms: Number
+    numterms: Number,
+    favorite: Boolean,
+    quickaccess: Boolean
   },
   data() {
     return{
-    setOwner: this.owner.concat("'s Set"),
+    setOwner: this.owner=='' ? '':this.owner.concat("'s Set"),
     setName: this.setname,
-    numTerms: this.numterms.toString().concat(" Terms")
+    numTerms: this.numterms.toString().concat(" Terms"),
+    favorite: this.favorite,
+    quickaccess: this.quickaccess
     }
   },
 }

@@ -27,7 +27,16 @@
           </div>
         </div>
         <div class="set-list">
-          <ProfileSetCard :owner="owner" :setname="setname" :numterms="10"/>
+          <ul id=list class=list>
+            <li v-for="set in sets" :key="set.setname">
+              <ProfileSetCard 
+              :owner="set.owner" 
+              :setname="set.setname" 
+              :numterms="set.numterms"
+              :favorite="set.favorite"
+              :quickaccess="set.quickaccess"/>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -55,12 +64,33 @@ export default {
         { name: 'Name Name', pic: 'NN' },
         { name: 'Place Holder', pic: 'PH' }
       ],
-      userId: 'cmessmer135',
-      owner: 'Fat Tony',
-      setname: 'Pizza Toppings'
+      userId: 'arg',
+      sets: [{owner: 'dude', setname: 'set1', numterms: '20', favorite: Boolean(""), quickaccess: ""},
+      {owner: '', setname: 'set12', numterms: '200', favorite: "", quickaccess: ""}]
+    }
+  },
+  computed: {
+    getName(){
+      if(data.firstname)
+      {
+        if(data.lastname)
+          return data.firstname.concat(" ").concat(data.lastname);
+        return data.firstname;
+      }
+      return data.userId;
+    },
+    getSets(){
+      var sets = [{owner: 'dude', setname: 'set1', numterms: '20'}]
+      var ul = document.querySelector("ul")
+
+      for (let set of sets) {
+        entry = document.createElement("li");
+        entry
+      }
     }
   }
 }
+
 </script>
  
 <style scoped>
@@ -134,10 +164,9 @@ export default {
   color: var(--black)
 }
 
-.set-list{
-  display: flex;
+.list{
+  list-style-type: none;
   width:100%;
-  height: 100%;
 }
 
 </style>
