@@ -3,6 +3,7 @@
     @click='toggle'
     :fill="[isFilled ? 'var(--accent-red)' : 'var(--white)']"
     stroke="var(--accent-red)" 
+    stroke-width="3"
     height="24"
     version="1.1" 
     width="24" 

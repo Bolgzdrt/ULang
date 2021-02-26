@@ -1,8 +1,9 @@
 <template>
   <svg 
   @click='toggle' 
-  :fill="[isFilled ? 'var(--yellow)' : 'var(--white)']" 
+  :fill="[isFilled ? 'var(--yellow)' : 'var(--white)']"
   stroke="var(--yellow)" 
+  stroke-width="3"
   viewBox="0 0 64 64" 
   xmlns="http://www.w3.org/2000/svg"
   >
@@ -30,3 +31,4 @@ export default {
     }
   }
 }
+</script>

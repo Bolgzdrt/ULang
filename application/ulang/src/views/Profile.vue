@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="set-list">
-          <ProfileSetCard :owner="chris" :setname="Chapter10" :numterms="10"/>
+          <ProfileSetCard :owner="owner" :setname="setname" :numterms="10"/>
         </div>
       </div>
     </div>
@@ -56,11 +56,8 @@ export default {
         { name: 'Place Holder', pic: 'PH' }
       ],
       userId: 'cmessmer135',
-    }
-  },
-  methods: {
-    getId() {
-      return document.URL.substring(url.lastIndexOf(':') + 1)
+      owner: 'Fat Tony',
+      setname: 'Pizza Toppings'
     }
   }
 }

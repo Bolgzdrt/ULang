@@ -34,9 +34,9 @@ export default {
   },
   data() {
     return{
-    setOwner: "John's set",
-    setName: "Travel",
-    numTerms: "20 Terms"
+    setOwner: this.owner.concat("'s Set"),
+    setName: this.setname,
+    numTerms: this.numterms.toString().concat(" Terms")
     }
   },
 }
