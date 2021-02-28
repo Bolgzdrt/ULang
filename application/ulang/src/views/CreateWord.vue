@@ -181,6 +181,7 @@
           </div>
         </div>
         <div class="buttonBox">
+          <button @click="clear">Clear</button>
           <button class="cancelButton" @click="cancel">Cancel</button>
           <button class="submitButton" @click="submit">Add</button>
         </div>
@@ -331,10 +332,7 @@ export default {
       ]
       this.conjugationIndex = 0
       this.anotherWordModal = false
-      let i = 0
-      for (i = 0; i < this.sets.length; i++) {
-        this.sets[i].selected = false
-      }
+      this.sets.forEach(set => set.seleced = false)
       this.requiredErrorEng = ''
       this.requiredErrorTrans = ''
       this.requiredErrorPoS = ''
