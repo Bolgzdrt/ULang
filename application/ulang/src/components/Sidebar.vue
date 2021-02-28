@@ -88,7 +88,7 @@ a:hover {
 hr {
   width: 80%;
   align-self: center;
-  margin: 10px 0px;
+  margin: 20px 0px;
 }
 
 #ppLink {
@@ -97,7 +97,7 @@ hr {
   color: #999999;
   text-decoration: underline;
   font-size: 16px;
-  margin: 0px 0px 0px 0px;
+  margin: 0px;
   text-align: center;
   width: 100%;
 }
@@ -106,7 +106,7 @@ hr {
   color: #999999;
   text-decoration: underline;
   font-size: 16px;
-  margin: 0px 0px 0px 0px;
+  margin: 0px;
   text-align: center;
 }
 
