@@ -230,6 +230,7 @@ export default {
     }
   },
   methods: {
+    ...mapGetters('settings', ['getLanguage']),
     ...mapGetters('auth', ['getUserId']),
     ...mapGetters('settings', ['getLanguage']),
     submit() {
@@ -334,6 +335,7 @@ export default {
       this.requiredErrorEng = ''
       this.requiredErrorTrans = ''
       this.requiredErrorPoS = ''
+      // this.$router.go()
     },
     conjugationPresenceCheck() {
       const positions = ['tl', 'ml', 'bl', 'tr', 'mr', 'bl']

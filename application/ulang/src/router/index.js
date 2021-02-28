@@ -8,6 +8,7 @@ import Profile from '../views/Profile.vue'
 import Settings from '../views/Settings.vue'
 import FlashCardsSettings from '../views/FlashCardsSettings.vue'
 import FlashCards from '../views/FlashCards.vue'
+import LearnSettings from '../views/LearnSettings.vue'
 import Learn from '../views/Learn.vue'
 import CreateWord from '../views/CreateWord.vue'
 import AddLanguage from '../views/AddLanguage.vue'
@@ -53,8 +54,7 @@ const routes = [
   {
     path: '/flashCardsSettings',
     name: 'FlashCardsSettings',
-    component: FlashCardsSettings,
-    props: true
+    component: FlashCardsSettings
   },
   {
     path: '/flashCards/:id/:setting',
@@ -63,9 +63,15 @@ const routes = [
     props: true
   },
   {
-    path: '/learn',
+    path: '/learnSettings',
+    name: 'LearnSettings',
+    component: LearnSettings
+  },
+  {
+    path: '/learn/:id',
     name: 'Learn',
-    component: Learn
+    component: Learn,
+    props: true
   },
   {
     path: '/createWord',

@@ -13,17 +13,11 @@ export default {
 </script>
 
 <style scoped>
-.setProgress {
-  padding-top: 50px;
-}
-
 .name {
-  font-size: 20px;
-  font-size: 3vw;
+  font-size: 3em;
 }
 
 .progress {
-  font-size: 16px;
-  font-size: 2vw;
+  font-size: 2em;
 }
 </style>
