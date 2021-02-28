@@ -13,7 +13,7 @@
           <label for="translation" class="required wordEntryLabel">Translation</label>
           <p class="error" v-if="requiredErrorTrans">Word must have a translation</p>
         </div>
-        <AccentButtons @buttonClicked="appendChar" language="french"/>
+        <AccentButtons @buttonClicked="appendChar" :language="language"/>
         <div class="field">
           <input type="text" id="definition" placeholder="Enter a definition for your word..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a definition for your word...'" v-model="definition" class="wordInput"><br>
           <label for="definition" class="wordEntryLabel">Definition</label>
