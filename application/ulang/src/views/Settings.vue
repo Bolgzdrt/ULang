@@ -58,7 +58,13 @@
                   class="setting-input"
                   v-model="newEmail"
                 />
-                <p class="error" id="newEmailError" v-if="errors.newEmailErrorMessage">{{ errors.newEmailErrorMessage }}</p>
+                <p
+                  class="error"
+                  id="newEmailError"
+                  v-if="errors.newEmailErrorMessage"
+                >
+                  {{ errors.newEmailErrorMessage }}
+                </p>
                 <label class="settings-input-label" for="newemail"
                   >New Email</label
                 >
@@ -71,7 +77,13 @@
                   class="setting-input"
                   v-model="newEmailPassword"
                 />
-                <p class="error" id="newEmailPasswordError" v-if="errors.newEmailPasswordErrorMessage">{{ errors.newEmailPasswordErrorMessage }}</p>
+                <p
+                  class="error"
+                  id="newEmailPasswordError"
+                  v-if="errors.newEmailPasswordErrorMessage"
+                >
+                  {{ errors.newEmailPasswordErrorMessage }}
+                </p>
                 <label class="settings-input-label" for="changeEmailPassword"
                   >Your Password</label
                 >
@@ -96,7 +108,13 @@
                   class="setting-input"
                   v-model="currentPassword"
                 />
-                <p class="error" id="currentPasswordError" v-if="errors.currentPasswordErrorMessage">{{ errors.currentPasswordErrorMessage }}</p>
+                <p
+                  class="error"
+                  id="currentPasswordError"
+                  v-if="errors.currentPasswordErrorMessage"
+                >
+                  {{ errors.currentPasswordErrorMessage }}
+                </p>
                 <label class="settings-input-label" for="currentPassword"
                   >CurrentPassword</label
                 >
@@ -110,10 +128,14 @@
                   title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
                   v-model="newPassword"
                 />
-                <p class="error" id="newPasswordError" v-if="errors.newPasswordErrorMessage">{{ errors.newPasswordErrorMessage }}</p>
-                <label
-                  class="settings-input-label"
-                  for="newPassword"
+                <p
+                  class="error"
+                  id="newPasswordError"
+                  v-if="errors.newPasswordErrorMessage"
+                >
+                  {{ errors.newPasswordErrorMessage }}
+                </p>
+                <label class="settings-input-label" for="newPassword"
                   >New Password</label
                 >
               </div>
@@ -126,10 +148,14 @@
                   title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
                   v-model="confirmNewPassword"
                 />
-                <p class="error" id="confirmNewPasswordError" v-if="errors.confirmNewPasswordErrorMessage">{{ errors.confirmNewPasswordErrorMessage }}</p>
-                <label
-                  class="settings-input-label"
-                  for="confirmNewPassword"
+                <p
+                  class="error"
+                  id="confirmNewPasswordError"
+                  v-if="errors.confirmNewPasswordErrorMessage"
+                >
+                  {{ errors.confirmNewPasswordErrorMessage }}
+                </p>
+                <label class="settings-input-label" for="confirmNewPassword"
                   >Confirm New Password</label
                 >
               </div>
@@ -155,7 +181,13 @@
                 class="setting-input"
                 v-model="confirmDeletePassword"
               />
-              <p class="error" id="deleteAccountPasswordError" v-if="errors.deleteAccountPasswordErrorMessage">{{ errors.deleteAccountPasswordErrorMessage }}</p>
+              <p
+                class="error"
+                id="deleteAccountPasswordError"
+                v-if="errors.deleteAccountPasswordErrorMessage"
+              >
+                {{ errors.deleteAccountPasswordErrorMessage }}
+              </p>
               <label class="settings-input-label" for="deletePassword"
                 >Confirm with Password</label
               >
@@ -175,169 +207,188 @@
 </template>
 
 <script>
-import NameCircle from '@/components/NameCircle.vue'
-import { getInitials, checkIfEmail, checkIfValidPassword } from '@/utils/utils'
-import { mapActions, mapGetters, mapMutations } from 'vuex'
-import { deleteAccount } from '@/services/userService'
+import NameCircle from "@/components/NameCircle.vue";
+import { getInitials, checkIfEmail, checkIfValidPassword } from "@/utils/utils";
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import { deleteAccount } from "@/services/userService";
 
 export default {
-  name: 'Settings',
+  name: "Settings",
   components: { NameCircle },
   data() {
     return {
-      email: '',
-      initials: '',
-      createdDate: '',
-      firstName: '',
-      lastName: '',
-      newEmail: '',
-      newEmailPassword: '',
-      currentPassword: '',
-      newPassword: '',
-      confirmNewPassword: '',
-      confirmDeletePassword: '',
+      email: "",
+      initials: "",
+      createdDate: "",
+      firstName: "",
+      lastName: "",
+      newEmail: "",
+      newEmailPassword: "",
+      currentPassword: "",
+      newPassword: "",
+      confirmNewPassword: "",
+      confirmDeletePassword: "",
       errors: {
-        newEmailErrorMessage: '',
-        newEmailPasswordErrorMessage: '',
-        currentPasswordErrorMessage: '',
-        newPasswordErrorMessage: '',
-        confirmNewPasswordErrorMessage: '',
-        deleteAccountPasswordErrorMessage: '',
+        newEmailErrorMessage: "",
+        newEmailPasswordErrorMessage: "",
+        currentPasswordErrorMessage: "",
+        newPasswordErrorMessage: "",
+        confirmNewPasswordErrorMessage: "",
+        deleteAccountPasswordErrorMessage: ""
       }
-    }
+    };
   },
   methods: {
-    ...mapActions('auth', ['getUserInfo', 'updateUserInfo', 'changeUserEmail', 'changeUserPassword']),
-    ...mapGetters('auth', ['getUserId']),
-    ...mapMutations('auth', ['setName', 'logout']),
+    ...mapActions("auth", [
+      "getUserInfo",
+      "updateUserInfo",
+      "changeUserEmail",
+      "changeUserPassword"
+    ]),
+    ...mapGetters("auth", ["getUserId"]),
+    ...mapMutations("auth", ["setName", "logout"]),
     changeName() {
-      const userId = this.getUserId()
+      const userId = this.getUserId();
       const info = {
         firstName: this.firstName,
         lastName: this.lastName
-      }
+      };
       this.updateUserInfo({ userId, info })
         .then(({ firstName, lastName }) => {
-          this.setName({ firstName, lastName })
-          this.initials = getInitials({ firstName, lastName })
-          this.resetData(['firstName', 'lastName'])
+          this.setName({ firstName, lastName });
+          this.initials = getInitials({ firstName, lastName });
+          this.resetData(["firstName", "lastName"]);
         })
-        .catch((err) => console.error(err.message))
+        .catch(err => console.error(err.message));
     },
     changeEmail() {
-      this.resetErrorMessages(['newEmailErrorMessage', 'newEmailPasswordErrorMessage'])
-      let error = false
+      this.resetErrorMessages([
+        "newEmailErrorMessage",
+        "newEmailPasswordErrorMessage"
+      ]);
+      let error = false;
       if (!this.newEmail) {
-        this.errors.newEmailErrorMessage = 'Must provide a new email'
-        error = true
+        this.errors.newEmailErrorMessage = "Must provide a new email";
+        error = true;
       }
       if (!this.newEmailPassword) {
-        this.errors.newEmailPasswordErrorMessage = 'Must enter account password to change email'
-        error = true
+        this.errors.newEmailPasswordErrorMessage =
+          "Must enter account password to change email";
+        error = true;
       }
       if (this.newEmail === this.email) {
-        this.errors.newEmailErrorMessage = 'New email cannot be the same'
-        error = true
+        this.errors.newEmailErrorMessage = "New email cannot be the same";
+        error = true;
       }
       if (!checkIfEmail) {
-        this.errors.newEmailErrorMessage = 'Must be a valid email'
-        error = true
+        this.errors.newEmailErrorMessage = "Must be a valid email";
+        error = true;
       }
-      if (error) return
-      const userId = this.getUserId()
-      const info = { email: this.newEmail, password: this.newEmailPassword }
+      if (error) return;
+      const userId = this.getUserId();
+      const info = { email: this.newEmail, password: this.newEmailPassword };
       this.changeUserEmail({ userId, info })
         .then(({ email }) => {
-          this.email = email
-          this.resetData(['email'])
+          this.email = email;
+          this.resetData(["email"]);
         })
-        .catch((err) => {
-          console.error(err.response.data.message)
-          if (err.response.data.message === 'Password incorrect') {
-            this.errors.newEmailPasswordErrorMessage = 'Password incorrect'
+        .catch(err => {
+          console.error(err.response.data.message);
+          if (err.response.data.message === "Password incorrect") {
+            this.errors.newEmailPasswordErrorMessage = "Password incorrect";
           }
-        })
+        });
     },
     changePassword() {
-      let error = false
+      let error = false;
       if (!this.currentPassword) {
-        this.errors.currentPasswordErrorMessage = 'Must enter current password'
-        error = true
+        this.errors.currentPasswordErrorMessage = "Must enter current password";
+        error = true;
       }
       if (!this.newPassword) {
-        this.errors.newPasswordErrorMessage = 'Must enter a new password'
-        error = true
+        this.errors.newPasswordErrorMessage = "Must enter a new password";
+        error = true;
       } else if (!checkIfValidPassword(this.newPassword)) {
-        this.errors.newPasswordErrorMessage = 'Must enter a valid password'
-        errors = true
+        this.errors.newPasswordErrorMessage = "Must enter a valid password";
+        errors = true;
       }
       if (!this.confirmNewPassword) {
-        this.errors.confirmNewPasswordErrorMessage = 'Must confirm a new password'
-        error = true
+        this.errors.confirmNewPasswordErrorMessage =
+          "Must confirm a new password";
+        error = true;
       } else if (!checkIfValidPassword(this.confirmNewPassword)) {
-        this.errors.confirmNewPasswordErrorMessage = 'Must enter a valid password'
-        errors = true
+        this.errors.confirmNewPasswordErrorMessage =
+          "Must enter a valid password";
+        errors = true;
       }
       if (!(this.newPassword !== this.confirmNewPassword)) {
-        this.errors.confirmNewPasswordErrorMessage = 'Passwords do not match'
-        error = true
+        this.errors.confirmNewPasswordErrorMessage = "Passwords do not match";
+        error = true;
       }
-      if (error) return
-      const userId = this.getUserId()
+      if (error) return;
+      const userId = this.getUserId();
       const info = {
         oldPassword: this.currentPassword,
         newPassword: this.newPassword
-      }
-      this.changeUserPassword({ userId, info }).then(() => {
-        this.resetData(['currentPassword', 'newPassword', 'confirmNewPassword'])
-      }).catch((err) => {
-        console.error(err.response.data.message)
-        if (err.response.data.message === 'Password incorrect') {
-          this.errors.currentPasswordErrorMessage = 'Password incorrect'
-        }
-      })
-    },
-    deleteAccount() {
-      let error = false
-      if (!this.confirmDeletePassword) {
-        this.errors.deleteAccountPasswordErrorMessage = 'Must enter password to confirm'
-        error = true
-      }
-      if (error) return
-      const userId = this.getUserId()
-      deleteAccount(userId, this.confirmDeletePassword)
+      };
+      this.changeUserPassword({ userId, info })
         .then(() => {
-          this.logout()
-          this.$router.push({ name: 'Welcome' })
+          this.resetData([
+            "currentPassword",
+            "newPassword",
+            "confirmNewPassword"
+          ]);
         })
         .catch(err => {
-          console.error(err.response.data.message)
-          if (err.response.data.message === 'Password incorrect') {
-            this.errors.deleteAccountPasswordErrorMessage = 'Password incorrect'
+          console.error(err.response.data.message);
+          if (err.response.data.message === "Password incorrect") {
+            this.errors.currentPasswordErrorMessage = "Password incorrect";
           }
+        });
+    },
+    deleteAccount() {
+      let error = false;
+      if (!this.confirmDeletePassword) {
+        this.errors.deleteAccountPasswordErrorMessage =
+          "Must enter password to confirm";
+        error = true;
+      }
+      if (error) return;
+      const userId = this.getUserId();
+      deleteAccount(userId, this.confirmDeletePassword)
+        .then(() => {
+          this.logout();
+          this.$router.push({ name: "Welcome" });
         })
+        .catch(err => {
+          console.error(err.response.data.message);
+          if (err.response.data.message === "Password incorrect") {
+            this.errors.deleteAccountPasswordErrorMessage =
+              "Password incorrect";
+          }
+        });
     },
     resetData(data) {
-      data.forEach((d) => (this[d] = ''))
+      data.forEach(d => (this[d] = ""));
     },
     resetErrorMessages(errors) {
-      errors.forEach((e) => this.errors[e] = '')
+      errors.forEach(e => (this.errors[e] = ""));
     }
   },
   created() {
     this.getUserInfo(this.getUserId())
-      .then((res) => {
-        this.initials = getInitials(res)
-        this.email = res.email
-        this.createdDate = res.createdDate.split('T')[0]
+      .then(res => {
+        this.initials = getInitials(res);
+        this.email = res.email;
+        this.createdDate = res.createdDate.split("T")[0];
       })
-      .catch((err) => console.error(err.response.data.error))
+      .catch(err => console.error(err.response.data.error));
   }
-}
+};
 </script>
 
 <style scoped>
-@import '../assets/styles/utils.css';
+@import "../assets/styles/utils.css";
 
 #settings {
   padding: 1rem;

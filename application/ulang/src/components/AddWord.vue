@@ -38,7 +38,7 @@
         <p class="verbTitle">Verb Tables</p>
         <div class="tableTitleLabel">
           <label for="tableName" class="tableTitleLabel">Title: </label>
-          <input type="text" id="tableName" v-model="conjugationData[conjugationIndex].title" class="conjugationTableInput">
+          <input type="text" id="tableName" @focus="focusTitleInput" @blur="blurTitleInput" v-model="conjugationData[conjugationIndex].title" class="conjugationTableInput">
         </div>
         <table>
           <tr>
@@ -105,6 +105,11 @@ export default {
   name: 'AddWord',
   components: { Tooltip, AccentButtons },
   props: ['fromRoute'],
+  computed: {
+    language() {
+      return this.getLanguage()
+    }
+  },
   data() {
     return {
       english: '',
@@ -122,17 +127,28 @@ export default {
   },
   methods: {
     ...mapGetters('auth', ['getUserId']),
+    ...mapGetters('settings', ['getLanguage']),
     submit() {
       let requestPayload
-      if (this.conjugationIndex == 0) {
+      // TODO: Possibly use this to point out incorrect tables with an error icon in the conjugation display
+      // for now, just using it to make sure invalid conjugation tables don't get made in the DB
+      const invalidConjugationIndecies = this.conjugationPresenceCheck()
+      // Filter invalid conjugations, i.e. ones that have no table entries
+      const conjData = this.conjugationData.filter((conj, index) => {
+        if (!invalidConjugationIndecies.includes(index)) {
+          return conj
+        }
+      })
+      if (conjData.length >= 1) {
         requestPayload = {
           english: this.english,
           word: this.translation,
           description: this.definition,
           partOfSpeech: this.partOfSpeech,
+          conjugationData: conjData,
           ownerId: this.getUserId(),
-          language: 'french' // TODO: make this pull from the global state
-        };
+          language: this.language
+        }
       } else {
         requestPayload = {
           english: this.english,
@@ -140,29 +156,22 @@ export default {
           description: this.definition,
           partOfSpeech: this.partOfSpeech,
           ownerId: this.getUserId(),
-          conjugationData: this.conjugationData,
-          language: 'french' // TODO: make this pull from the global state
-        };
-      }
-      const setIds = this.sets.reduce((acc, curr) => {
-        if (curr.selected) {
-          return [...acc, curr._id]
-        } else {
-          return acc
+          language: this.language
         }
-      },
-      []
-      );
+      }
+      const setIds = this.sets.reduce((acc, curr) => (
+        curr.selected ? [...acc, curr._id] : acc
+      ), [])
       requestPayload["setIds"] = setIds
-      createWord(requestPayload).then(data => {
-        this.anotherWordModal = true;
+      createWord(requestPayload).then(() => {
+        this.anotherWordModal = true
       }).catch(err => {
-        console.log(err);
+        console.log(err)
         this.requiredErrorEng = err.message
         this.requiredErrorTrans = err.message
         this.requiredErrorPoS = err.message
         this.conjugationData = [{ title: 'Table 1', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }]
-      });
+      })
     },
     nextClick() {
       if (this.conjugationIndex === this.conjugationData.length -1) {
@@ -181,7 +190,7 @@ export default {
       }
     },
     appendChar(char){
-      this.translation += char;
+      this.translation += char
     },
     cancel() {
       if (this.fromRoute) {
@@ -205,7 +214,27 @@ export default {
       this.requiredErrorEng = ''
       this.requiredErrorTrans = ''
       this.requiredErrorPoS = ''
-    }
+    },
+    conjugationPresenceCheck() {
+      const positions = ['tl', 'ml', 'bl', 'tr', 'mr', 'bl']
+      let invalidIndices = []
+      this.conjugationData.forEach((conj, index) => {
+        if (!(positions.filter(pos => conj[pos] !== '').length)) {
+          invalidIndices.push(index)
+        }
+      })
+      return invalidIndices
+    },
+    focusTitleInput(e) {
+      if (e.target.value.includes('Table ')) {
+        e.target.value = ''
+      }
+    },
+    blurTitleInput(e) {
+      if (!e.target.value) {
+        e.target.value = `Table ${this.conjugationIndex + 1}`
+      }
+    },
   },
   created() {
     getSets(this.getUserId(), "french").then(({sets}) => {
