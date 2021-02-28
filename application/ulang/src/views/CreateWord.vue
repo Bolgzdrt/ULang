@@ -373,6 +373,8 @@ export default {
 </script>
 
 <style scoped>
+@import "../assets/styles/utils.css";
+
 .createWord {
   display: flex;
   flex-direction: column;
@@ -381,7 +383,7 @@ export default {
 }
 
 .box {
-  background-color: white;
+  background-color: var(--white);
   border-radius: 5px;
   filter: drop-shadow(5px 5px 4px rgba(0, 0, 0, 0.3));
   height: 100%;
@@ -439,7 +441,7 @@ export default {
   align-items: center;
   justify-content: flex-start;
   font-size: 1.25em;
-  border: 0px solid #ccc;
+  border: 0px solid var(--gray);
   border-bottom-width: 1px;
   width: 100%;
 }
@@ -480,7 +482,7 @@ export default {
 
 .field {
   display: inline-block;
-  margin: 1% 0% 1% 0%;
+  margin: 1% 0%;
   width: 100%;
 }
 
@@ -499,7 +501,7 @@ export default {
 
 .wordInput {
   width: 100%;
-  border: 0px solid #000000;
+  border: 0px solid var(--black);
   border-bottom-width: 1px;
   background-color: transparent;
   font-size: 125%;
@@ -512,7 +514,7 @@ export default {
 }
 
 .conjugationTableInput {
-  border: 0px solid #000000;
+  border: 0px solid var(--black);
   font-size: 100%;
   outline: none;
   text-align: center;
@@ -527,12 +529,12 @@ table {
 
 td {
   padding: 0.5rem;
-  border: 1px solid black;
+  border: 1px solid var(--black);
 }
 
 select {
   width: 100%;
-  border: 0px solid #000000;
+  border: 0px solid var(--black);
   border-bottom-width: 1px;
   background-color: transparent;
   font-size: 125%;
@@ -560,7 +562,7 @@ select:hover {
 .tableChange {
   width: 2em;
   height: 2em;
-  background: #ffffff;
+  background: var(--white);
   border-radius: 50px;
   display: flex;
   justify-content: center;
@@ -620,7 +622,7 @@ button:hover {
 }
 
 .modal {
-  background: #ffffff;
+  background: var(--white);
   box-shadow: 2px 2px 20px 1px;
   overflow-x: auto;
   display: flex;
