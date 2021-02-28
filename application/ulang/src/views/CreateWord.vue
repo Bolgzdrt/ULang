@@ -338,6 +338,7 @@ export default {
       this.requiredErrorEng = ''
       this.requiredErrorTrans = ''
       this.requiredErrorPoS = ''
+      // this.$router.go()
     },
     conjugationPresenceCheck() {
       const positions = ['tl', 'ml', 'bl', 'tr', 'mr', 'bl']
