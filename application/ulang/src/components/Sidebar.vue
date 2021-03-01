@@ -67,7 +67,7 @@ export default {
 }
 
 a {
-  margin: 6px 8px 6px 48px;
+  margin: 10px 8px 10px 48px;
   text-decoration: none;
   color: black;
   display: block;

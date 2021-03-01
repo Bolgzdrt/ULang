@@ -101,4 +101,8 @@ export default {
   text-decoration: none;
   color: var(--default-font);
 }
+
+.nav-drop-down div:not(:last-of-type) {
+  border-bottom: 1px solid var(--gray);
+}
 </style>

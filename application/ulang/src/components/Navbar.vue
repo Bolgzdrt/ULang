@@ -83,17 +83,6 @@ export default {
       this.clicked = false
     }
   },
-  // updated() {
-  //   if (!this.initials) {
-  //     this.getUserInfo(this.userId)
-  //       .then((info) => {
-  //         this.initials = getInitials(info)
-  //       })
-  //       .catch((err) => {
-  //         console.error(err)
-  //       })
-  //   }
-  // }
 }
 </script>
 
@@ -189,5 +178,9 @@ nav .nav-items {
   text-decoration: none;
   color: #2c3e50;
   padding: 0 0.5em;
+}
+
+.nav-drop-down a {
+  border-bottom: 1px solid var(--gray);
 }
 </style>
