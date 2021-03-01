@@ -236,8 +236,19 @@ const deleteAccount = async (req, res) => {
   }
 }
 
-const getUserByInfo = (req, res) => {
-
+const searchNames = (req, res) => {
+  const { query } = req.params
+  try {
+    res.status(200).json({
+      success: true,
+      message: query
+    })
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
 }
 
 module.exports = {
@@ -250,5 +261,5 @@ module.exports = {
   changeEmail,
   changePassword,
   deleteAccount,
-  getUserByInfo,
+  searchNames,
 }

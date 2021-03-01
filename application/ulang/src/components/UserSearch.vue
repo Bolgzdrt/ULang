@@ -16,6 +16,8 @@
 
 <script>
 import Search from '@/assets/svgs/search.vue'
+import { debounce } from 'lodash'
+import { searchNames } from '@/services/userService'
 
 export default {
   name: 'UserSearch',
@@ -27,7 +29,17 @@ export default {
       query: ''
     }
   },
+  watch: {
+    query: debounce(function () {
+      this.search()
+    }, 1000)
+  },
   methods: {
+    search() {
+      searchNames(this.query)
+        .then((res) => console.log(res))
+        .catch((err) => console.error(err))
+    }
   }
 }
 </script>
