@@ -2,8 +2,8 @@
   <nav v-bind:class="getClass()">
     <span @click="logoClick" id="logo-container">
       <Logo id="logo" />
+      <UserSearch />
     </span>
-    <UserSearch />
     <div v-if="userId" class="nav-items">
       <Plus />
       <LanguageSelector />
@@ -111,6 +111,10 @@ nav {
 
 #logo-container {
   height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 #logo {

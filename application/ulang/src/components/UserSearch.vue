@@ -1,6 +1,9 @@
 <template>
   <div id="userSearch">
     <div id="searchContainer">
+      <div class="searchButton">
+        <Search />
+      </div>
       <input
         type="text"
         class="search"
@@ -9,9 +12,6 @@
         @focus="() => { focused = true }"
         @blur="() => { focused = false }"
       />
-      <div class="searchButton">
-        <Search />
-      </div>
       <div v-if="focused" class="results-container">
         <ul :class="{ 'results-list': true, 'border': results.length }">
           <li class="result" v-for="result in results" :key="result._id">
@@ -98,10 +98,11 @@ export default {
   width: 100%;
   height: 100%;
   border: 1px inset var(--black);
-  border-right: none;
+  border-left: none;
   padding: 0.25em;
   font-size: 1em;
   font-family: 'Roboto', 'Avenir', Arial, sans-serif;
+  outline: none;
 }
 
 .searchButton {
@@ -110,7 +111,7 @@ export default {
   cursor: pointer;
   background-color: var(--white);
   border: 1px inset var(--black);
-  border-left: none;
+  border-right: none;
   display: flex;
   flex-direction: row;
   justify-content: center;
