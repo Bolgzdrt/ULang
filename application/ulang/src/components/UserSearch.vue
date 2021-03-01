@@ -43,8 +43,6 @@ export default {
 .search {
   width: 100%;
   height: 100%;
-  /* border: 1px solid var(--black);
-  border-right: none; */
   border: 1px inset black;
   border-right: none;
   padding: 0.25em;
@@ -54,9 +52,11 @@ export default {
 
 .searchButton {
   width: 40px;
-  height: calc(100% - 2px);
+  height: 100%;
   cursor: pointer;
-  background: #988ee9;
+  background: #fff;
+  border: 1px inset black;
+  border-left: none;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -66,7 +66,7 @@ export default {
 .searchButton #searchIcon {
   height: 24px;
   width: 24px;
-  fill: #fff;
-  stroke: #fff;
+  fill: #000;
+  stroke: #000;
 }
 </style>
