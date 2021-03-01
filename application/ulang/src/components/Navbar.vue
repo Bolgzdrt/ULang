@@ -173,7 +173,7 @@ nav .nav-items {
   width: 100%;
   height: 100%;
   line-height: 2rem;
-  font-size: 1rem;
+  font-size: 1.15rem;
   text-align: left;
   text-decoration: none;
   color: #2c3e50;

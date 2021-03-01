@@ -99,7 +99,7 @@ export default {
   width: 100%;
   text-align: left;
   text-decoration: none;
-  color: var(--default-font);
+  font-size: 1.15rem;
 }
 
 .nav-drop-down div:not(:last-of-type) {
