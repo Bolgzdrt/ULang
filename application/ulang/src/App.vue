@@ -27,12 +27,14 @@ export default {
 </script>
 
 <style>
+@import "assets/styles/utils.css";
+
 #app {
-  font-family: 'Roboto', Avenir, Arial, sans-serif;
+  font-family: 'Roboto', 'Avenir', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: var(--default-font);
   width: 100vw;
   height: 100vh;
   overflow-x: hidden;

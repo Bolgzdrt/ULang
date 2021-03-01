@@ -43,18 +43,18 @@ export default {
 .search {
   width: 100%;
   height: 100%;
-  border: 1px inset black;
+  border: 1px inset var(--black);
   border-right: none;
   padding: 0.25em;
   font-size: 1em;
-  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  font-family: 'Roboto', 'Avenir', Arial, sans-serif;
 }
 
 .searchButton {
   width: 40px;
   height: 100%;
   cursor: pointer;
-  background: var(--white);
+  background-color: var(--white);
   border: 1px inset var(--black);
   border-left: none;
   display: flex;
