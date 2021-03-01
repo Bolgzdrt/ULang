@@ -41,6 +41,10 @@ export const deleteAccount = async (userId, password) => {
 }
 
 export const searchNames = async (query) => {
-  const res = await axios.get(`user/searchNames/${query}`)
-  return res.data
+  if (query) {
+    const res = await axios.get(`user/searchNames/${query}`)
+    return res.data
+  } else {
+    return []
+  }
 }

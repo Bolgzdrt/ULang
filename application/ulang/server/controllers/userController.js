@@ -241,7 +241,11 @@ const searchNames = (req, res) => {
   try {
     res.status(200).json({
       success: true,
-      message: query
+      users: [
+        { _id: '123', username: 'testUser1', firstName: 'test', lastName: 'user'},
+        { _id: '456', username: 'testUser2', firstName: 'test', lastName: undefined},
+        { _id: '789', username: 'testUser3', firstName: undefined, lastName: undefined},
+      ]
     })
   } catch (err) {
     res.status(400).json({
