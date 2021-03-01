@@ -142,6 +142,7 @@ export default {
   width: 100%;
   height: 45%;
   margin-bottom: 5%;
+  max-height: 150px;
 }
 
 .login-content .inputbox {
@@ -160,7 +161,7 @@ export default {
   width: 100%;
   height: 30px;
   line-height: 2rem;
-  font-size: 1rem;
+  font-size: 1.25rem;
   border: 0;
   background: none;
   border-bottom: 1px solid var(--gray);
@@ -172,7 +173,7 @@ export default {
 .inputbox-content input:valid ~ label,
 .label-up {
   color: var(--purple);
-  transform: translateY(-20px);
+  transform: translateY(-25px);
   font-size: 0.825em;
   cursor: default;
 }

@@ -6,7 +6,7 @@
     <div v-if="userId" class="nav-items">
       <Plus />
       <LanguageSelector />
-      <div @click="onNameClick" id="user-container">
+      <div @click="onNameClick" :class="{ 'name-clicked': clicked }" id="user-container">
         <span id="outside-element-click" v-click-outside="hideDropdown">
           <NameCircle :initials="initials" />
           <div class="nav-drop-down" v-if="clicked">
@@ -61,6 +61,12 @@ export default {
         'logged-out-nav': !this.userId
       }
     },
+    isClicked() {
+      console.log('isclicked')
+      return {
+        'name-clicked': this.clicked
+      }
+    },
     onNameClick(e) {
       this.clicked = !this.clicked
     },
@@ -83,17 +89,6 @@ export default {
       this.clicked = false
     }
   },
-  // updated() {
-  //   if (!this.initials) {
-  //     this.getUserInfo(this.userId)
-  //       .then((info) => {
-  //         this.initials = getInitials(info)
-  //       })
-  //       .catch((err) => {
-  //         console.error(err)
-  //       })
-  //   }
-  // }
 }
 </script>
 
@@ -158,12 +153,19 @@ nav .nav-items {
   position: relative;
   cursor: pointer;
   height: 100%;
+  padding: 0 3px;
+}
+
+.name-clicked {
+  border-left: 1px solid var(--black);
+  border-right: 1px solid var(--black);
+  padding: 0 2px !important;
 }
 
 .nav-drop-down {
   position: absolute;
-  bottom: -100px;
-  right: 0px;
+  bottom: -99px;
+  right: -1px;
   width: 150px;
   height: 100px;
   border: 1px solid black;
@@ -184,10 +186,14 @@ nav .nav-items {
   width: 100%;
   height: 100%;
   line-height: 2rem;
-  font-size: 1rem;
+  font-size: 1.15rem;
   text-align: left;
   text-decoration: none;
   color: #2c3e50;
   padding: 0 0.5em;
+}
+
+.nav-drop-down a {
+  border-bottom: 1px solid var(--gray);
 }
 </style>

@@ -44,7 +44,7 @@ export default {
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  background-color: #fff;
+  background-color: var(--white);
 }
 
 .content-container {
@@ -74,7 +74,7 @@ export default {
 
 .menu a {
   text-decoration: none;
-  color: #000;
+  color: var(--default-font);
   font-size: 1.1rem;
 }
 
