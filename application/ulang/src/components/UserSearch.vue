@@ -1,7 +1,12 @@
 <template>
   <div id="userSearch">
     <div id="searchContainer">
-      <input type="text" class="search" placeholder="Search for users">
+      <input
+        type="text"
+        class="search"
+        placeholder="Search for users"
+        v-model="query"
+      />
       <div class="searchButton">
         <Search />
       </div>
@@ -16,12 +21,19 @@ export default {
   name: 'UserSearch',
   components: {
     Search
+  },
+  data() {
+    return {
+      query: ''
+    }
+  },
+  methods: {
   }
 }
 </script>
 
 <style scoped>
-@import "../assets/styles/utils.css";
+@import '../assets/styles/utils.css';
 
 #userSearch {
   width: 40vw;

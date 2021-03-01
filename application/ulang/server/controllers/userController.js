@@ -236,6 +236,10 @@ const deleteAccount = async (req, res) => {
   }
 }
 
+const getUserByInfo = (req, res) => {
+
+}
+
 module.exports = {
   followUser,
   unfollowUser,
@@ -246,4 +250,5 @@ module.exports = {
   changeEmail,
   changePassword,
   deleteAccount,
+  getUserByInfo,
 }
