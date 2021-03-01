@@ -147,5 +147,11 @@ export default {
   list-style: none;
   line-height: 1.5em;
   font-size: 1.25em;
+  padding: 0 0.5em;
+  cursor: pointer;
+}
+
+.result:not(:last-of-type) {
+  border-bottom: 1px solid var(--gray);
 }
 </style>
