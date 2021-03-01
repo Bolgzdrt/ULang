@@ -1,5 +1,5 @@
 <template>
-  <div id="plus-container" @click="onAddClick">
+  <div id="plus-container" :class="{ 'plus-clicked': clicked }" @click="onAddClick">
     <div id="outside-click-element" v-click-outside="hideDropdown">
       <svg
         id="plus"
@@ -58,6 +58,13 @@ export default {
   position: relative;
   cursor: pointer;
   height: 100%;
+  padding: 0 3px;
+}
+
+.plus-clicked {
+  border-left: 1px solid var(--black);
+  border-right: 1px solid var(--black);
+  padding: 0 2px !important
 }
 
 #outside-click-element {
@@ -70,8 +77,8 @@ export default {
 
 .nav-drop-down {
   position: absolute;
-  bottom: -75px;
-  right: 0;
+  bottom: -74px;
+  right: -1px;
   width: 150px; /* Possibly make this 200 when the SVGs are in */
   height: 75px;
   border: 1px solid black;
