@@ -1,7 +1,7 @@
 <template>
   <div id="userSearch">
     <div id="searchContainer">
-      <input type="text" class="search">
+      <input type="text" class="search" placeholder="Search for users">
       <div class="searchButton">
         <Search />
       </div>
@@ -43,6 +43,13 @@ export default {
 .search {
   width: 100%;
   height: 100%;
+  /* border: 1px solid var(--black);
+  border-right: none; */
+  border: 1px inset black;
+  border-right: none;
+  padding: 0.25em;
+  font-size: 1em;
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
 }
 
 .searchButton {
