@@ -54,8 +54,8 @@ export default {
   width: 40px;
   height: 100%;
   cursor: pointer;
-  background: #fff;
-  border: 1px inset black;
+  background: var(--white);
+  border: 1px inset var(--black);
   border-left: none;
   display: flex;
   flex-direction: row;
@@ -64,9 +64,9 @@ export default {
 }
 
 .searchButton #searchIcon {
-  height: 24px;
-  width: 24px;
-  fill: #000;
-  stroke: #000;
+  height: 1.5em;
+  width: 1.5em;
+  fill: var(--default-font);
+  stroke: var(--default-font);
 }
 </style>
