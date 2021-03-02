@@ -77,8 +77,8 @@ export default {
 @import '../assets/styles/utils.css';
 
 #userSearch {
-  width: 40vw;
-  max-width: 400px;
+  width: 100vw;
+  max-width: 300px;
   min-width: 200px;
   height: 100%;
   display: flex;
@@ -108,7 +108,7 @@ export default {
 .searchButton {
   width: 40px;
   height: 100%;
-  cursor: pointer;
+  /* cursor: pointer; */
   background-color: var(--white);
   border: 1px inset var(--black);
   border-right: none;
@@ -150,6 +150,10 @@ export default {
   font-size: 1.25em;
   padding: 0 0.5em;
   cursor: pointer;
+}
+
+.result:hover {
+  background: var(--gray);
 }
 
 .result:not(:last-of-type) {
