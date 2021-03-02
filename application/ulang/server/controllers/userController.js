@@ -236,16 +236,17 @@ const deleteAccount = async (req, res) => {
   }
 }
 
-const searchNames = (req, res) => {
+const searchNames = async (req, res) => {
   const { query } = req.params
   try {
+    const users = await User.find(
+      {
+        username: { '$regex': query, '$options': 'i' }
+      }
+    )
     res.status(200).json({
       success: true,
-      users: [
-        { _id: '123', username: 'testUser1', firstName: 'test', lastName: 'user'},
-        { _id: '456', username: 'testUser2', firstName: 'test', lastName: undefined},
-        { _id: '789', username: 'testUser3', firstName: undefined, lastName: undefined},
-      ]
+      users: users
     })
   } catch (err) {
     res.status(400).json({

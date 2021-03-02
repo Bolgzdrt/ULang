@@ -143,6 +143,8 @@ export default {
   background-color: var(--white);
   border-radius: 0 0 20px 20px;
   box-shadow: 0 12px 12px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .results-list {
