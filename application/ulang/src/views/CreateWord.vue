@@ -181,7 +181,6 @@
           </div>
         </div>
         <div class="buttonBox">
-          <button @click="clear">Clear</button>
           <button class="cancelButton" @click="cancel">Cancel</button>
           <button class="submitButton" @click="submit">Add</button>
         </div>
