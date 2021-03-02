@@ -13,7 +13,7 @@
         @blur="() => { focused = false }"
       />
       <div v-if="focused" class="backdrop">
-        <div class="results-container">
+        <div class="results-container" :style="{ display: results.length ? 'block' : 'none' }">
           <ul class="results-list">
             <li class="result" v-for="result in results" :key="result._id">
               {{ formatResult(result) }}
