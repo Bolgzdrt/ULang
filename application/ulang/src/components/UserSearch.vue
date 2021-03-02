@@ -12,12 +12,15 @@
         @focus="() => { focused = true }"
         @blur="() => { focused = false }"
       />
-      <div v-if="focused" class="results-container">
-        <ul :class="{ 'results-list': true, 'border': results.length }">
-          <li class="result" v-for="result in results" :key="result._id">
-            {{ formatResult(result) }}
-          </li>
-        </ul>
+      <div v-if="focused" class="backdrop">
+        <div class="results-container">
+          <ul class="results-list">
+            <li class="result" v-for="result in results" :key="result._id">
+              {{ formatResult(result) }}
+              <span v-if="result.firstName || result.lastName">({{ result.username }})</span>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -62,7 +65,7 @@ export default {
           resultStr += ` ${lastName}`
         }
       } else if (lastName) {
-        resultStr += lastName
+        resultStr += `lastName`
       } else {
         // username required for an account so this is the fallback
         resultStr += username
@@ -97,8 +100,8 @@ export default {
 .search {
   width: 100%;
   height: 100%;
-  border: 1px inset var(--black);
-  border-left: none;
+  border: none;
+  border-radius: 0 20px 20px 0;
   padding: 0.25em;
   font-size: 1em;
   font-family: 'Roboto', 'Avenir', Arial, sans-serif;
@@ -108,10 +111,8 @@ export default {
 .searchButton {
   width: 40px;
   height: 100%;
-  /* cursor: pointer; */
   background-color: var(--white);
-  border: 1px inset var(--black);
-  border-right: none;
+  border-radius: 20px 0 0 20px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -125,23 +126,31 @@ export default {
   stroke: var(--default-font);
 }
 
+.backdrop {
+  width: 104%;
+  padding-top: 45px;
+  position: absolute;
+  top: -5px;
+  right: -2%;
+  background: #fff;
+  border-radius: 18px;
+  z-index: -1;
+}
+
 .results-container {
   width: 100%;
   max-height: 300px;
   background-color: var(--white);
-  position: absolute;
-  top: 100%;
-  right: 0;
-}
-
-.border {
-  border: 1px inset var(--black);
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 12px 12px rgba(0, 0, 0, 0.3);
 }
 
 .results-list {
   width: 100%;
   height: 100%;
   text-align: left;
+  padding-bottom: 0.5em;
+  padding-top: 0.25em;
 }
 
 .result {
@@ -150,6 +159,8 @@ export default {
   font-size: 1.25em;
   padding: 0 0.5em;
   cursor: pointer;
+  border-radius: 20px;
+  margin: 0 0.25em;
 }
 
 .result:hover {
@@ -157,6 +168,10 @@ export default {
 }
 
 .result:not(:last-of-type) {
-  border-bottom: 1px solid var(--gray);
+  margin-bottom: 0.25em;
+}
+
+.result span {
+  font-size: 0.75em;
 }
 </style>
