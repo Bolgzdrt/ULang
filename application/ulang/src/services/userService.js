@@ -39,3 +39,12 @@ export const deleteAccount = async (userId, password) => {
   const res = await axios.delete(`user/deleteAccount/${userId}`, { data: { password } })
   return res.data
 }
+
+export const searchNames = async (query) => {
+  if (query) {
+    const res = await axios.get(`user/searchNames/${query}`)
+    return res.data
+  } else {
+    return { users: [] }
+  }
+}

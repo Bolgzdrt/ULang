@@ -236,6 +236,30 @@ const deleteAccount = async (req, res) => {
   }
 }
 
+const searchNames = async (req, res) => {
+  const { query } = req.params
+  try {
+    const users = await User.find(
+      { 
+        $or: [
+          {firstName: { '$regex': query, '$options': 'i' }},
+          {lastName: { '$regex': query, '$options': 'i' }},
+          {username: { '$regex': query, '$options': 'i' }},
+        ]
+      }
+    )
+    res.status(200).json({
+      success: true,
+      users: users
+    })
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
 module.exports = {
   followUser,
   unfollowUser,
@@ -246,4 +270,5 @@ module.exports = {
   changeEmail,
   changePassword,
   deleteAccount,
+  searchNames,
 }

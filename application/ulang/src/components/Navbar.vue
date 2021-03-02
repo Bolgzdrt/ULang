@@ -2,6 +2,7 @@
   <nav v-bind:class="getClass()">
     <span @click="logoClick" id="logo-container">
       <Logo id="logo" />
+      <UserSearch />
     </span>
     <div v-if="userId" class="nav-items">
       <Plus />
@@ -27,6 +28,7 @@ import Logo from '@/assets/svgs/logo.vue'
 import Plus from '@/assets/svgs/plus.vue'
 import NameCircle from '@/components/NameCircle.vue'
 import LanguageSelector from '@/components/LanguageSelector.vue'
+import UserSearch from '@/components/UserSearch.vue'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import { getInitials } from '@/utils/utils'
 
@@ -36,7 +38,8 @@ export default {
     Plus,
     NameCircle,
     Logo,
-    LanguageSelector
+    LanguageSelector,
+    UserSearch,
   },
   data() {
     return {
@@ -108,6 +111,10 @@ nav {
 
 #logo-container {
   height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 #logo {
