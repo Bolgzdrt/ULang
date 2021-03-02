@@ -240,8 +240,12 @@ const searchNames = async (req, res) => {
   const { query } = req.params
   try {
     const users = await User.find(
-      {
-        username: { '$regex': query, '$options': 'i' }
+      { 
+        $or: [
+          {firstName: { '$regex': query, '$options': 'i' }},
+          {lastName: { '$regex': query, '$options': 'i' }},
+          {username: { '$regex': query, '$options': 'i' }},
+        ]
       }
     )
     res.status(200).json({
