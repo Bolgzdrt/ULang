@@ -48,6 +48,7 @@ import Sidebar from '../components/Sidebar.vue'
 import NameCirclePurple from '@/components/NameCirclePurple.vue'
 import getUserInfo from '../services/userService.js'
 import ProfileSetCard from '../components/ProfileSetCard.vue'
+var data = getUserInfo();
 export default {
   name: 'Profile',
   components: { 
