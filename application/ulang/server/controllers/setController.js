@@ -1,8 +1,6 @@
 const Set = require('../models/Set')
 const User = require('../models/User')
 const Word = require('../models/Word')
-const { filterUpdates } = require('../utils/utils')
-
 
 const createSet = async (req, res) => {
   const { name, language, words, description, ownerId, quickAccess } = req.body

@@ -14,7 +14,7 @@
       <router-link :to="{ name: 'CreateWord' }">New Word</router-link>
     </div>
     <hr>
-    <a href="#">Friends</a>
+    <p id="friends">Friends</p>
     <div class="friendLink"> 
         <a href="#" v-for="friend in friends" :key="friend.id">
           <div class="user">
@@ -66,6 +66,10 @@ export default {
   padding-top: 40px;
 }
 
+#friends {
+  margin: 6px 8px 6px 48px;
+}
+
 a {
   margin: 10px 8px 10px 48px;
   text-decoration: none;
@@ -84,7 +88,7 @@ a:hover {
 hr {
   width: 80%;
   align-self: center;
-  margin: 20px 0px 20px 0px;
+  margin: 20px 0px;
 }
 
 #ppLink {
@@ -93,7 +97,7 @@ hr {
   color: #999999;
   text-decoration: underline;
   font-size: 16px;
-  margin: 0px 0px 0px 0px;
+  margin: 0px;
   text-align: center;
   width: 100%;
 }
@@ -102,7 +106,7 @@ hr {
   color: #999999;
   text-decoration: underline;
   font-size: 16px;
-  margin: 0px 0px 0px 0px;
+  margin: 0px;
   text-align: center;
 }
 
