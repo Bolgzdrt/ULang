@@ -70,7 +70,7 @@ export default {
       {owner: '', setname: 'set12', numterms: '200', favorite: '', quickaccess: ''}]
     }
   },
-  created() {
+  created: function() {
     this.getName();
   },
   methods: {
