@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Navbar :userId="userId" @logout="() => userId = ''" />
+    <Navbar />
     <section class="main-container">
-      <Sidebar v-if="userId" :friends="friends" />
+      <Sidebar v-if="userId" />
       <router-view class="defaultPage" :key="$route.fullPath" />
     </section>
   </div>
@@ -11,7 +11,6 @@
 <script>
 import Navbar from '@/components/Navbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
-import { mapGetters } from 'vuex'
 
 export default {
   name: 'App',
@@ -19,38 +18,23 @@ export default {
     Navbar,
     Sidebar
   },
-  data() {
-    return {
-      // friends place holder
-      friends: [
-        { name: 'Joe Schmo', pic: 'JS' },
-        { name: 'Name Name', pic: 'NN' },
-        { name: 'Place Holder', pic: 'PH' }
-      ],
-      userId: ''
+  computed: {
+    userId() {
+      return this.$store.getters['auth/getUserId']
     }
-  },
-  methods: {
-    ...mapGetters('auth', ['getUserId'])
-  },
-  updated() {
-    if (!['Welcome', 'Login', 'Signup'].includes(this.$route.name)) {
-      this.userId = this.getUserId()
-    }
-  },
-  mounted() {
-    this.userId = this.getUserId()
   }
 }
 </script>
 
 <style>
+@import "assets/styles/utils.css";
+
 #app {
-  font-family: 'Roboto', Avenir, Arial, sans-serif;
+  font-family: 'Roboto', 'Avenir', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: var(--default-font);
   width: 100vw;
   height: 100vh;
   overflow-x: hidden;

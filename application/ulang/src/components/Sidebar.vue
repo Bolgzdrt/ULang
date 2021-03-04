@@ -3,13 +3,18 @@
     <router-link :to="{ name: 'Home' }">Home</router-link>
     <hr>
     <div class="pageLinks">
-      <router-link :to="{ name: 'FlashCards' }">Flash Cards</router-link>
-      <a href="#">Learn</a>
-      <a href="#">Game</a>
-      <a href="#">Pronunciation</a>
+      <router-link :to="{ name: 'FlashCardsSettings' }">Flash Cards</router-link>
+      <router-link :to="{ name: 'LearnSettings' }">Vocabulary</router-link>
+      <router-link :to="{ name: 'Conjugations' }">Conjugations</router-link>
+      <router-link :to="{ name: 'Pronunciations' }">Pronunciations</router-link>
     </div>
     <hr>
-    <a href="#">Friends</a>
+    <div class="pageLinks">
+      <router-link :to="{ name: 'CreateSet' }">New Set</router-link>
+      <router-link :to="{ name: 'CreateWord' }">New Word</router-link>
+    </div>
+    <hr>
+    <p id="friends">Friends</p>
     <div class="friendLink"> 
         <a href="#" v-for="friend in friends" :key="friend.id">
           <div class="user">
@@ -30,10 +35,18 @@ import NameCircle from '@/components/NameCircle.vue'
 
 export default {
   name: "Sidebar",
-  props: ['friends'],
   components: {
     NameCircle
   },
+  data() {
+    return {
+      friends: [
+        { name: 'Joe Schmo', pic: 'JS' },
+        { name: 'Name Name', pic: 'NN' },
+        { name: 'Place Holder', pic: 'PH' }
+      ],
+    }
+  }
 }
 </script>
 
@@ -53,8 +66,12 @@ export default {
   padding-top: 40px;
 }
 
-a {
+#friends {
   margin: 6px 8px 6px 48px;
+}
+
+a {
+  margin: 10px 8px 10px 48px;
   text-decoration: none;
   color: black;
   display: block;
@@ -71,7 +88,7 @@ a:hover {
 hr {
   width: 80%;
   align-self: center;
-  margin: 20px 0px 20px 0px;
+  margin: 20px 0px;
 }
 
 #ppLink {
@@ -80,7 +97,7 @@ hr {
   color: #999999;
   text-decoration: underline;
   font-size: 16px;
-  margin: 0px 0px 0px 0px;
+  margin: 0px;
   text-align: center;
   width: 100%;
 }
@@ -89,7 +106,7 @@ hr {
   color: #999999;
   text-decoration: underline;
   font-size: 16px;
-  margin: 0px 0px 0px 0px;
+  margin: 0px;
   text-align: center;
 }
 

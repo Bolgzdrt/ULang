@@ -46,9 +46,8 @@
 <script>
 import Sidebar from '../components/Sidebar.vue'
 import NameCirclePurple from '@/components/NameCirclePurple.vue'
-import getUserInfo from '../services/userService.js'
 import ProfileSetCard from '../components/ProfileSetCard.vue'
-var data = getUserInfo();
+import {mapGetters} from 'vuex'
 export default {
   name: 'Profile',
   components: { 
@@ -71,11 +70,11 @@ export default {
       {owner: '', setname: 'set12', numterms: '200', favorite: '', quickaccess: ''}]
     }
   },
-  created: function() {
-    this.getName();
-  },
   methods: {
+    ...mapGetters('auth', ['getUserInfo']),
+
     getName(){
+      var data = this.getUserInfo();
       if(data.firstname)
       {
         if(data.lastname)

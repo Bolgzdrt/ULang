@@ -48,6 +48,22 @@
           </div>
         </div>
         <div class="inputbox">
+          <div class="inputbox-content">
+            <input
+              type="password"
+              name="confirmPassword"
+              id="confirmPassword"
+              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+              title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+              v-model="confirmPassword"
+              required
+            />
+            <label for="confirmPassword" :class="shouldStay('confirmPassword')">Confirm Password</label>
+            <p class="error">{{ confirmPasswordError }}</p>
+          </div>
+        </div>
+      </section>
+        <div class="inputbox">
           <div class="language-selector">
             <FlagSVGs :language="primaryLanguage" height="32" />
             <select name="primaryLanguage" id="languageSelect" v-model="primaryLanguage" >
@@ -57,7 +73,6 @@
             </select>
           </div>
         </div>
-      </section>
       <input type="submit" style="display: none;" />
       <button class="submit-button">Submit</button>
     </form>
@@ -66,7 +81,7 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex'
-import { languageCodes, languages } from '@/utils/utils'
+import { languages } from '@/utils/utils'
 import FlagSVGs from '@/assets/svgs/flags/flagSVGs'
 
 export default {
@@ -77,10 +92,11 @@ export default {
       email: '',
       username: '',
       password: '',
+      confirmPassword: '',
       emailError: '',
       usernameError: '',
       passwordError: '',
-      languageCodes,
+      confirmPasswordError: '',
       languages,
       primaryLanguage: 'french'
     }
@@ -105,6 +121,10 @@ export default {
     onSubmit(e) {
       e.preventDefault()
       this.resetErrors()
+      if (this.password !== this.confirmPassword) {
+        this.confirmPasswordError = 'Passwords do not match'
+        return
+      }
       // this.loading = true // start some loading spinner thing
       this.signUp({ password: this.password, primaryLanguage: this.primaryLanguage })
         .then(() => {
@@ -166,10 +186,10 @@ export default {
   border-radius: 3%;
   top: 10%;
   width: 45%;
-  height: 55%;
+  height: 65%;
   max-width: 600px;
   max-height: 700px;
-  min-height: 450px;
+  min-height: 500px;
   min-width: 400px;
   position: relative;
   padding: 1.5rem 2rem;
@@ -185,8 +205,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 55%;
-  margin-bottom: 5%;
+  height: 45%;
   width: 100%;
 }
 
@@ -264,11 +283,6 @@ export default {
   transition: all 100ms ease-out;
   cursor: pointer;
   width: 30%;
-}
-
-.signup-content button:hover,
-.signup-content button:focus {
-  transform: translateY(-1px);
 }
 
 .signup-content button:active{

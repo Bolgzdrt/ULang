@@ -1,29 +1,42 @@
 <template>
-  <div class="create-set">
-    <Sidebar />
-    <div class="create-set-box">
-      <header class="new-set-header">
-        <h1>Add a new set</h1>
-      </header>
-    <div class="dictionary-box">
-
+  <div class="createSet">
+    <div class="box">
+      <AddSet :fromRoute="fromRoute" />
     </div>
   </div>
 </template>
 
 <script>
-import Sidebar from '../components/Sidebar.vue'
-export default {
-  name: 'CreateSet'
-}
+import AddSet from '@/components/AddSet.vue'
 
-    Sidebar</script>
+export default {
+  name: 'CreateSet',
+  components: { AddSet },
+  data() {
+    return {
+      fromRoute: ''
+    }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.fromRoute = from
+    })
+  }
+}
+</script>
 
 <style scoped>
-
-.create-set{
+.createSet {
   display: flex;
-
+  flex-direction: column;
+  align-items: stretch;
+  padding: 2%;
 }
 
+.box {
+  background-color: white;
+  border-radius: 5px;
+  filter: drop-shadow(5px 5px 4px rgba(0, 0, 0, 0.3));
+  height: 100%;
+}
 </style>

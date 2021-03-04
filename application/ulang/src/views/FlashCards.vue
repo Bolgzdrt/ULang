@@ -1,11 +1,11 @@
 <template>
   <div class="flashCards">
-    <BackButton />
+    <BackButton :fromRoute="fromRoute" />
     <SetProg v-bind:curr="index + 1" v-bind:total="total" v-bind:setName="setName"/>
     <div class="scene">
       <div class="card" @click="toggleCard" v-bind:class="{isFlipped: flipped}">
-        <div class="cardFace">{{ words[index].english }}</div>
-        <div class="cardFace cardFaceBack">{{ words[index].translation }}</div>
+        <div class="cardFace">{{ words[index].given === "0"?words[index].english : words[index].word }}</div>
+        <div class="cardFace cardFaceBack">{{ words[index].given === "0"?words[index].word : words[index].english }}</div>
       </div>
     </div>
     <div class="nav">
@@ -19,29 +19,29 @@
 <script>
 import SetProg from '@/components/SetProg.vue'
 import BackButton from '@/components/BackButton.vue'
+import { getWordsInSet, getSetById } from '@/services/setService'
 
 export default {
   name: 'FlashCards',
   components: { BackButton, SetProg },
+  props: ['id', 'setting', 'fromRoute'],
   data() {
     return {
-      words: [
-        { english: 'helmet', translation: 'casque' },
-        { english: 'egg', translation: 'oeuf' },
-        { english: 'diamond', translation: 'diamant' },
-        { english: 'dog', translation: 'chienne/chien' }
-      ],
-      setName: 'Random Set',
+      words: [{
+        english: '',
+        word: ''
+      }],
+      setName: '',
       index: 0,
       total: 0,
       flipped: false
     }
   },
   methods: {
-    toggleCard: function() {
+    toggleCard() {
       this.flipped = !this.flipped;
     },
-    nextCard: function() {
+    nextCard() {
       if (!(this.index >= this.total - 1)) {
         if (this.flipped == true){
           this.toggleCard();
@@ -51,7 +51,7 @@ export default {
         }, 100);
       }
     },
-    prevCard: function() {
+    prevCard() {
       if (!(this.index == 0)) {
         if (this.flipped == true){
           this.toggleCard();
@@ -62,8 +62,34 @@ export default {
       }
     },
   },
-  created: function(){
-    this.total = this.words.length;
+  created() {
+    if (!this.id) {
+      this.$router.push({name: "FlashCardSettings"})
+    }
+    const settings = this.setting || 0
+    getWordsInSet(this.id).then(({words}) => {
+      this.words = words.map(word => { 
+        let num
+        if (settings == 2) {
+          num = Math.round(Math.random())
+        } else {
+          num = settings
+        }
+        return {
+          ...word, 
+          given: num
+        } 
+      })
+      this.total = this.words.length;
+    })
+    getSetById(this.id).then(({set}) => {
+      this.setName = set.name
+    })
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.fromRoute = from
+    })
   }
 }
 </script>
