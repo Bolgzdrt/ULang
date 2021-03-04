@@ -2,7 +2,7 @@
   <nav v-bind:class="getClass()">
     <span @click="logoClick" id="logo-container">
       <Logo id="logo" />
-      <UserSearch />
+      <UserSearch v-if="userId" />
     </span>
     <div v-if="userId" class="nav-items">
       <Plus />
