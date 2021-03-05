@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
-const { requireAuth, checkUser } = require('./middleware/authMiddleware')
+const { requireAuth } = require('./middleware/authMiddleware')
 
 const { authRouter } = require('./routes/authRoutes')
 const { setRouter } = require('./routes/setRoutes')
@@ -45,7 +45,6 @@ mongoose
   .then(() => app.listen(PORT, () => console.log(`Listening on port ${PORT}`)))
   .catch((err) => console.error(err))
 
-// app.all('*', checkUser)
 app.use(authRouter)
 app.use('/set', requireAuth, setRouter)
 app.use('/word', requireAuth, wordRouter)
