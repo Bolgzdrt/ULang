@@ -248,9 +248,11 @@ const searchNames = async (req, res) => {
         ]
       }
     )
+    // Return only the first 20 results
+    const maxResults = 20
     res.status(200).json({
       success: true,
-      users: users
+      users: users.slice(0, maxResults)
     })
   } catch (err) {
     res.status(400).json({
