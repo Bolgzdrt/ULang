@@ -16,6 +16,7 @@ import CreateSet from '../views/CreateSet.vue'
 import Vocabulary from '../views/Vocabulary.vue'
 import Conjugations from '../views/Conjugations.vue'
 import Pronunciations from '../views/Pronunciations.vue'
+import Dictionary from '../views/Dictionary.vue'
 
 Vue.use(VueRouter)
 
@@ -102,8 +103,13 @@ const routes = [
     path: '/pronunciations',
     name: 'Pronunciations',
     component: Pronunciations
+  },
+  {
+    path: '/profile/:id/:setid',
+    name: 'Dictionary',
+    component: Dictionary,
+    props: true
   }
-  
 ]
 
 const router = new VueRouter({

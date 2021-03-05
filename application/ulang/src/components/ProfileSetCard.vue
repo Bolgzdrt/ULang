@@ -1,15 +1,15 @@
 <template>
-  <div class="card">
-    <div class="set-info">
-      <div class="set-owner">
+  <div class="card" @click="openSet">
+    <div class="set-info" >
+      <span class="set-owner">
         {{setOwner}}
-      </div>
-      <div class="set-name">
+      </span>
+      <span class="set-name">
         {{setName}}
-      </div>
-      <div class="num-terms">
+      </span>
+      <span class="num-terms">
         {{numTerms}}
-      </div>
+      </span>
     </div>
     <div class="buttons">
       <lightningbolt class="lightningbolt" v-bind:fill="quickaccess" />
@@ -21,6 +21,7 @@
 <script>
 import heart from '@/assets/svgs/heart.vue';
 import lightningbolt from '@/assets/svgs/lightningbolt.vue';
+import {mapGetters} from 'vuex'
 export default {
   name:"ProfileSetCard",
   components: {
@@ -28,6 +29,7 @@ export default {
     lightningbolt
   },
   props: {
+    setId: String,
     owner: String,
     setname: String,
     numterms: Number,
@@ -43,6 +45,12 @@ export default {
     quickaccess: this.quickaccess
     }
   },
+  methods: {
+    ...mapGetters('auth', ['getUserId']),
+    openSet(){
+      this.$router.push({ name: 'Dictionary', params: {id: this.getUserId(), setId: setId} });
+    }
+  }
 }
 </script>
 

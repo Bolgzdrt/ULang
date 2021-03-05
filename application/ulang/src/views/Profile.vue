@@ -1,6 +1,5 @@
 <template>
   <div class="profile">
-    <Sidebar v-if="userId" :friends="friends" />
     <div class="profile-content">
       <div class="user-banner">
         <span class="banner-spacing"/>
@@ -28,13 +27,13 @@
         </div>
         <div class="set-list">
           <ul id=list class=list>
-            <li v-for="set in sets" :key="set.setname">
+            <li v-for="set in sets" :key="set.name">
               <ProfileSetCard 
-              :owner="set.owner" 
-              :setname="set.setname" 
-              :numterms="set.numterms"
-              :favorite="set.favorite"
-              :quickaccess="set.quickaccess"/>
+              :owner="set.ownerId"
+              :setname="set.name"
+              :numterms="set.words.length"
+              :favorite="true"
+              :quickaccess="true" />
             </li>
           </ul>
         </div>
@@ -47,7 +46,10 @@
 import Sidebar from '../components/Sidebar.vue'
 import NameCirclePurple from '@/components/NameCirclePurple.vue'
 import ProfileSetCard from '../components/ProfileSetCard.vue'
+import {getSets}  from '@/services/setService'
 import {mapGetters} from 'vuex'
+import { getInitials } from '@/utils/utils'
+
 export default {
   name: 'Profile',
   components: { 
@@ -58,41 +60,33 @@ export default {
   },
   data() {
     return {
-      initials: 'CM',
-      friends: [
-        { name: 'Joe Schmo', pic: 'JS' },
-        { name: 'Name Name', pic: 'NN' },
-        { name: 'Place Holder', pic: 'PH' }
-      ],
-      userId: 'arg',
-      username: '',
-      sets: [{owner: 'dude', setname: 'set1', numterms: '20', favorite: '', quickaccess: ''},
-      {owner: '', setname: 'set12', numterms: '200', favorite: '', quickaccess: ''}]
+    }
+  },
+  computed: {
+    username(){
+      var data = this.getUserInfo();
+      if(data.firstName)
+      {
+        if(data.lastName)
+          return data.firstName.concat(" ").concat(data.lastName);
+        return data.firstName;
+      }
+      return data.username;
+    },
+    sets(){
+      //return getSets(this.getUserId(), this.getLanguage());  
+      return  [{ _id : "604260a90753053f91fabf32", name : "Test Set", language : "french", words : [ ], favorite : false, description : "My third test set of Spanish words", ownerId : "60418460e3aee293b8f74a42" }]
+    },
+    initials() {
+      return getInitials(this.getUserInfo())
     }
   },
   methods: {
     ...mapGetters('auth', ['getUserInfo']),
-
-    getName(){
-      var data = this.getUserInfo();
-      if(data.firstname)
-      {
-        if(data.lastname)
-          username= data.firstname.concat(" ").concat(data.lastname);
-        username= data.firstname;
-      }
-      username= data.userId;
-    },
-    getSets(){
-      var sets = [{owner: 'dude', setname: 'set1', numterms: '20'}]
-      var ul = document.querySelector("ul")
-
-      for (let set of sets) {
-        entry = document.createElement("li");
-        entry
-      }
-    }
-  }
+    ...mapGetters('settings', ['getLanguage']),
+    ...mapGetters('auth', ['getUserId'])
+  },
+  
 }
 
 </script>
