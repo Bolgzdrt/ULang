@@ -118,17 +118,17 @@ const router = new VueRouter({
  *
  * Commenting out for now for development testing purposes
  */
-// router.beforeEach((to, from, next) => {
-//   if (!['Welcome', 'Login', 'Signup'].includes(to.name)) {
-//     if (!Vue.$cookies.get('token')) {
-//       console.log('No Token Found')
-//       router.replace('/ulang')
-//     } else {
-//       next()
-//     }
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  if (!['Welcome', 'Login', 'Signup'].includes(to.name)) {
+    if (!Vue.$cookies.get('token')) {
+      console.log('No Token Found')
+      router.replace('/ulang')
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
 
 export default router
