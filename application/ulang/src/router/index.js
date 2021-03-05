@@ -121,20 +121,18 @@ const router = new VueRouter({
 /**
  * This block will proctect any route other than Welcome, Login, and Signup
  * from being accessed without a token.
- *
- * Commenting out for now for development testing purposes
  */
-// router.beforeEach((to, from, next) => {
-//   if (!['Welcome', 'Login', 'Signup'].includes(to.name)) {
-//     if (!Vue.$cookies.get('token')) {
-//       console.log('No Token Found')
-//       router.replace('/ulang')
-//     } else {
-//       next()
-//     }
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  if (!['Welcome', 'Login', 'Signup'].includes(to.name)) {
+    if (!Vue.$cookies.get('jwt')) {
+      console.log('No Token Found')
+      router.replace('/ulang')
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
 
 export default router
