@@ -1,12 +1,45 @@
 <template>
-  <div class="inputCard">
-    <div class="word">
-      <p>{{ this.word }}</p>
+  <div class="tableInputCard">
+    <div class="table">
+      <p>Word: {{ conjObj.word }}</p>
+      <p>Table: {{ conjObj.conjugation.title }}</p>
+      <table>
+          <tr>
+            <td>
+              <p v-if="conjObj.selected === 'tl'">?</p>
+              <p v-if="conjObj.selected !== 'tl'">{{ conjObj.conjugation.tl }}</p>
+            </td>
+            <td>
+              <p v-if="conjObj.selected === 'tr'">?</p>
+              <p v-if="conjObj.selected !== 'tr'">{{ conjObj.conjugation.tr }}</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p v-if="conjObj.selected === 'ml'">?</p>
+              <p v-if="conjObj.selected !== 'ml'">{{ conjObj.conjugation.ml }}</p>
+            </td>
+            <td>
+              <p v-if="conjObj.selected === 'mr'">?</p>
+              <p v-if="conjObj.selected !== 'mr'">{{ conjObj.conjugation.mr }}</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p v-if="conjObj.selected === 'bl'">?</p>
+              <p v-if="conjObj.selected !== 'bl'">{{ conjObj.conjugation.bl }}</p>
+            </td>
+            <td>
+              <p v-if="conjObj.selected === 'br'">?</p>
+              <p v-if="conjObj.selected !== 'br'">{{ conjObj.conjugation.br }}</p>
+            </td>
+          </tr>
+        </table>
     </div>
     <div class="entry">
-      <input class="textBox" type="text" placeholder="Enter translation here..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter translation here...'" v-model="input" @keyup.enter="correctCheck">
+      <input class="textBox" type="text" placeholder="Enter conjugation here..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter translation here...'" v-model="input" @keyup.enter="correctCheck">
       <AccentButtons @buttonClicked="appendChar" />
-      <p class="error" v-if="entryErr">Please enter a translation</p>
+      <p class="error" v-if="entryErr">Please enter a conjugation for the ? cell</p>
     </div>
     <button class="submitButton" @click="correctCheck">Submit</button>
     <transition name="modalFade" v-if="resultModal">
@@ -16,7 +49,12 @@
           <div class="incorrect" v-if="!correct">
             <p class="result">Incorrect</p>
             <p>Correct answer:</p>
-            <p>{{ answer }}</p>
+            <p v-if="conjObj.selected === 'tl'">{{ conjObj.conjugation.tl }}</p>
+            <p v-if="conjObj.selected === 'tr'">{{ conjObj.conjugation.tr }}</p>
+            <p v-if="conjObj.selected === 'ml'">{{ conjObj.conjugation.ml }}</p>
+            <p v-if="conjObj.selected === 'mr'">{{ conjObj.conjugation.mr }}</p>
+            <p v-if="conjObj.selected === 'bl'">{{ conjObj.conjugation.bl }}</p>
+            <p v-if="conjObj.selected === 'br'">{{ conjObj.conjugation.br }}</p>
           </div>
           <div class="buttonBox">
             <button class="submitButton" @click="cont">Continue</button>
@@ -31,9 +69,26 @@
 import AccentButtons from '@/components/AccentButtons.vue'
 
 export default {
-  name: 'InputCard',
+  name: 'tableInputCard',
   components: { AccentButtons },
-  props: ['word', 'answer'],
+  props: {
+    conjObj: {
+      required: true,
+      default: () => ({
+        word: '',
+        selected: '',
+        correct: false,
+        conjugation: {
+          bl: '',
+          br: '',
+          ml: '',
+          mr: '',
+          tl: '',
+          tr: ''
+        }
+      })
+    }
+  },
   data() {
     return {
       input: '',
@@ -48,12 +103,11 @@ export default {
     },
     correctCheck() {
       if (this.input) {
-        if (this.input === this.answer) {
+        if (this.input === this.conjObj.conjugation[this.conjObj.selected]) {
           this.correct = true
         } else {
           this.correct = false
         }
-        console.log(this.correct)
         this.resultModal = true
         if (this.entryErr) {this.entryErr = false}
       } else {
@@ -70,7 +124,7 @@ export default {
 </script>
 
 <style scoped>
-.inputCard {
+.tableInputCard {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -82,8 +136,23 @@ export default {
   width: 50em;
 }
 
-.word > p {
-  font-size: 4em;
+.table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 2.5em;
+}
+
+table {
+  margin-top: 15px;
+  border-style: hidden;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td {
+  padding: .75rem;
+  border: 2px solid black;
 }
 
 .textBox {

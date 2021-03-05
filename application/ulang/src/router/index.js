@@ -14,7 +14,8 @@ import CreateWord from '../views/CreateWord.vue'
 import AddLanguage from '../views/AddLanguage.vue'
 import CreateSet from '../views/CreateSet.vue'
 import Vocabulary from '../views/Vocabulary.vue'
-import Conjugations from '../views/Conjugations.vue'
+import Conjugation from '../views/Conjugation.vue'
+import ConjugationSettings from '../views/ConjugationSettings.vue'
 import Pronunciations from '../views/Pronunciations.vue'
 
 Vue.use(VueRouter)
@@ -94,9 +95,15 @@ const routes = [
     component: Vocabulary
   },
   {
-    path: '/conjugations',
-    name: 'Conjugations',
-    component: Conjugations
+    path: '/conjugation/:id',
+    name: 'Conjugation',
+    component: Conjugation,
+    props: true
+  },
+  {
+    path: '/conjugationSettings',
+    name: 'ConjugationSettings',
+    component: ConjugationSettings
   },
   {
     path: '/pronunciations',

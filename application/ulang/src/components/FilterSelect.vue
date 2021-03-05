@@ -3,6 +3,7 @@
     <div class="container">
       <div class="input-box" v-click-outside="hideSelection">
         <input type="text" @click="showSelection" @input="filterList" v-model="filter">
+        <i class="arrow down"></i>
       </div>
       <div class="optionList" v-if="setList">
         <p class="option" v-for="option in slimList" v-bind:value="option._id" :key="option._id" @click="setSelect(option)">{{ option.name }}</p>
@@ -81,11 +82,15 @@ input {
   flex-direction: column;
   overflow-y: scroll;
   z-index: 1;
-  top: 1.5em;
+  top: 1.6em;
 }
 
 select:hover, .option:hover {
   cursor: pointer;
+}
+
+.option:hover {
+  background-color: #f1f1f1;
 }
 
 /* Scrollbar */
@@ -101,5 +106,22 @@ select:hover, .option:hover {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  z-index: -1;
+  position: absolute;
+  float: right;
+  right: 2.7em;
+  top: 1em;
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
 }
 </style>
