@@ -1,7 +1,7 @@
 <template>
   <div id="word">
     <div class="container">
-
+      <h1>{{ wordInfo.word }}</h1>
     </div>
   </div>
 </template>
@@ -13,24 +13,29 @@ export default {
   props: ['id'],
   data() {
     return {
-      word: {
+      wordInfo: {
         word: '',
         language: '',
         english: '',
         partOfSpeech: '',
         notes: '',
         definition: ''
-      }
+      },
+      conjugations: []
     }
   },
   methods: {
-    async getWordInfo() {
-      try {
-        const res = await getWordById(this.id)
-        console.log(res)
-      } catch (err) {
+    getWordInfo() {
+      getWordById(this.id).then(res => {
+        ['word', 'english', 'partOfSpeech', 'description', 'notes'].forEach(info => {
+          if (res.word[info]) {
+            this.wordInfo[info] = res.word[info]
+          }
+        })
+        this.conjugations = res.conjugations || null
+      }).catch(err => {
         console.error(err.response.data.error)
-      }
+      })
     }
   },
   mounted() {

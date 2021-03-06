@@ -11,6 +11,10 @@ export const getWords = async (userId, language) => {
 }
 
 export const getWordById = async (wordId) => {
-  const res = await axios.get(`word/getWord/${wordId}`)
-  return res.data
+  try {
+    const res = await axios.get(`word/getWord/${wordId}`)
+    return res.data
+  } catch (err) {
+    console.log(err)
+  }
 }

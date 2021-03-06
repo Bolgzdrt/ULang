@@ -84,7 +84,7 @@ const getWordById = async (req, res) => {
     res.status(200).json({
       success: true,
       word: word._doc,
-      conjugation: conjugationData,
+      conjugations: conjugationData,
     })
   } catch (err) {
     console.log(err)
