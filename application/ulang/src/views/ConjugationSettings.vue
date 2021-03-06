@@ -17,7 +17,7 @@
 <script>
 import FilterSelect from '@/components/FilterSelect'
 import { mapGetters } from 'vuex'
-import { getSets } from '@/services/setService'
+import { getSetsWithVerbs } from '@/services/setService'
 
 export default {
   name: 'ConjugationSettings',
@@ -45,7 +45,7 @@ export default {
     }
   },
   created() {
-    getSets(this.getUserId(), this.getLanguage()).then(({sets}) => {
+    getSetsWithVerbs(this.getUserId(), this.getLanguage()).then(({sets}) => {
       this.sets = sets
     })
   },

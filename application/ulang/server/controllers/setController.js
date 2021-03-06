@@ -69,7 +69,7 @@ const getSetById = async (req, res) => {
 }
 
 const getSetsWithVerbs = async (req, res) => {
-  const { id, lang } = req.body
+  const { id, lang } = req.params
   try {
     const user = await User.findById(id)
     const setsOfUser = user.sets;
@@ -77,7 +77,7 @@ const getSetsWithVerbs = async (req, res) => {
     let verbContainingSets = []
     for (let s of sets) {
       for (let w of s.words) {
-        const word = await Word.findById(w._id)
+        const word = await Word.findById(w)
         if (word.conjugationIds.length) {
           verbContainingSets.push(s)
           break
