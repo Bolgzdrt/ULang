@@ -11,10 +11,11 @@ export const getWords = async (userId, language) => {
 }
 
 export const getWordById = async (wordId) => {
-  try {
-    const res = await axios.get(`word/getWord/${wordId}`)
-    return res.data
-  } catch (err) {
-    console.log(err)
-  }
+  const res = await axios.get(`word/getWord/${wordId}`)
+  return res.data
+}
+
+export const getConjugation = async (conjId) => {
+  const res = await axios.get(`word/getConjugation/${conjId}`)
+  return res.data
 }

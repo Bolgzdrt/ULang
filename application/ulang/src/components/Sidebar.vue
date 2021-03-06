@@ -5,7 +5,7 @@
     <div class="pageLinks">
       <router-link :to="{ name: 'FlashCardsSettings' }">Flash Cards</router-link>
       <router-link :to="{ name: 'LearnSettings' }">Vocabulary</router-link>
-      <router-link :to="{ name: 'Conjugations' }">Conjugations</router-link>
+      <router-link :to="{ name: 'ConjugationSettings' }">Conjugations</router-link>
       <router-link :to="{ name: 'Pronunciations' }">Pronunciations</router-link>
     </div>
     <hr>

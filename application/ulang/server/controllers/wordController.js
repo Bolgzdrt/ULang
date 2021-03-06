@@ -95,6 +95,35 @@ const getWordById = async (req, res) => {
   }
 }
 
+const getConjugation = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const conjugation = await Conjugation.findById(id)
+    const response = ['tl', 'tr', 'ml', 'mr', 'bl', 'br'].reduce((acc, cur) => {
+      if(conjugation[cur]){
+        return {
+          ...acc,
+          [cur]: conjugation[cur]
+        }
+      } else {
+        return acc
+      }
+    }, {})
+    response['title'] = conjugation.title
+    res.status(200).json({
+      success: true,
+      conjugation: response
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
 const updateWord = async (req, res) => {
   const args = req.body
 
@@ -146,6 +175,7 @@ module.exports = {
   createWord,
   getAllWordsOfUser,
   getWordById,
+  getConjugation,
   updateWord,
   deleteWord
 }
