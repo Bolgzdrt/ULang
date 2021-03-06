@@ -5,7 +5,7 @@ const router = Router()
 
 router.post('/createWord', wordController.createWord)
 router.get('/getWords/:id/:language', wordController.getAllWordsOfUser)
-router.get('/getWords/:id', wordController.getWordById)
+router.get('/getWord/:id', wordController.getWordById)
 router.put('/updateWord/:id', wordController.updateWord)
 router.delete('/deleteWord/:id', wordController.deleteWord)
 

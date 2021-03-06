@@ -2,7 +2,7 @@ const Word = require('../models/Word')
 const Set = require('../models/Set')
 const User = require('../models/User')
 const Conjugation = require('../models/Conjugation')
-const { filterUpdates } = require('../utils/utils')
+const { getRelevantConjugationData } = require('../utils/utils')
 
 const createWord = async (req, res) => {
   const { word, language, english, partOfSpeech, definition, ownerId, setIds, conjugationData } = req.body
@@ -73,15 +73,24 @@ const getWordById = async (req, res) => {
 
   try {
     const word = await Word.findById(id)
+    let conjugationData = undefined;
+    if (word.conjugationIds.length) {
+      const conjugationDataPromises = word.conjugationIds.map((conjId) => {
+        return Conjugation.findById(conjId)
+      })
+      conjugationData = await Promise.all(conjugationDataPromises)
+      conjugationData = conjugationData.map(conj => getRelevantConjugationData(conj))
+    }
     res.status(200).json({
       success: true,
-      word
+      word: word._doc,
+      conjugation: conjugationData,
     })
   } catch (err) {
     console.log(err)
     res.status(400).json({
       success: false,
-      error: err.message
+      error: err.message,
     })
   }
 }
@@ -98,9 +107,8 @@ const updateWord = async (req, res) => {
     ownerId: args.ownerId
   } = req.body)
 
-  const updates = filterUpdates(inputs)
   try {
-    const updatedWord = await Word.findByIdAndUpdate(args._id, updates, {
+    const updatedWord = await Word.findByIdAndUpdate(args._id, inputs, {
       new: true,
       useFindAndModify: false
     })

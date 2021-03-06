@@ -5,6 +5,14 @@ module.exports.filterUpdates = (inputs) =>
     {}
   )
 
-module.exports.capitalizeWord = (word) => {
-  return word.charAt(0).toUpperCase() + word.slice(1)
+module.exports.capitalizeWord = (word) => (
+  word.charAt(0).toUpperCase() + word.slice(1)
+)
+
+module.exports.getRelevantConjugationData = (conjugation) => {
+  return ['tl', 'tr', 'ml', 'mr', 'bl', 'br', 'title'].reduce((acc, cur) => {
+    return conjugation[cur]
+      ? { ...acc, [cur]: conjugation[cur] }
+      : acc
+  }, {})
 }
