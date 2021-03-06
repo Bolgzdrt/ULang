@@ -5,6 +5,11 @@ export const getSets = async (userId, language) => {
   return res.data
 }
 
+export const getSetsWithVerbs = async (userId, language) => {
+  const res = await axios.get(`set/getSetsWithVerbs/${userId}/${language}`)
+  return res.data
+}
+
 export const createSet = async (setObject) => {
   const res = await axios.post(`set/createSet`, setObject)
   return res.data

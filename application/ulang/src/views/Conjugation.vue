@@ -1,19 +1,19 @@
 <template>
-  <div class="learn">
+  <div class="conjugation">
     <BackButton :fromRoute="fromRoute" />
     <div v-if="!done">
-      <div style="padding-bottom: 30px;"><SetProg :curr="index + 1" :total="total" :setName="setName" /></div>
-      <InputCard :word="wordList[index].english" :answer="wordList[index].word" @nextCard="nextCard"/>
+      <div style="padding-bottom: 30px;"><SetProg :curr="index + 1" :total="conjList.length" :setName="setName" /></div>
+      <TableInputCard :conjObj="conjList[index]" @nextCard="nextCard"/>
     </div>
-    <div class="learnResult" v-if="done">
+    <div class="conjugationResult" v-if="done">
       <div>
         <p class="title">Results:</p>
         <p class="percent">{{ resPercent }}% correct</p>
       </div>
       <div class="resultList">
-        <div class="word" v-for="word in wordList" :key="word._id">
-          <p>{{ word.english }}/{{ word.word }}:</p>
-          <p :class="word.correct == true?'correct':'incorrect'">{{ word.correct == true?"Correct" : "Incorrect" }}</p>
+        <div class="conj" v-for="conj in conjList" :key="conj._id">
+          <p>{{ conj.conjugation[conj.selected] }} ({{ conj.word }}):</p>
+          <p :class="conj.correct == true?'correct':'incorrect'">{{ conj.correct == true?"Correct" : "Incorrect" }}</p>
         </div>
       </div>
     </div>
@@ -23,19 +23,20 @@
 <script>
 import BackButton from '@/components/BackButton.vue'
 import SetProg from '@/components/SetProg.vue'
-import InputCard from '@/components/InputCard.vue'
+import TableInputCard from '@/components/TableInputCard.vue'
 import { getWordsInSet, getSetById } from '@/services/setService'
+import { getConjugation } from '@/services/wordService'
 
 export default {
-  name: 'Learn',
-  components: { BackButton, SetProg, InputCard },
+  name: 'Conjugation',
+  components: { BackButton, SetProg, TableInputCard },
   props: ['id'],
   data() {
     return {
       wordList: [{english: ''}],
+      conjList: [],
       setName: '',
       index: 0,
-      total: 0,
       resultModal: false,
       done: false,
       resPercent: '',
@@ -44,35 +45,51 @@ export default {
   },
   methods: {
     nextCard(correct) {
-      if (this.index < this.total) {
+      if (this.index < this.conjList.length) {
         if (correct) {
-          this.wordList[this.index].correct = true
+          this.conjList[this.index].correct = true
         }
         this.index += 1
       }
-      if (this.index >= this.total) {
+      if (this.index >= this.conjList.length) {
         this.done = true
         var correctTally = 0
-        this.wordList.forEach(element => {
+        this.conjList.forEach(element => {
           if (element.correct) {
             correctTally += 1
           }
         })
-        this.resPercent = ((correctTally/this.total) * 100).toFixed(0)
+        this.resPercent = ((correctTally/this.conjList.length) * 100).toFixed(0)
       }
     }
   },
   created: function(){
     if (!this.id) {
-      this.$router.push({name: "LearnSettings"})
+      this.$router.push({name: "ConjugationSettings"})
     }
     getWordsInSet(this.id).then(({words}) => {
-      this.wordList = words.map(word => ({ ...word, correct: false }))
-      this.total = this.wordList.length;
+      this.wordList = words
+      this.wordList.forEach((element) => {
+        element.conjugationIds.forEach((conjId) => {
+          if(conjId){
+            getConjugation(conjId).then(conj => {
+              const countOfKeys = Object.keys(conj.conjugation).length - 1
+              const options = Object.keys(conj.conjugation).filter(key => key != 'title')
+              this.conjList.push({
+                word: element.word,
+                conjugation: conj.conjugation,
+                selected: options[Math.floor(Math.random()*countOfKeys)],
+                correct: false
+              })
+            })
+          }
+        })
+      })
     })
     getSetById(this.id).then(({set}) => {
       this.setName = set.name
     })
+    
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -83,7 +100,7 @@ export default {
 </script>
 
 <style scoped>
-.learn {
+.conjugation {
   width: 100%;
   overflow-y: auto;
   display: flex;
@@ -92,7 +109,7 @@ export default {
   align-items: center;
 }
 
-.learnResult {
+.conjugationResult {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -120,7 +137,7 @@ export default {
   overflow-y: scroll;
 }
 
-.word > p {
+.conj > p {
   display: inline-block;
   font-size: 1.5em;
 }
