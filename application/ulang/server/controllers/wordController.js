@@ -100,17 +100,7 @@ const getConjugation = async (req, res) => {
 
   try {
     const conjugation = await Conjugation.findById(id)
-    const response = ['tl', 'tr', 'ml', 'mr', 'bl', 'br'].reduce((acc, cur) => {
-      if(conjugation[cur]){
-        return {
-          ...acc,
-          [cur]: conjugation[cur]
-        }
-      } else {
-        return acc
-      }
-    }, {})
-    response['title'] = conjugation.title
+    const response = getRelevantConjugationData(conjugation)
     res.status(200).json({
       success: true,
       conjugation: response
