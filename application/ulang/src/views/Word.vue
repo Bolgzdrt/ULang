@@ -160,6 +160,18 @@ export default {
     },
     getPlaceHolder(str) {
       return `${str} ${this.wordInfo.word.toLowerCase()}`
+    },
+    backClick() {
+      if (this.conjugations - 1 >= 0) {
+        this.conjugationIndex--
+      }
+    },
+    nextClick() {
+      if (this.conjugationIndex + 1 < this.conjugations.length) {
+        this.conjugationIndex++
+      } else {
+        // Switch into edit mode and add a new table
+      }
     }
   },
   mounted() {
@@ -187,7 +199,7 @@ export default {
 }
 
 .title {
-  font-size: 2em;
+  font-size: 2.25em;
   text-align: left;
   padding-left: 1em;
   padding-bottom: 0.5em;
@@ -225,7 +237,7 @@ export default {
 
 .attribute-container p,
 .attribute-container label {
-  font-size: 1.25em;
+  font-size: 1.5em;
 }
 
 .attribute-container input {
