@@ -19,3 +19,9 @@ export const getConjugation = async (conjId) => {
   const res = await axios.get(`word/getConjugation/${conjId}`)
   return res.data
 }
+
+export const updateWord = async (wordId, updates) => {
+  console.log(updates);
+  const res = await axios.put(`word/updateWord/${wordId}`, updates)
+  return res.data
+}

@@ -2,18 +2,27 @@ const Word = require('../models/Word')
 const Set = require('../models/Set')
 const User = require('../models/User')
 const Conjugation = require('../models/Conjugation')
-const { getRelevantConjugationData } = require('../utils/utils')
+const { getRelevantConjugationData, filterUpdates } = require('../utils/utils')
 
 const createWord = async (req, res) => {
-  const { word, language, english, partOfSpeech, definition, ownerId, setIds, conjugationData } = req.body
+  const {
+    word,
+    language,
+    english,
+    partOfSpeech,
+    definition,
+    ownerId,
+    setIds,
+    conjugationData
+  } = req.body
 
   try {
     let conjugationIds
     if (conjugationData) {
-      const conjIds = conjugationData.map(async(conj) => {
+      const conjIds = conjugationData.map(async (conj) => {
         const newConj = await Conjugation.create(conj)
         return newConj._id
-      });
+      })
       conjugationIds = await Promise.all(conjIds)
     }
     const newWord = await Word.create({
@@ -26,13 +35,18 @@ const createWord = async (req, res) => {
       conjugationIds
     })
 
-    setIds.forEach(setId => {
-      Set.findByIdAndUpdate(setId, { $push: { words: newWord._id }}).exec()
-    });
+    setIds.forEach((setId) => {
+      Set.findByIdAndUpdate(setId, { $push: { words: newWord._id } }).exec()
+    })
     const user = await User.findById(ownerId)
     const dictsOfUser = user.dictionaries
-    const dicts = await Set.find({ _id: { $in: dictsOfUser }, language: language })
-    Set.findByIdAndUpdate(dicts[0]._id, { $push: { words: newWord._id }}).exec()
+    const dicts = await Set.find({
+      _id: { $in: dictsOfUser },
+      language: language
+    })
+    Set.findByIdAndUpdate(dicts[0]._id, {
+      $push: { words: newWord._id }
+    }).exec()
 
     res.status(201).json({
       success: true,
@@ -52,9 +66,12 @@ const getAllWordsOfUser = async (req, res) => {
   try {
     const user = await User.findById(id)
     const dictsOfUser = user.dictionaries
-    const dicts = await Set.find({ _id: { $in: dictsOfUser }, language: language })
+    const dicts = await Set.find({
+      _id: { $in: dictsOfUser },
+      language: language
+    })
     const wordIds = dicts[0].words
-    const words = await Word.find({_id: { $in: wordIds}})
+    const words = await Word.find({ _id: { $in: wordIds } })
     res.status(200).json({
       success: true,
       words
@@ -73,24 +90,26 @@ const getWordById = async (req, res) => {
 
   try {
     const word = await Word.findById(id)
-    let conjugationData = undefined;
+    let conjugationData = undefined
     if (word.conjugationIds.length) {
       const conjugationDataPromises = word.conjugationIds.map((conjId) => {
         return Conjugation.findById(conjId)
       })
       conjugationData = await Promise.all(conjugationDataPromises)
-      conjugationData = conjugationData.map(conj => getRelevantConjugationData(conj))
+      conjugationData = conjugationData.map((conj) =>
+        getRelevantConjugationData(conj)
+      )
     }
     res.status(200).json({
       success: true,
       word: word._doc,
-      conjugations: conjugationData,
+      conjugations: conjugationData
     })
   } catch (err) {
     console.log(err)
     res.status(400).json({
       success: false,
-      error: err.message,
+      error: err.message
     })
   }
 }
@@ -115,6 +134,7 @@ const getConjugation = async (req, res) => {
 }
 
 const updateWord = async (req, res) => {
+  const { id } = req.params
   const args = req.body
 
   const inputs = ({
@@ -125,11 +145,11 @@ const updateWord = async (req, res) => {
     notes: args.notes,
     ownerId: args.ownerId
   } = req.body)
+  const updates = filterUpdates(inputs)
 
   try {
-    const updatedWord = await Word.findByIdAndUpdate(args._id, inputs, {
-      new: true,
-      useFindAndModify: false
+    const updatedWord = await Word.findByIdAndUpdate(id, updates, {
+      new: true
     })
     res.status(200).json({
       success: true,
