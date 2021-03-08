@@ -44,38 +44,48 @@
           </span>
         </span>
       </div>
-      <div v-if="conjugations.length" class="conjugation-container">
+      <div v-if="wordInfo.conjugations.length" class="conjugation-container">
         <div class="table-title">
-          <p>{{ conjugations[conjugationIndex].title }}</p>
+          <p v-if="!editBools.conjugation">{{ wordInfo.conjugations[conjugationIndex].title }}</p>
+          <input type="text" name="title" id="title" v-if="editBools.conjugation" v-model="editInputs.conjugations[conjugationIndex].title">
         </div>
+        <span @click="toggleEdit('conjugation')" id="conjugationEdit">
+          <Edit />
+        </span>
         <div class="table">
           <table>
             <tr>
               <td>
-                <p>{{ conjugations[conjugationIndex].tl }}</p>
+                <p v-if="!editBools.conjugation">{{ wordInfo.conjugations[conjugationIndex].tl }}</p>
+                <input type="text" name="tl" id="tl" v-if="editBools.conjugation" v-model="editInputs.conjugations[conjugationIndex].tl">
               </td>
               <td>
-                <p>{{ conjugations[conjugationIndex].tr }}</p>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p>{{ conjugations[conjugationIndex].ml }}</p>
-              </td>
-              <td>
-                <p>{{ conjugations[conjugationIndex].mr }}</p>
+                <p v-if="!editBools.conjugation">{{ wordInfo.conjugations[conjugationIndex].tr }}</p>
+                <input type="text" name="tr" id="tr" v-if="editBools.conjugation" v-model="editInputs.conjugations[conjugationIndex].tr">
               </td>
             </tr>
             <tr>
               <td>
-                <p>{{ conjugations[conjugationIndex].bl }}</p>
+                <p v-if="!editBools.conjugation">{{ wordInfo.conjugations[conjugationIndex].ml }}</p>
+                <input type="text" name="ml" id="ml" v-if="editBools.conjugation" v-model="editInputs.conjugations[conjugationIndex].ml">
               </td>
               <td>
-                <p>{{ conjugations[conjugationIndex].br }}</p>
+                <p v-if="!editBools.conjugation">{{ wordInfo.conjugations[conjugationIndex].mr }}</p>
+                <input type="text" name="mr" id="mr" v-if="editBools.conjugation" v-model="editInputs.conjugations[conjugationIndex].mr">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p v-if="!editBools.conjugation">{{ wordInfo.conjugations[conjugationIndex].bl }}</p>
+                <input type="text" name="bl" id="bl" v-if="editBools.conjugation" v-model="editInputs.conjugations[conjugationIndex].bl">
+              </td>
+              <td>
+                <p v-if="!editBools.conjugation">{{ wordInfo.conjugations[conjugationIndex].br }}</p>
+                <input type="text" name="br" id="br" v-if="editBools.conjugation" v-model="editInputs.conjugations[conjugationIndex].br">
               </td>
             </tr>
           </table>
-          <div class="nav">
+          <div v-if="!editBools.conjugation" class="nav">
             <div class="tableChange" @click="backClick">
               <img src="@/assets/pngs/Vector.png" alt="previous" />
             </div>
@@ -87,6 +97,14 @@
                 style="transform: rotate(180deg);"
               />
             </div>
+          </div>
+          <div v-if="editBools.conjugation" class="nav">
+            <span class="confirm-container conjugation-edit-icon" @click="cancelConjugationEdit">
+              <Cancel :height="32" :width="32" />
+            </span>
+            <span class="confirm-container conjugation-edit-icon" @click="confirmConjugationEdit">
+              <Confirm :height="36" :width="36" />
+            </span>
           </div>
         </div>
       </div>
@@ -112,10 +130,12 @@ export default {
         partOfSpeech: '',
         notes: '',
         definition: '',
+        conjugations: []
       },
       editBools: {
         definition: false,
         notes: false,
+        conjugation: false,
       },
       // These are what is being edited but if the edit is cancelled, the original is maintained
       editInputs: {
@@ -124,8 +144,8 @@ export default {
         partOfSpeech: '',
         notes: '',
         definition: '',
+        conjugations: []
       },
-      conjugations: [],
       conjugationIndex: 0,
     }
   },
@@ -138,7 +158,8 @@ export default {
             this.editInputs[info] = res.word[info]
           }
         })
-        this.conjugations = res.conjugations || null
+        this.wordInfo.conjugations = res.conjugations || null
+        this.editInputs.conjugations = res.conjugations
       }).catch(err => {
         console.error(err.response.data.error)
       })
@@ -158,16 +179,33 @@ export default {
       this.editInputs[property] = this.wordInfo[property]
       this.toggleEdit(property)
     },
+    confirmConjugationEdit() {
+      const test = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(this.editInputs.conjugations[this.conjugationIndex])
+        }, 1500)
+      })
+      test.then(res => {
+        this.wordInfo.conjugations[this.conjugationIndex] = res
+        this.toggleEdit('conjugation')
+      }).catch(err => {
+        console.log(err.message)
+      })
+    },
+    cancelConjugationEdit() {
+      this.editInputs.conjugations[this.conjugationIndex] = this.wordInfo.conjugations[this.conjugationIndex]
+      this.toggleEdit('conjugation')
+    },
     getPlaceHolder(str) {
       return `${str} ${this.wordInfo.word.toLowerCase()}`
     },
     backClick() {
-      if (this.conjugations - 1 >= 0) {
+      if (this.wordInfo.conjugations - 1 >= 0) {
         this.conjugationIndex--
       }
     },
     nextClick() {
-      if (this.conjugationIndex + 1 < this.conjugations.length) {
+      if (this.conjugationIndex + 1 < this.wordInfo.conjugations.length) {
         this.conjugationIndex++
       } else {
         // Switch into edit mode and add a new table
@@ -276,21 +314,37 @@ export default {
   background-color: #e0e0e0;
   margin-top: 1.5rem;
   padding: 0 2rem;
+  position: relative;
 }
 
 .table-title {
   width: 100%;
   text-align: center;
   padding-top: 2rem;
+}
+
+.table-title p {
   font-size: 1.5em;
+  margin-bottom: 2rem;
+}
+
+.table-title input {
+  padding: 0.25rem 0.5rem;
+  font-size: 1.25rem;
+  margin-bottom: 1.55rem;
+}
+
+#conjugationEdit {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
 }
 
 .table {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 2em;
-  margin-top: 1em;
+  /* margin-top: 2rem; */
 }
 
 table {
@@ -304,6 +358,15 @@ td {
   border: 2px solid black;
   min-width: 200px;
   text-align: center;
+}
+
+.table p {
+  font-size: 2em;
+}
+
+.table input {
+  padding: 0.25rem 0.5rem;
+  font-size: 1.35rem;
 }
 
 .nav {
@@ -328,5 +391,10 @@ td {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.conjugation-edit-icon #confirmIcon>svg {
+  width: 32px;
+  height: 32px;
 }
 </style>

@@ -3,8 +3,8 @@
     <svg
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
+      :width="width"
+      :height="height"
       viewBox="0 0 60 60"
     >
       <path
@@ -15,7 +15,21 @@
 </template>
 
 <script>
-export default {}
+export default {
+  name: 'cancel',
+  props: {
+    height: {
+      type: Number,
+      required: false,
+      default: 28,
+    },
+    width: {
+      type: Number,
+      required: false,
+      default: 28,
+    }
+  },
+}
 </script>
 
 <style scoped>

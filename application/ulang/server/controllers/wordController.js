@@ -97,7 +97,11 @@ const getWordById = async (req, res) => {
       })
       conjugationData = await Promise.all(conjugationDataPromises)
       conjugationData = conjugationData.map((conj) =>
-        getRelevantConjugationData(conj)
+        ['tl', 'tr', 'ml', 'mr', 'bl', 'br', 'title'].reduce((acc, cur) => {
+          return conj[cur]
+            ? { ...acc, [cur]: conj[cur] }
+            : { ...acc, [cur]: '' }
+        }, {})
       )
     }
     res.status(200).json({
