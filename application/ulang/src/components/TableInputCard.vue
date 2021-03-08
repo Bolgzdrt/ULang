@@ -4,42 +4,52 @@
       <p>Word: {{ conjObj.word }}</p>
       <p>Table: {{ conjObj.conjugation.title }}</p>
       <table>
-          <tr>
-            <td>
-              <p v-if="conjObj.selected === 'tl'">?</p>
-              <p v-if="conjObj.selected !== 'tl'">{{ conjObj.conjugation.tl }}</p>
-            </td>
-            <td>
-              <p v-if="conjObj.selected === 'tr'">?</p>
-              <p v-if="conjObj.selected !== 'tr'">{{ conjObj.conjugation.tr }}</p>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <p v-if="conjObj.selected === 'ml'">?</p>
-              <p v-if="conjObj.selected !== 'ml'">{{ conjObj.conjugation.ml }}</p>
-            </td>
-            <td>
-              <p v-if="conjObj.selected === 'mr'">?</p>
-              <p v-if="conjObj.selected !== 'mr'">{{ conjObj.conjugation.mr }}</p>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <p v-if="conjObj.selected === 'bl'">?</p>
-              <p v-if="conjObj.selected !== 'bl'">{{ conjObj.conjugation.bl }}</p>
-            </td>
-            <td>
-              <p v-if="conjObj.selected === 'br'">?</p>
-              <p v-if="conjObj.selected !== 'br'">{{ conjObj.conjugation.br }}</p>
-            </td>
-          </tr>
-        </table>
+        <tr>
+          <td>
+            <p v-if="conjObj.selected === 'tl'">?</p>
+            <p v-if="conjObj.selected !== 'tl'">{{ conjObj.conjugation.tl }}</p>
+          </td>
+          <td>
+            <p v-if="conjObj.selected === 'tr'">?</p>
+            <p v-if="conjObj.selected !== 'tr'">{{ conjObj.conjugation.tr }}</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p v-if="conjObj.selected === 'ml'">?</p>
+            <p v-if="conjObj.selected !== 'ml'">{{ conjObj.conjugation.ml }}</p>
+          </td>
+          <td>
+            <p v-if="conjObj.selected === 'mr'">?</p>
+            <p v-if="conjObj.selected !== 'mr'">{{ conjObj.conjugation.mr }}</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p v-if="conjObj.selected === 'bl'">?</p>
+            <p v-if="conjObj.selected !== 'bl'">{{ conjObj.conjugation.bl }}</p>
+          </td>
+          <td>
+            <p v-if="conjObj.selected === 'br'">?</p>
+            <p v-if="conjObj.selected !== 'br'">{{ conjObj.conjugation.br }}</p>
+          </td>
+        </tr>
+      </table>
     </div>
     <div class="entry">
-      <input class="textBox" type="text" placeholder="Enter conjugation here..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter translation here...'" v-model="input" @keyup.enter="correctCheck">
+      <input
+        class="textBox"
+        type="text"
+        placeholder="Enter conjugation here..."
+        onfocus="this.placeholder=''"
+        onblur="this.placeholder='Enter translation here...'"
+        v-model="input"
+        @keyup.enter="correctCheck"
+      />
       <AccentButtons @buttonClicked="appendChar" />
-      <p class="error" v-if="entryErr">Please enter a conjugation for the ? cell</p>
+      <p class="error" v-if="entryErr">
+        Please enter a conjugation for the ? cell
+      </p>
     </div>
     <button class="submitButton" @click="correctCheck">Submit</button>
     <transition name="modalFade" v-if="resultModal">
@@ -98,8 +108,8 @@ export default {
     }
   },
   methods: {
-    appendChar(char){
-      this.input += char;
+    appendChar(char) {
+      this.input += char
     },
     correctCheck() {
       if (this.input) {
@@ -109,7 +119,9 @@ export default {
           this.correct = false
         }
         this.resultModal = true
-        if (this.entryErr) {this.entryErr = false}
+        if (this.entryErr) {
+          this.entryErr = false
+        }
       } else {
         this.entryErr = true
       }
@@ -124,6 +136,8 @@ export default {
 </script>
 
 <style scoped>
+@import "../assets/styles/utils.css";
+
 .tableInputCard {
   display: flex;
   flex-direction: column;
@@ -151,13 +165,13 @@ table {
 }
 
 td {
-  padding: .75rem;
+  padding: 0.75rem;
   border: 2px solid black;
 }
 
 .textBox {
   width: 20em;
-  border: 0px solid #000000;
+  border: 0px solid var(--black);
   border-bottom-width: 1px;
   background-color: transparent;
   font-size: 2em;
@@ -175,6 +189,7 @@ button {
   border: none;
   filter: drop-shadow(3px 3px 4px rgba(0, 0, 0, 0.3));
 }
+
 button:hover {
   filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
   cursor: pointer;
@@ -209,7 +224,7 @@ button:hover {
 }
 
 .modal {
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 2px 2px 20px 1px;
   overflow-x: auto;
   display: flex;
@@ -238,5 +253,10 @@ button:hover {
 
 .incorrect > .result {
   color: red;
+}
+
+/* Adding styles to accentButtons to make it centered below the input box */
+.accentButtons {
+  justify-content: center;
 }
 </style>

@@ -1,6 +1,6 @@
 const User = require('../models/User')
 const Set = require('../models/Set')
-const { capitalizeWord } = require('../utils/utils')
+const { capitalizeWord, filterUpdates } = require('../utils/utils')
 const bcrypt = require('bcrypt')
 
 const followUser = async (req, res) => {
@@ -138,8 +138,8 @@ const addLanguagesToUser = async (req, res) => {
 
 const updateUserInfo = async (req, res) => {
   const { id } = req.params
-  const updates = ({ email, password, firstName, lastName } = req.body)
-
+  const inputs = ({ email, password, firstName, lastName } = req.body)
+  const updates = filterUpdates(inputs)
   try {
     // const updates = filterUpdates(inputs)
     const user = await User.findByIdAndUpdate(id, updates, { new: true })
@@ -212,7 +212,6 @@ const changePassword = async (req, res) => {
 const deleteAccount = async (req, res) => {
   const { id } = req.params
   const { password } = req.body
-  console.log(id, password)
   try {
     const user = await User.findById(id)
     const success = await bcrypt.compare(password, user.password)
