@@ -44,34 +44,34 @@
           </span>
         </span>
       </div>
-      <div class="conjugation-container">
+      <div v-if="conjugations.length" class="conjugation-container">
         <div class="table-title">
-          <p>Present or something</p>
+          <p>{{ conjugations[conjugationIndex].title }}</p>
         </div>
         <div class="table">
           <table>
             <tr>
               <td>
-                <p>idk</p>
+                <p>{{ conjugations[conjugationIndex].tl }}</p>
               </td>
               <td>
-                <p>idk</p>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p>idk</p>
-              </td>
-              <td>
-                <p>idk</p>
+                <p>{{ conjugations[conjugationIndex].tr }}</p>
               </td>
             </tr>
             <tr>
               <td>
-                <p>idk</p>
+                <p>{{ conjugations[conjugationIndex].ml }}</p>
               </td>
               <td>
-                <p>idk</p>
+                <p>{{ conjugations[conjugationIndex].mr }}</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>{{ conjugations[conjugationIndex].bl }}</p>
+              </td>
+              <td>
+                <p>{{ conjugations[conjugationIndex].br }}</p>
               </td>
             </tr>
           </table>
@@ -79,6 +79,7 @@
             <div class="tableChange" @click="backClick">
               <img src="@/assets/pngs/Vector.png" alt="previous" />
             </div>
+            <!-- TODO: When next clicked when there are no more tables, add another -->
             <div class="tableChange" @click="nextClick">
               <img
                 src="@/assets/pngs/Vector.png"
