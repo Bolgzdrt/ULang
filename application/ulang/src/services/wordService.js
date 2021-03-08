@@ -34,3 +34,8 @@ export const createConjugationForWord = async (wordId, conjugationData) => {
   const res = await axios.post(`word/createConjugationForWord/${wordId}`, conjugationData)
   return res.data
 }
+
+export const deleteWord = async (wordId) => {
+  const res = await axios.delete(`word/deleteWord/${wordId}`)
+  return res.data
+}

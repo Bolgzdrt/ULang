@@ -238,6 +238,7 @@ const deleteWord = async (req, res) => {
     await Word.findByIdAndDelete(id)
     res.status(200).json({
       success: true,
+      message: 'Word Deleted Successfully'
     })
   } catch (err) {
     console.log(err)

@@ -1,11 +1,16 @@
 <template>
   <div id="word">
     <div class="container">
-      <p class="title">
-        {{ wordInfo.word }} – {{ wordInfo.english }} ({{
-          wordInfo.partOfSpeech
-        }})
-      </p>
+      <div class="title-container">
+        <p class="title">
+          {{ wordInfo.word }} – {{ wordInfo.english }} ({{
+            wordInfo.partOfSpeech
+          }})
+        </p>
+        <span class="trash-icon" @click="initiateDelete">
+          <Trash />
+        </span>
+      </div>
       <div v-if="!editBools.definition" class="attribute-container">
         <span class="attribute">
           <p>Definition</p>
@@ -187,6 +192,17 @@
           </div>
         </div>
       </div>
+      <transition name="modalFade" v-if="editBools.delete">
+        <div class="modalBackdrop">
+          <div class="modal">
+            <p class="titleP">Delete this word?</p>
+            <div class="buttonBox">
+              <button class="cancelButton" @click="cancelDelete">Cancel</button>
+              <button class="submitButton" @click="deleteWord">Delete</button>
+            </div>
+          </div>
+        </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -195,18 +211,20 @@
 import Edit from '@/assets/svgs/edit.vue'
 import Confirm from '@/assets/svgs/confirm.vue'
 import Cancel from '@/assets/svgs/cancel.vue'
+import Trash from '@/assets/svgs/trash.vue'
 import {
   getWordById,
   updateWord,
   updateConjugation,
   createConjugationForWord,
+  deleteWord,
 } from '@/services/wordService'
 import { isEqual } from 'lodash'
 
 export default {
   name: 'Word',
   props: ['id'],
-  components: { Edit, Confirm, Cancel },
+  components: { Edit, Confirm, Cancel, Trash },
   data() {
     return {
       wordInfo: {
@@ -221,6 +239,7 @@ export default {
         definition: false,
         notes: false,
         conjugation: false,
+        delete: false,
       },
       // These are what is being edited but if the edit is cancelled, the original is maintained
       editInputs: {
@@ -367,6 +386,21 @@ export default {
         }
       }
     },
+    initiateDelete() {
+      this.editBools.delete = true
+    },
+    deleteWord() {
+      deleteWord(this.id)
+        .then(() => {
+          this.$router.push({ name: 'Home' })
+        })
+        .catch(err => {
+          console.error(err.response.data.error)
+        })
+    },
+    cancelDelete() {
+      this.editBools.delete = false
+    },
   },
   mounted() {
     this.getWordInfo()
@@ -382,6 +416,64 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 1rem;
+  position: relative;
+}
+
+.modalBackdrop {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: var(--white);
+  box-shadow: 2px 2px 20px 1px;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 1rem;
+  border-radius: 5px;
+  width: 25%;
+  min-width: 380px;
+  height: 15%;
+  min-height: 150px;
+}
+
+.titleP {
+  font-size: 2em;
+  text-align: center;
+}
+
+.buttonBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonBox button {
+  width: 30%;
+  padding: 0.5rem 0;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1.15em;
+  margin: 0 0.5rem;
+  cursor: pointer;
+}
+
+.cancelButton {
+  background-color: #e0e0e0;
+}
+
+.submitButton {
+  background-color: var(--accent-red);
+  color: #fff;
 }
 
 .container {
@@ -390,14 +482,27 @@ export default {
   padding: 3rem;
   background-color: var(--white);
   text-align: left;
+  /* position: relative; */
 }
 
 .title {
   font-size: 2.25em;
   text-align: left;
   padding-left: 1em;
-  padding-bottom: 0.5em;
-  border-bottom: 2px solid var(--gray);
+}
+
+.title-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 1rem;
+}
+
+.trash-icon {
+  cursor: pointer;
+  margin-right: 2rem;
 }
 
 .attribute-container {
