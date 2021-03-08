@@ -24,3 +24,8 @@ export const updateWord = async (wordId, updates) => {
   const res = await axios.put(`word/updateWord/${wordId}`, updates)
   return res.data
 }
+
+export const updateConjugation = async (conjugationId, updates) => {
+  const res = await axios.put(`word/updateConjugation/${conjugationId}`, updates)
+  return res.data
+}

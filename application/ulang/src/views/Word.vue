@@ -116,7 +116,7 @@
 import Edit from '@/assets/svgs/edit.vue'
 import Confirm from '@/assets/svgs/confirm.vue'
 import Cancel from '@/assets/svgs/cancel.vue'
-import { getWordById, updateWord } from '@/services/wordService'
+import { getWordById, updateWord, updateConjugation } from '@/services/wordService'
 
 export default {
   name: 'Word',
@@ -180,17 +180,16 @@ export default {
       this.toggleEdit(property)
     },
     confirmConjugationEdit() {
-      const test = new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve(this.editInputs.conjugations[this.conjugationIndex])
-        }, 1500)
-      })
-      test.then(res => {
-        this.wordInfo.conjugations[this.conjugationIndex] = res
-        this.toggleEdit('conjugation')
-      }).catch(err => {
-        console.log(err.message)
-      })
+      updateConjugation(
+        this.wordInfo.conjugations[this.conjugationIndex]._id,
+        this.editInputs.conjugations[this.conjugationIndex]
+      )
+        .then(res => {
+          this.wordInfo.conjugations[this.conjugationIndex] = this.editInputs.conjugations[this.conjugationIndex]
+          this.toggleEdit('conjugation')
+        }).catch(err => {
+          console.log(err.message)
+        })
     },
     cancelConjugationEdit() {
       this.editInputs.conjugations[this.conjugationIndex] = this.wordInfo.conjugations[this.conjugationIndex]

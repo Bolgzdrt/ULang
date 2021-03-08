@@ -3,6 +3,7 @@ const Set = require('../models/Set')
 const User = require('../models/User')
 const Conjugation = require('../models/Conjugation')
 const { getRelevantConjugationData, filterUpdates } = require('../utils/utils')
+const { findByIdAndUpdate } = require('../models/Word')
 
 const createWord = async (req, res) => {
   const {
@@ -97,7 +98,7 @@ const getWordById = async (req, res) => {
       })
       conjugationData = await Promise.all(conjugationDataPromises)
       conjugationData = conjugationData.map((conj) =>
-        ['tl', 'tr', 'ml', 'mr', 'bl', 'br', 'title'].reduce((acc, cur) => {
+        ['tl', 'tr', 'ml', 'mr', 'bl', 'br', 'title', '_id'].reduce((acc, cur) => {
           return conj[cur]
             ? { ...acc, [cur]: conj[cur] }
             : { ...acc, [cur]: '' }
@@ -168,6 +169,35 @@ const updateWord = async (req, res) => {
   }
 }
 
+const updateConjugation = async (req, res) => {
+  const { id } = req.params
+  const args = req.body
+  const inputs = ({
+    title: args.title,
+    tl: args.tl,
+    tr: args.tr,
+    ml: args.ml,
+    mr: args.mr,
+    bl: args.bl,
+    br: args.br,
+  } = req.body)
+  const updates = filterUpdates(inputs)
+
+  try {
+    const updatedConjugation = await Conjugation.findByIdAndUpdate(id, updates, { new: true })
+    res.status(200).json({
+      success: true,
+      word: updatedConjugation
+    })
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
 const deleteWord = async (req, res) => {
   const { id } = req.params
 
@@ -191,5 +221,6 @@ module.exports = {
   getWordById,
   getConjugation,
   updateWord,
-  deleteWord
+  updateConjugation,
+  deleteWord,
 }
