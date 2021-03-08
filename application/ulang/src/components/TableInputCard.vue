@@ -167,6 +167,7 @@ table {
 td {
   padding: 0.75rem;
   border: 2px solid black;
+  min-width: 200px;
 }
 
 .textBox {

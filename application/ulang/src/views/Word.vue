@@ -44,6 +44,51 @@
           </span>
         </span>
       </div>
+      <div class="conjugation-container">
+        <div class="table-title">
+          <p>Present or something</p>
+        </div>
+        <div class="table">
+          <table>
+            <tr>
+              <td>
+                <p>idk</p>
+              </td>
+              <td>
+                <p>idk</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>idk</p>
+              </td>
+              <td>
+                <p>idk</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>idk</p>
+              </td>
+              <td>
+                <p>idk</p>
+              </td>
+            </tr>
+          </table>
+          <div class="nav">
+            <div class="tableChange" @click="backClick">
+              <img src="@/assets/pngs/Vector.png" alt="previous" />
+            </div>
+            <div class="tableChange" @click="nextClick">
+              <img
+                src="@/assets/pngs/Vector.png"
+                alt="next"
+                style="transform: rotate(180deg);"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -80,6 +125,7 @@ export default {
         definition: '',
       },
       conjugations: [],
+      conjugationIndex: 0,
     }
   },
   methods: {
@@ -205,8 +251,69 @@ export default {
   padding: 0.25em 0.5em;
   font-size: 1em;
 }
+
 .edit-notes {
   display: flex;
   align-items: flex-start;
+}
+
+.conjugation-container {
+  width: 100%;
+  height: 400px;
+  background-color: #e0e0e0;
+  margin-top: 1.5rem;
+  padding: 0 2rem;
+}
+
+.table-title {
+  width: 100%;
+  text-align: center;
+  padding-top: 2rem;
+  font-size: 1.5em;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 2em;
+  margin-top: 1em;
+}
+
+table {
+  border-style: hidden;
+  border-collapse: collapse;
+  width: 75%;
+}
+
+td {
+  padding: 0.75rem;
+  border: 2px solid black;
+  min-width: 200px;
+  text-align: center;
+}
+
+.nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 15%;
+  margin: 1rem;
+}
+
+.tableChange {
+  width: 2.25rem;
+  height: 2.25rem;
+  background: var(--white);
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 </style>
