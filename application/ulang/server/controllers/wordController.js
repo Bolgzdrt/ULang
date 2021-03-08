@@ -177,7 +177,16 @@ const updateWord = async (req, res) => {
 
 const updateConjugation = async (req, res) => {
   const { id } = req.params
-  const inputs = ({ title, tl, tr, ml, mr, bl, br } = req.body)
+  const args = req.params
+  const inputs = {
+    title: args.title,
+    tl: args.tl,
+    tr: args.tr,
+    ml: args.ml,
+    mr: args.mr,
+    bl: args.bl,
+    br: args.br,
+  }
   const updates = filterFalseyValues(inputs)
 
   try {

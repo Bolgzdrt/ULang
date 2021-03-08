@@ -167,7 +167,6 @@
             <div class="tableChange" @click="backClick">
               <img src="@/assets/pngs/Vector.png" alt="previous" />
             </div>
-            <!-- TODO: When next clicked when there are no more tables, add another -->
             <div class="tableChange" @click="nextClick">
               <img
                 src="@/assets/pngs/Vector.png"
