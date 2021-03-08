@@ -2,24 +2,16 @@
   <div id="word">
     <div class="container">
       <p class="title">{{ wordInfo.word }} – {{ wordInfo.english }} ({{ wordInfo.partOfSpeech }})</p>
-      <div v-if="wordInfo.definition && !editBools.definition" class="definition-container">
-        <span class="definition">
+      <div v-if="!editBools.definition" class="attribute-container">
+        <span class="attribute">
           <p>Definition</p>
-          <span class="editContainer" @click="toggleEdit('definition')">
+          <span class="edit-container" @click="toggleEdit('definition')">
             <Edit />
           </span>
         </span>
         <p>{{ wordInfo.definition }}</p>
       </div>
-      <div v-else-if="!editBools.definition" class="definition-container">
-        <span class="definition">
-          <p>Definition</p>
-          <span class="editContainer" @click="toggleEdit('definition')">
-            <Edit />
-          </span>
-        </span>
-      </div>
-      <div v-if="editBools.definition" class="definition-container">
+      <div v-else class="attribute-container">
         <label for="def">Definition</label>
         <span class="edit-definition">
           <input type="text" name="def" id="def" v-model="editInputs.definition">
@@ -27,6 +19,27 @@
             <Cancel />
           </span>
           <span class="confirm-container" @click="confirmEdit('definition')">
+            <Confirm />
+          </span>
+        </span>
+      </div>
+      <div v-if="!editBools.notes" class="attribute-container">
+        <span class="attribute">
+          <p>Notes</p>
+          <span class="edit-container" @click="toggleEdit('notes')">
+            <Edit />
+          </span>
+        </span>
+        <p>{{ wordInfo.notes }}</p>
+      </div>
+      <div v-else class="attribute-container">
+        <label for="notes">Notes</label>
+        <span class="edit-notes">
+          <textarea name="notes" id="notes" cols="50" rows="5" v-model="editInputs.notes" :placeholder="getPlaceHolder('Notes about')"></textarea>
+          <span class="confirm-container" @click="cancelEdit('notes')">
+            <Cancel />
+          </span>
+          <span class="confirm-container" @click="confirmEdit('notes')">
             <Confirm />
           </span>
         </span>
@@ -56,6 +69,7 @@ export default {
       },
       editBools: {
         definition: false,
+        notes: false,
       },
       // These are what is being edited but if the edit is cancelled, the original is maintained
       editInputs: {
@@ -65,7 +79,7 @@ export default {
         notes: '',
         definition: '',
       },
-      conjugations: []
+      conjugations: [],
     }
   },
   methods: {
@@ -91,12 +105,15 @@ export default {
           this.wordInfo[property] = this.editInputs[property]
           this.toggleEdit(property)
         })
-        .catch(err => console.log(err.response.data.error))
+        .catch(err => console.error(err.response.data.error))
     },
     cancelEdit(property) {
       this.editInputs[property] = this.wordInfo[property]
       this.toggleEdit(property)
     },
+    getPlaceHolder(str) {
+      return `${str} ${this.wordInfo.word.toLowerCase()}`
+    }
   },
   mounted() {
     this.getWordInfo()
@@ -130,40 +147,41 @@ export default {
   border-bottom: 2px solid var(--gray);
 }
 
-.definition-container {
+.attribute-container {
   margin-top: 1.5em;
   padding-left: 2em;
   display: flex;
   flex-direction: column;
 }
 
-.definition-container .definition {
+.attribute-container .attribute {
   display: flex;
 }
 
-.definition-container .definition p {
+.attribute-container .attribute p {
   padding-right: 0.25em;
 }
 
-.editContainer {
+.edit-container {
   height: 24px;
   width: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
-.editContainer #editIcon {
+.edit-container #editIcon {
   width: 20px;
   height: 20px;
 }
 
-.definition-container p,
-.definition-container label {
+.attribute-container p,
+.attribute-container label {
   font-size: 1.25em;
 }
 
-.definition-container input {
+.attribute-container input {
   padding: 0.25em 0.5em;
   width: 50%;
   font-size: 1em;
@@ -180,5 +198,15 @@ export default {
   align-items: center;
   margin-left: 0.5em;
   cursor: pointer;
+}
+
+#notes {
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  padding: 0.25em 0.5em;
+  font-size: 1em;
+}
+.edit-notes {
+  display: flex;
+  align-items: flex-start;
 }
 </style>
