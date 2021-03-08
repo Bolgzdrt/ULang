@@ -1,6 +1,6 @@
 const User = require('../models/User')
 const Set = require('../models/Set')
-const { capitalizeWord, filterUpdates } = require('../utils/utils')
+const { capitalizeWord, filterFalseyValues } = require('../utils/utils')
 const bcrypt = require('bcrypt')
 
 const followUser = async (req, res) => {
@@ -139,9 +139,9 @@ const addLanguagesToUser = async (req, res) => {
 const updateUserInfo = async (req, res) => {
   const { id } = req.params
   const inputs = ({ email, password, firstName, lastName } = req.body)
-  const updates = filterUpdates(inputs)
+  const updates = filterFalseyValues(inputs)
   try {
-    // const updates = filterUpdates(inputs)
+    // const updates = filterFalseyValues(inputs)
     const user = await User.findByIdAndUpdate(id, updates, { new: true })
     res.status(200).json({
       success: true,

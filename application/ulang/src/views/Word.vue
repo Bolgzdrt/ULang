@@ -199,7 +199,9 @@ import {
   getWordById,
   updateWord,
   updateConjugation,
+  createConjugationForWord,
 } from '@/services/wordService'
+import { isEqual } from 'lodash'
 
 export default {
   name: 'Word',
@@ -249,7 +251,8 @@ export default {
               this.editInputs[info] = res.word[info]
             }
           })
-          this.wordInfo.conjugations = res.conjugations || null
+          this.wordInfo.conjugations =
+            res.conjugations.map((conj) => ({ ...conj, new: false })) || null
           this.editInputs.conjugations = res.conjugations
         })
         .catch((err) => {
@@ -272,31 +275,67 @@ export default {
       this.toggleEdit(property)
     },
     confirmConjugationEdit() {
-      updateConjugation(
-        this.wordInfo.conjugations[this.conjugationIndex]._id,
-        this.editInputs.conjugations[this.conjugationIndex]
-      )
-        .then(() => {
-          this.wordInfo.conjugations[
-            this.conjugationIndex
-          ] = this.editInputs.conjugations[this.conjugationIndex]
-          this.toggleEdit('conjugation')
-        })
-        .catch((err) => {
-          console.log(err.message)
-        })
+      if (!this.editInputs.conjugations[this.conjugationIndex].new) {
+        // Update existing table
+        updateConjugation(
+          this.wordInfo.conjugations[this.conjugationIndex]._id,
+          this.editInputs.conjugations[this.conjugationIndex]
+        )
+          .then(() => {
+            this.wordInfo.conjugations[
+              this.conjugationIndex
+            ] = this.editInputs.conjugations[this.conjugationIndex]
+            this.toggleEdit('conjugation')
+          })
+          .catch((err) => {
+            console.log(err.message)
+          })
+      } else {
+        // New table
+        createConjugationForWord(
+          this.id,
+          this.editInputs.conjugations[this.conjugationIndex]
+        )
+          .then((res) => {
+            const { _id } = res.conjugation
+            this.wordInfo.conjugations[
+              this.conjugationIndex
+            ] = this.editInputs.conjugations[this.conjugationIndex]
+            this.wordInfo.conjugations[this.conjugationIndex].new = false
+            this.wordInfo.conjugations[this.conjugationIndex]._id = _id
+            this.toggleEdit('conjugation')
+          })
+          .catch((err) => {
+            console.log(err.response.data.error)
+          })
+      }
     },
     cancelConjugationEdit() {
       this.editInputs.conjugations[
         this.conjugationIndex
       ] = this.wordInfo.conjugations[this.conjugationIndex]
+      const baseObject = {
+          title: '',
+          tl: '',
+          tr: '',
+          ml: '',
+          mr: '',
+          bl: '',
+          br: '',
+          new: true,
+        }
+      if (isEqual(this.editInputs.conjugations[this.conjugationIndex], baseObject)) {
+        this.conjugationIndex--
+        this.editInputs.conjugations.pop()
+        this.wordInfo.conjugations.pop()
+      }
       this.toggleEdit('conjugation')
     },
     getPlaceHolder(str) {
       return `${str} ${this.wordInfo.word.toLowerCase()}`
     },
     backClick() {
-      if (this.wordInfo.conjugations - 1 >= 0) {
+      if (this.conjugationIndex - 1 >= 0) {
         this.conjugationIndex--
       }
     },
@@ -304,9 +343,28 @@ export default {
       if (this.conjugationIndex + 1 < this.wordInfo.conjugations.length) {
         this.conjugationIndex++
       } else {
-        // Switch into edit mode and add a new table
-        // this.toggleEdit('conjugation')
-        // this.conjugationIndex++
+        const baseObject = {
+          title: '',
+          tl: '',
+          tr: '',
+          ml: '',
+          mr: '',
+          bl: '',
+          br: '',
+          new: true,
+        }
+        if (
+          !isEqual(
+            this.editInputs.conjugations[this.conjugationIndex],
+            baseObject
+          )
+        ) {
+          // Switch into edit mode and add a new table
+          this.editInputs.conjugations.push(baseObject)
+          this.wordInfo.conjugations.push(baseObject)
+          this.conjugationIndex++
+          this.toggleEdit('conjugation')
+        }
       }
     },
   },

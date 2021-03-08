@@ -1,7 +1,7 @@
 const Set = require('../models/Set')
 const User = require('../models/User')
 const Word = require('../models/Word')
-const { filterUpdates } = require('../utils/utils')
+const { filterFalseyValues } = require('../utils/utils')
 
 const createSet = async (req, res) => {
   const { name, language, words, description, ownerId, quickAccess } = req.body
@@ -158,7 +158,7 @@ const updateSet = async (req, res) => {
     favorite: args.favorite,
     description: args.description
   } = req.body)
-  const updates = filterUpdates(input)
+  const updates = filterFalseyValues(input)
 
   try {
     const updatedSet = await Set.findByIdAndUpdate(id, updates, { new: true, useFindAndModify: false })
