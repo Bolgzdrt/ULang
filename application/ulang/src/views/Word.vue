@@ -1,7 +1,11 @@
 <template>
   <div id="word">
     <div class="container">
-      <p class="title">{{ wordInfo.word }} – {{ wordInfo.english }} ({{ wordInfo.partOfSpeech }})</p>
+      <p class="title">
+        {{ wordInfo.word }} – {{ wordInfo.english }} ({{
+          wordInfo.partOfSpeech
+        }})
+      </p>
       <div v-if="!editBools.definition" class="attribute-container">
         <span class="attribute">
           <p>Definition</p>
@@ -14,7 +18,12 @@
       <div v-else class="attribute-container">
         <label for="def">Definition</label>
         <span class="edit-definition">
-          <input type="text" name="def" id="def" v-model="editInputs.definition">
+          <input
+            type="text"
+            name="def"
+            id="def"
+            v-model="editInputs.definition"
+          />
           <span class="confirm-container" @click="cancelEdit('definition')">
             <Cancel />
           </span>
@@ -35,7 +44,14 @@
       <div v-else class="attribute-container">
         <label for="notes">Notes</label>
         <span class="edit-notes">
-          <textarea name="notes" id="notes" cols="50" rows="5" v-model="editInputs.notes" :placeholder="getPlaceHolder('Notes about')"></textarea>
+          <textarea
+            name="notes"
+            id="notes"
+            cols="50"
+            rows="5"
+            v-model="editInputs.notes"
+            :placeholder="getPlaceHolder('Notes about')"
+          ></textarea>
           <span class="confirm-container" @click="cancelEdit('notes')">
             <Cancel />
           </span>
@@ -46,8 +62,16 @@
       </div>
       <div v-if="wordInfo.conjugations.length" class="conjugation-container">
         <div class="table-title">
-          <p v-if="!editBools.conjugation">{{ wordInfo.conjugations[conjugationIndex].title }}</p>
-          <input type="text" name="title" id="title" v-if="editBools.conjugation" v-model="editInputs.conjugations[conjugationIndex].title">
+          <p v-if="!editBools.conjugation">
+            {{ wordInfo.conjugations[conjugationIndex].title }}
+          </p>
+          <input
+            type="text"
+            name="title"
+            id="title"
+            v-if="editBools.conjugation"
+            v-model="editInputs.conjugations[conjugationIndex].title"
+          />
         </div>
         <span @click="toggleEdit('conjugation')" id="conjugationEdit">
           <Edit />
@@ -56,35 +80,84 @@
           <table>
             <tr>
               <td>
-                <p v-if="!editBools.conjugation">{{ wordInfo.conjugations[conjugationIndex].tl }}</p>
-                <input type="text" name="tl" id="tl" v-if="editBools.conjugation" v-model="editInputs.conjugations[conjugationIndex].tl">
+                <p v-if="!editBools.conjugation">
+                  {{ wordInfo.conjugations[conjugationIndex].tl }}
+                </p>
+                <input
+                  type="text"
+                  name="tl"
+                  id="tl"
+                  v-if="editBools.conjugation"
+                  v-model="editInputs.conjugations[conjugationIndex].tl"
+                />
               </td>
               <td>
-                <p v-if="!editBools.conjugation">{{ wordInfo.conjugations[conjugationIndex].tr }}</p>
-                <input type="text" name="tr" id="tr" v-if="editBools.conjugation" v-model="editInputs.conjugations[conjugationIndex].tr">
+                <p v-if="!editBools.conjugation">
+                  {{ wordInfo.conjugations[conjugationIndex].tr }}
+                </p>
+                <input
+                  type="text"
+                  name="tr"
+                  id="tr"
+                  v-if="editBools.conjugation"
+                  v-model="editInputs.conjugations[conjugationIndex].tr"
+                />
               </td>
             </tr>
             <tr>
               <td>
-                <p v-if="!editBools.conjugation">{{ wordInfo.conjugations[conjugationIndex].ml }}</p>
-                <input type="text" name="ml" id="ml" v-if="editBools.conjugation" v-model="editInputs.conjugations[conjugationIndex].ml">
+                <p v-if="!editBools.conjugation">
+                  {{ wordInfo.conjugations[conjugationIndex].ml }}
+                </p>
+                <input
+                  type="text"
+                  name="ml"
+                  id="ml"
+                  v-if="editBools.conjugation"
+                  v-model="editInputs.conjugations[conjugationIndex].ml"
+                />
               </td>
               <td>
-                <p v-if="!editBools.conjugation">{{ wordInfo.conjugations[conjugationIndex].mr }}</p>
-                <input type="text" name="mr" id="mr" v-if="editBools.conjugation" v-model="editInputs.conjugations[conjugationIndex].mr">
+                <p v-if="!editBools.conjugation">
+                  {{ wordInfo.conjugations[conjugationIndex].mr }}
+                </p>
+                <input
+                  type="text"
+                  name="mr"
+                  id="mr"
+                  v-if="editBools.conjugation"
+                  v-model="editInputs.conjugations[conjugationIndex].mr"
+                />
               </td>
             </tr>
             <tr>
               <td>
-                <p v-if="!editBools.conjugation">{{ wordInfo.conjugations[conjugationIndex].bl }}</p>
-                <input type="text" name="bl" id="bl" v-if="editBools.conjugation" v-model="editInputs.conjugations[conjugationIndex].bl">
+                <p v-if="!editBools.conjugation">
+                  {{ wordInfo.conjugations[conjugationIndex].bl }}
+                </p>
+                <input
+                  type="text"
+                  name="bl"
+                  id="bl"
+                  v-if="editBools.conjugation"
+                  v-model="editInputs.conjugations[conjugationIndex].bl"
+                />
               </td>
               <td>
-                <p v-if="!editBools.conjugation">{{ wordInfo.conjugations[conjugationIndex].br }}</p>
-                <input type="text" name="br" id="br" v-if="editBools.conjugation" v-model="editInputs.conjugations[conjugationIndex].br">
+                <p v-if="!editBools.conjugation">
+                  {{ wordInfo.conjugations[conjugationIndex].br }}
+                </p>
+                <input
+                  type="text"
+                  name="br"
+                  id="br"
+                  v-if="editBools.conjugation"
+                  v-model="editInputs.conjugations[conjugationIndex].br"
+                />
               </td>
             </tr>
           </table>
+
           <div v-if="!editBools.conjugation" class="nav">
             <div class="tableChange" @click="backClick">
               <img src="@/assets/pngs/Vector.png" alt="previous" />
@@ -99,10 +172,16 @@
             </div>
           </div>
           <div v-if="editBools.conjugation" class="nav">
-            <span class="confirm-container conjugation-edit-icon" @click="cancelConjugationEdit">
+            <span
+              class="confirm-container conjugation-edit-icon"
+              @click="cancelConjugationEdit"
+            >
               <Cancel :height="32" :width="32" />
             </span>
-            <span class="confirm-container conjugation-edit-icon" @click="confirmConjugationEdit">
+            <span
+              class="confirm-container conjugation-edit-icon"
+              @click="confirmConjugationEdit"
+            >
               <Confirm :height="36" :width="36" />
             </span>
           </div>
@@ -116,7 +195,11 @@
 import Edit from '@/assets/svgs/edit.vue'
 import Confirm from '@/assets/svgs/confirm.vue'
 import Cancel from '@/assets/svgs/cancel.vue'
-import { getWordById, updateWord, updateConjugation } from '@/services/wordService'
+import {
+  getWordById,
+  updateWord,
+  updateConjugation,
+} from '@/services/wordService'
 
 export default {
   name: 'Word',
@@ -130,7 +213,7 @@ export default {
         partOfSpeech: '',
         notes: '',
         definition: '',
-        conjugations: []
+        conjugations: [],
       },
       editBools: {
         definition: false,
@@ -144,25 +227,34 @@ export default {
         partOfSpeech: '',
         notes: '',
         definition: '',
-        conjugations: []
+        conjugations: [],
       },
       conjugationIndex: 0,
     }
   },
   methods: {
     getWordInfo() {
-      getWordById(this.id).then(res => {
-        ['word', 'english', 'partOfSpeech', 'description', 'notes', 'definition'].forEach(info => {
-          if (res.word[info]) {
-            this.wordInfo[info] = res.word[info]
-            this.editInputs[info] = res.word[info]
-          }
+      getWordById(this.id)
+        .then((res) => {
+          ;[
+            'word',
+            'english',
+            'partOfSpeech',
+            'description',
+            'notes',
+            'definition',
+          ].forEach((info) => {
+            if (res.word[info]) {
+              this.wordInfo[info] = res.word[info]
+              this.editInputs[info] = res.word[info]
+            }
+          })
+          this.wordInfo.conjugations = res.conjugations || null
+          this.editInputs.conjugations = res.conjugations
         })
-        this.wordInfo.conjugations = res.conjugations || null
-        this.editInputs.conjugations = res.conjugations
-      }).catch(err => {
-        console.error(err.response.data.error)
-      })
+        .catch((err) => {
+          console.error(err.response.data.error)
+        })
     },
     toggleEdit(property) {
       this.editBools[property] = !this.editBools[property]
@@ -173,7 +265,7 @@ export default {
           this.wordInfo[property] = this.editInputs[property]
           this.toggleEdit(property)
         })
-        .catch(err => console.error(err.response.data.error))
+        .catch((err) => console.error(err.response.data.error))
     },
     cancelEdit(property) {
       this.editInputs[property] = this.wordInfo[property]
@@ -184,15 +276,20 @@ export default {
         this.wordInfo.conjugations[this.conjugationIndex]._id,
         this.editInputs.conjugations[this.conjugationIndex]
       )
-        .then(res => {
-          this.wordInfo.conjugations[this.conjugationIndex] = this.editInputs.conjugations[this.conjugationIndex]
+        .then(() => {
+          this.wordInfo.conjugations[
+            this.conjugationIndex
+          ] = this.editInputs.conjugations[this.conjugationIndex]
           this.toggleEdit('conjugation')
-        }).catch(err => {
+        })
+        .catch((err) => {
           console.log(err.message)
         })
     },
     cancelConjugationEdit() {
-      this.editInputs.conjugations[this.conjugationIndex] = this.wordInfo.conjugations[this.conjugationIndex]
+      this.editInputs.conjugations[
+        this.conjugationIndex
+      ] = this.wordInfo.conjugations[this.conjugationIndex]
       this.toggleEdit('conjugation')
     },
     getPlaceHolder(str) {
@@ -208,17 +305,19 @@ export default {
         this.conjugationIndex++
       } else {
         // Switch into edit mode and add a new table
+        // this.toggleEdit('conjugation')
+        // this.conjugationIndex++
       }
-    }
+    },
   },
   mounted() {
     this.getWordInfo()
-  }
+  },
 }
 </script>
 
 <style scoped>
-@import "../assets/styles/utils.css";
+@import '../assets/styles/utils.css';
 
 #word {
   display: flex;
@@ -392,7 +491,7 @@ td {
   user-select: none;
 }
 
-.conjugation-edit-icon #confirmIcon>svg {
+.conjugation-edit-icon #confirmIcon > svg {
   width: 32px;
   height: 32px;
 }
