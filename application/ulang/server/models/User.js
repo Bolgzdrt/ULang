@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema(
       type: String // List of IDs of friends
     },
     recentList: {
-      // type: [String] // TODO
+      type: [String]
     },
     languagesStudying: {
       type: ['String'],

@@ -261,6 +261,25 @@ const searchNames = async (req, res) => {
   }
 }
 
+const getQuickSets = async (req, res) => {
+  const { id, language } = req.params
+
+  try {
+    const user = await User.findById(id)
+    const quickAccessOfUser = user.quickAccess
+    const sets = await Set.find({ _id: { $in: quickAccessOfUser }, language: language })
+    res.status(200).json({
+      sets
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      message: 'Error getting user quick access sets'
+    })
+  }
+}
+
 module.exports = {
   followUser,
   unfollowUser,
@@ -272,4 +291,5 @@ module.exports = {
   changePassword,
   deleteAccount,
   searchNames,
+  getQuickSets
 }

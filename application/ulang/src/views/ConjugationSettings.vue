@@ -18,6 +18,7 @@
 import FilterSelect from '@/components/FilterSelect'
 import { mapGetters } from 'vuex'
 import { getSetsWithVerbs } from '@/services/setService'
+import { updateRecentList } from "@/utils/utils"
 
 export default {
   name: 'ConjugationSettings',
@@ -40,6 +41,7 @@ export default {
       if (!this.setSelection) {
         this.selectErr = true
       } else {
+        updateRecentList("Conjugations", this.setSelection)
         this.$router.push({ name: 'Conjugation', params: { id: this.setSelection } })
       }
     }
