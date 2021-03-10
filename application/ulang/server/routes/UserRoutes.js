@@ -13,6 +13,7 @@ router.put('/changeEmail/:id', userController.changeEmail)
 router.put('/changePassword/:id', userController.changePassword)
 router.delete('/deleteAccount/:id', userController.deleteAccount)
 router.get('/searchNames/:query', userController.searchNames)
+router.get('/getQuickSets/:id/:language', userController.getQuickSets)
 
 module.exports = {
   userRouter: router
