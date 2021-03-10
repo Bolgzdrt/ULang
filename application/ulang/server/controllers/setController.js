@@ -151,17 +151,17 @@ const toggleFavorite = async (req, res) => {
 const updateSet = async (req, res) => {
   const { id } = req.params
   const args = req.body
-  const input = ({
+  const input = {
     name: args.name,
     language: args.language,
     words: args.words,
     favorite: args.favorite,
     description: args.description
-  } = req.body)
+  }
   const updates = filterFalseyValues(input)
 
   try {
-    const updatedSet = await Set.findByIdAndUpdate(id, updates, { new: true, useFindAndModify: false })
+    const updatedSet = await Set.findByIdAndUpdate(id, updates, { new: true })
     res.status(200).json({
       success: true,
       set: updatedSet

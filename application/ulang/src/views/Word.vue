@@ -162,7 +162,6 @@
               </td>
             </tr>
           </table>
-
           <div v-if="!editBools.conjugation" class="nav">
             <div class="tableChange" @click="backClick">
               <img src="@/assets/pngs/Vector.png" alt="previous" />
@@ -194,7 +193,7 @@
       <transition name="modalFade" v-if="editBools.delete">
         <div class="modalBackdrop">
           <div class="modal">
-            <p class="titleP">Delete this word?</p>
+            <p>Delete this word?</p>
             <div class="buttonBox">
               <button class="cancelButton" @click="cancelDelete">Cancel</button>
               <button class="submitButton" @click="deleteWord">Delete</button>
@@ -240,7 +239,7 @@ export default {
         conjugation: false,
         delete: false,
       },
-      // These are what is being edited but if the edit is cancelled, the original is maintained
+      // These are what is being edited so if the edit is cancelled, the original can be maintained
       editInputs: {
         word: '',
         english: '',
@@ -445,7 +444,7 @@ export default {
   min-height: 150px;
 }
 
-.titleP {
+.modal p {
   font-size: 2em;
   text-align: center;
 }
