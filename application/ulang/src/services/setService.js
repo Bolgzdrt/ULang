@@ -20,7 +20,12 @@ export const getWordsInSet = async (userId) => {
   return res.data
 }
 
-export const getSetById = async (userId) => {
-  const res = await axios.get(`set/getSet/${userId}`)
+export const getSetById = async (setId) => {
+  const res = await axios.get(`set/getSet/${setId}`)
+  return res.data
+}
+
+export const getMostRecentSets = async (userId, language) => {
+  const res = await axios.get(`set/getMostRecentSets/${userId}/${language}`)
   return res.data
 }

@@ -5,6 +5,7 @@
       <div class="field">
         <p>Select Set:</p>
         <FilterSelect :options="sets" @selected="setSelect" />
+        <p class="error" v-if="selectErr">Please select a set</p>
       </div>
       <div class="field">
         <p class="radioTitle">Face First Displayed:</p>
@@ -16,7 +17,7 @@
         <label for="rand" class="radioLabel">Random</label>
       </div>
       <div class="buttonBox">
-        <router-link :to="{ name: 'FlashCards', params: { id: this.setSelection, setting: this.languageGiven } }"><button class="submitButton">Start</button></router-link>
+        <button class="submitButton" @click="startClick">Start</button>
       </div>
     </div>
   </div>
@@ -26,6 +27,7 @@
 import FilterSelect from '@/components/FilterSelect'
 import { mapGetters } from 'vuex'
 import { getSets } from '@/services/setService'
+import { updateRecentList } from "@/utils/utils"
 
 export default {
   name: 'FlashCardsSettings',
@@ -36,7 +38,8 @@ export default {
       languageGiven: '0',
       currentLanguage: '',
       sets: [],
-      fromRoute: ''
+      fromRoute: '',
+      selectErr: false
     }
   },
   methods: {
@@ -44,6 +47,14 @@ export default {
     ...mapGetters('auth', ['getUserId']),
     setSelect(value) {
       this.setSelection = value
+    },
+    startClick() {
+      if (!this.setSelection) {
+        this.selectErr = true
+      } else {
+        updateRecentList("Flash Cards", this.setSelection, this.languageGiven)
+        this.$router.push({ name: 'FlashCards', params: { id: this.setSelection, setting: this.languageGiven } })
+      }
     }
   },
   created() {
@@ -165,5 +176,9 @@ button:hover {
 
 .submitButton:hover {
   background: #5b49d0;
+}
+
+.error {
+  color: red;
 }
 </style>

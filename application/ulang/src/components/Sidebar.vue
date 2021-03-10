@@ -10,6 +10,7 @@
     </div>
     <hr>
     <div class="pageLinks">
+      <router-link :to="{ name: 'Profile', params: { id: userId } }">Profile</router-link>
       <router-link :to="{ name: 'CreateSet' }">New Set</router-link>
       <router-link :to="{ name: 'CreateWord' }">New Word</router-link>
     </div>
@@ -32,6 +33,7 @@
 
 <script>
 import NameCircle from '@/components/NameCircle.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: "Sidebar",
@@ -45,6 +47,14 @@ export default {
         { name: 'Name Name', pic: 'NN' },
         { name: 'Place Holder', pic: 'PH' }
       ],
+    }
+  },
+  methods: {
+    ...mapGetters('auth', ['getUserId']),
+  },
+  computed: {
+    userId() {
+      return this.getUserId()
     }
   }
 }

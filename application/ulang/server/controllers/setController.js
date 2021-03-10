@@ -190,6 +190,25 @@ const deleteSet = async (req, res) => {
   }
 }
 
+const getMostRecentSets = async (req, res) => {
+  const { id, lang } = req.params
+  try {
+    const user = await User.findById(id)
+    const setsOfUser = user.sets;
+    const sets = await Set.find({ _id: { $in: setsOfUser }, language: lang }).sort({ createdAt: -1 }).limit(4)
+    res.status(200).json({
+      success: true,
+      sets
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
 module.exports = {
   createSet,
   getAllSetsOfLanguage,
@@ -198,5 +217,6 @@ module.exports = {
   updateSet,
   toggleFavorite,
   deleteSet,
-  getSetsWithVerbs
+  getSetsWithVerbs,
+  getMostRecentSets
 }
