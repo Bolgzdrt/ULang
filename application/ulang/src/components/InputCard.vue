@@ -170,4 +170,9 @@ button:hover {
 .incorrect > .result {
   color: red;
 }
+
+/* Adding styles to accentButtons to make it centered below the input box */
+.accentButtons {
+  justify-content: center;
+}
 </style>

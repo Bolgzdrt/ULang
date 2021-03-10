@@ -17,6 +17,7 @@ import Vocabulary from '../views/Vocabulary.vue'
 import Conjugation from '../views/Conjugation.vue'
 import ConjugationSettings from '../views/ConjugationSettings.vue'
 import Pronunciations from '../views/Pronunciations.vue'
+import Word from '../views/Word.vue'
 
 Vue.use(VueRouter)
 
@@ -109,8 +110,13 @@ const routes = [
     path: '/pronunciations',
     name: 'Pronunciations',
     component: Pronunciations
+  },
+  {
+    path: '/word/:id',
+    name: 'Word',
+    component: Word,
+    props: true
   }
-  
 ]
 
 const router = new VueRouter({
