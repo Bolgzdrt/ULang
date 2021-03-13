@@ -18,6 +18,7 @@ import Conjugation from '../views/Conjugation.vue'
 import ConjugationSettings from '../views/ConjugationSettings.vue'
 import Pronunciations from '../views/Pronunciations.vue'
 import Word from '../views/Word.vue'
+import PrivacyPolicy from '../views/PrivacyPolicy.vue'
 
 Vue.use(VueRouter)
 
@@ -116,6 +117,11 @@ const routes = [
     name: 'Word',
     component: Word,
     props: true
+  },
+  {
+    path: '/privacyPolicy',
+    name: 'PrivacyPolicy',
+    component: PrivacyPolicy
   }
 ]
 

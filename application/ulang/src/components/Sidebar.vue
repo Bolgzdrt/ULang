@@ -26,7 +26,7 @@
         <a href="#" class="viewAll">View All Friends</a>
     </div>
     <div id="ppLink">
-      <a href="#">Privacy Policy</a>
+      <router-link :to="{ name: 'PrivacyPolicy' }">Privacy Policy</router-link>
     </div>
   </div>
 </template>
