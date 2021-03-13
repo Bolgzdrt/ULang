@@ -228,7 +228,7 @@ const createConjugationForWord = async (req, res) => {
     await Word.findByIdAndUpdate(id, {
       $push: { conjugationIds: newConjugation._id },
     })
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       conjugation: newConjugation,
     })
