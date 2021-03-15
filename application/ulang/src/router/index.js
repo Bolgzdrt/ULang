@@ -64,7 +64,15 @@ const routes = [
     path: '/flashCards/:id/:setting',
     name: 'FlashCards',
     component: FlashCards,
-    props: true
+    props: true,
+  },
+  {
+    path: '/flashcards',
+    redirect: '/flashCardsSettings'
+  },
+  {
+    path: '/flashcards/:anything',
+    redirect: '/flashCardsSettings'
   },
   {
     path: '/learnSettings',
@@ -123,6 +131,10 @@ const routes = [
     path: '/privacyPolicy',
     name: 'PrivacyPolicy',
     component: PrivacyPolicy
+  },
+  {
+    path: '*',
+    redirect: '/'
   }
 ]
 

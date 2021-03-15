@@ -97,9 +97,9 @@ const mutations = {
       window.localStorage.setItem('lastName', lastName)
   },
   logout: (state) => {
+    state.userId = ''
     state.email = ''
     state.username = ''
-    state.userId = ''
     state.firstName = ''
     state.lastName = ''
     window.localStorage.removeItem('email')

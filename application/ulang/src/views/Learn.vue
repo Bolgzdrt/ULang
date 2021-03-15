@@ -62,7 +62,7 @@ export default {
       }
     }
   },
-  created: function(){
+  mounted() {
     if (!this.id) {
       this.$router.push({name: "LearnSettings"})
     }
