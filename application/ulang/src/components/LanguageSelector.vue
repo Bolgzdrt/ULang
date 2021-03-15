@@ -102,7 +102,7 @@ export default {
   },
   created() {
     // TODO: See if this can be moved to App.vue or somewhere else just to initialize this data
-    this.getUserLanguages(this.getUserInfo()?.userId)
+    this.getUserLanguages(this.getUserInfo().userId)
       .then(() => {/* Got the languages to use in the computed properties */})
       .catch((err) => console.error(err))
   },

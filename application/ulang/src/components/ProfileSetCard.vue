@@ -41,14 +41,12 @@ export default {
     setOwner: this.owner=='' ? '':this.owner.concat("'s Set"),
     setName: this.setname,
     numTerms: this.numterms.toString().concat(" Terms"),
-    favorite: this.favorite,
-    quickaccess: this.quickaccess
     }
   },
   methods: {
     ...mapGetters('auth', ['getUserId']),
     openSet(){
-      this.$router.push({ name: 'Dictionary', params: {id: this.getUserId(), setId: setId} });
+      this.$router.push({ name: 'Dictionary', params: {setId: this.setId }});
     }
   }
 }

@@ -79,7 +79,6 @@ const getUserInfo = async (req, res) => {
 
 const getUserLanguages = async (req, res) => {
   const { id } = req.params
-
   try {
     const user = await User.findById(id)
     res.status(200).json({

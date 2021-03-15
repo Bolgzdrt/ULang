@@ -105,7 +105,7 @@ const routes = [
     component: Pronunciations
   },
   {
-    path: '/profile/:id/:setid',
+    path: '/profile/:id/:setId',
     name: 'Dictionary',
     component: Dictionary,
     props: true

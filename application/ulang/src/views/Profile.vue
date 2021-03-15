@@ -29,6 +29,7 @@
           <ul id=list class=list>
             <li v-for="set in sets" :key="set.name">
               <ProfileSetCard 
+              :setId="set._id"
               :owner="set.ownerId"
               :setname="set.name"
               :numterms="set.words.length"
@@ -47,6 +48,7 @@ import Sidebar from '../components/Sidebar.vue'
 import NameCirclePurple from '@/components/NameCirclePurple.vue'
 import ProfileSetCard from '../components/ProfileSetCard.vue'
 import {getSets}  from '@/services/setService'
+import {getUserInfo} from '@/services/userService'
 import {mapGetters} from 'vuex'
 import { getInitials } from '@/utils/utils'
 
@@ -60,6 +62,8 @@ export default {
   },
   data() {
     return {
+      sets:[],
+      userId:''
     }
   },
   computed: {
@@ -73,10 +77,6 @@ export default {
       }
       return data.username;
     },
-    sets(){
-      //return getSets(this.getUserId(), this.getLanguage());  
-      return  [{ _id : "604260a90753053f91fabf32", name : "Test Set", language : "french", words : [ ], favorite : false, description : "My third test set of Spanish words", ownerId : "60418460e3aee293b8f74a42" }]
-    },
     initials() {
       return getInitials(this.getUserInfo())
     }
@@ -86,7 +86,36 @@ export default {
     ...mapGetters('settings', ['getLanguage']),
     ...mapGetters('auth', ['getUserId'])
   },
-  
+  created() {
+    getSets(this.getUserId(), this.getLanguage())
+      .then(setdata =>{
+        for (var i = 0; i < setdata.sets.length; i++){
+          var set = setdata.sets[i];
+          if(set.ownerId == this.getUserId())
+          {
+            set.ownerId = '';
+            this.sets.push(set);
+          }
+          else
+          {
+            getUserInfo(set.ownerId)
+            .then(userdata =>{
+              if(userdata.firstName)
+              {
+                if(userdata.lastName)
+                  set.ownerId = userdata.firstName.concat(" ").concat(userdata.lastName);
+                set.ownerId = userdata.firstName;
+              }
+              else
+              {
+              set.ownerId = userdata.username;
+              } 
+              this.sets.push(set)
+            })
+          }
+        }
+      })
+  }
 }
 
 </script>
