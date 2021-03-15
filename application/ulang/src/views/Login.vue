@@ -63,7 +63,7 @@ export default {
         })
         .catch((err) => {
           console.log(err.response.data.errors)
-          const { password, username } = err.responsedata.errors
+          const { password, username } = err.response.data.errors
           this.usernameError = username
           this.passwordError = password
         })

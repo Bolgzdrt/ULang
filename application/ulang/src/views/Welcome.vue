@@ -32,6 +32,10 @@ export default {
     return {
       countries: ['france', 'spain', 'germany', 'italy', 'portugal', 'romania', 'sweden', 'netherlands']
     }
+  },
+  mounted() {
+    // To make sure that the sidebar and navbar update after logout
+    this.$forceUpdate()
   }
 }
 </script>
