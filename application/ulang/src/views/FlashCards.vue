@@ -1,6 +1,6 @@
 <template>
   <div class="flashCards">
-    <BackButton :fromRoute="fromRoute" />
+    <BackButton :fromRoute="'/flashCardsSettings'" />
     <SetProg v-bind:curr="index + 1" v-bind:total="total" v-bind:setName="setName"/>
     <div class="scene">
       <div class="card" @click="toggleCard" v-bind:class="{isFlipped: flipped}">
@@ -24,7 +24,7 @@ import { getWordsInSet, getSetById } from '@/services/setService'
 export default {
   name: 'FlashCards',
   components: { BackButton, SetProg },
-  props: ['id', 'setting', 'fromRoute'],
+  props: ['id', 'setting'],
   data() {
     return {
       words: [{
@@ -86,11 +86,6 @@ export default {
       this.setName = set.name
     })
   },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      vm.fromRoute = from
-    })
-  }
 }
 </script>
 
