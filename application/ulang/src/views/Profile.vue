@@ -115,6 +115,8 @@ export default {
 </script>
 
 <style scoped>
+@import "../assets/styles/utils.css";
+
 .profile {
   display: flex;
 }

@@ -71,6 +71,8 @@ export default {
 </script>
 
 <style scoped>
+@import "../assets/styles/utils.css";
+
 .dictionary {
   display: flex;
   flex-direction: column;

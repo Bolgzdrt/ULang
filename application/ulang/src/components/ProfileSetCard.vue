@@ -53,6 +53,8 @@ export default {
 </script>
 
 <style scoped>
+@import "../assets/styles/utils.css";
+
 .card {
   display: flex;
   flex-direction: row;
