@@ -66,12 +66,8 @@ export default {
         return
       }
       if (userId && language) {
-        console.log(userId)
-        console.log(language)
         getQuickSets(userId, language)
           .then(({ sets }) => {
-            console.log(`try number: ${tryNumber}`)
-            console.log(sets)
             this.quickAccessList = sets
           })
           .catch((err) => {
