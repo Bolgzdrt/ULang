@@ -131,8 +131,8 @@ export default {
           this.$router.push({ name: 'Home' })
         })
         .catch((err) => {
-          const { email, password, username } = err.response?.data.errors
-          console.log(err.response?.data.errors)
+          const { email, password, username } = err.response.data.errors
+          console.log(err.response.data.errors)
           this.emailError = email
           this.passwordError = password
           this.usernameError = username

@@ -62,8 +62,8 @@ export default {
           this.$router.push({ name: 'Home' })
         })
         .catch((err) => {
-          console.log(err.response?.data.errors)
-          const { password, username } = err.response?.data.errors
+          console.log(err.response.data.errors)
+          const { password, username } = err.response.data.errors
           this.usernameError = username
           this.passwordError = password
         })
