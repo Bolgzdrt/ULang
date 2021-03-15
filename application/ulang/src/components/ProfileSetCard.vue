@@ -12,21 +12,21 @@
       </span>
     </div>
     <div class="buttons">
-      <lightningbolt class="lightningbolt" v-bind:fill="quickaccess" />
-      <heart class="heart" v-bind:fill="favorite" />
+      <Lightningbolt class="lightningbolt" v-bind:fill="quickaccess" />
+      <Heart class="heart" v-bind:fill="favorite" />
     </div>
   </div>
 </template>
 
 <script>
-import heart from '@/assets/svgs/heart.vue'
-import lightningbolt from '@/assets/svgs/lightningbolt.vue'
+import Heart from '@/assets/svgs/heart.vue'
+import Lightningbolt from '@/assets/svgs/lightningbolt.vue'
 import { mapGetters } from 'vuex'
 export default {
   name: 'ProfileSetCard',
   components: {
-    heart,
-    lightningbolt,
+    Heart,
+    Lightningbolt,
   },
   props: {
     setId: String,
