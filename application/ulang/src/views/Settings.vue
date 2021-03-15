@@ -5,7 +5,7 @@
         <section class="profile">
           <p class="setting-title title">My Profile</p>
           <div class="profile-content content">
-            <NameCircle :initials="initials" background="#7666D8" :radius="4" />
+            <NameCircle :initials="initials"/>
             <!-- TODO: Do the moving label thing -->
             <div class="name-input input-group">
               <input
