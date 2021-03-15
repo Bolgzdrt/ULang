@@ -55,31 +55,50 @@ export default {
       recentActivity: []
     }
   },
-  // computed: {
-  //   left() {
-  //     return [recentActivity[3], recentActivity[1]]
-  //   },
-  //   right() {
-  //     return [recentActivity[2], recentActivity[0]]
-  //   }
-  // },
   methods: {
     ...mapGetters('settings', ['getLanguage']),
-    ...mapGetters('auth', ['getUserId'])
+    ...mapGetters('auth', ['getUserId']),
+    retrieveInfo(tryNumber) {
+      const userId = this.getUserId()
+      const language = this.getLanguage()
+      if (tryNumber > 3) {
+        console.log('took too long')
+        return
+      }
+      if (userId && language) {
+        console.log(userId)
+        console.log(language)
+        getQuickSets(userId, language)
+          .then(({ sets }) => {
+            console.log(`try number: ${tryNumber}`)
+            console.log(sets)
+            this.quickAccessList = sets
+          })
+          .catch((err) => {
+            console.error(err.response.data.error)
+          })
+        getMostRecentSets(userId, this.getLanguage())
+          .then(({ sets }) => {
+            this.recentSetList = sets
+          })
+          .catch((err) => {
+            console.error(err.response.data.error)
+          })
+      } else {
+        setTimeout(() => this.retrieveInfo(++tryNumber), 1000)
+      }
+    }
   },
   mounted() {
-    getQuickSets(this.getUserId(), this.getLanguage()).then(({sets}) => {
-      this.quickAccessList = sets
-    })
-    getMostRecentSets(this.getUserId(), this.getLanguage()).then(({sets}) => {
-      this.recentSetList = sets
-    })
+    this.retrieveInfo(1)
     this.recentActivity = getRecentList()
   }
 }
 </script>
 
 <style scoped>
+@import '../assets/styles/utils.css';
+
 .quickStart {
   text-align: left;
 }
