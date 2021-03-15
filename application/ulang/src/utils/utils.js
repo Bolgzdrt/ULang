@@ -34,13 +34,20 @@ export const checkIfValidPassword = (password) => {
 
 export const updateRecentList = (event, setId, setting=-1) => {
   const newEvent = {
-    event: event,
-    setId: setId,
-    setting: setting
+    event,
+    setId,
+    setting
   }
-  var recentList = JSON.parse(window.localStorage.getItem('recentList')) || []
+  let recentList = JSON.parse(window.localStorage.getItem('recentList')) || []
   if (recentList.length < 4) {
-    recentList.push(newEvent)
+    const sameItems = recentList.filter(item => {
+      if (item.event  === event && item.setId === setId && item.setting === setting) {
+        return item
+      }
+    })
+    if (!sameItems.length) {
+      recentList.push(newEvent)
+    }
   } else {
     recentList.shift()
     recentList.push(newEvent)

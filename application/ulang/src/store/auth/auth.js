@@ -108,6 +108,7 @@ const mutations = {
     window.localStorage.removeItem('firstName')
     window.localStorage.removeItem('lastName')
     Vue.$cookies.remove('userId')
+    console.log(Vue.$cookies.get('userId'))
   }
 }
 
