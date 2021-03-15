@@ -2,11 +2,17 @@
   <div class="profile">
     <div class="profile-content">
       <div class="user-banner">
-        <span class="banner-spacing" />
-        <NameCircle :initials="initials" />
-        <h1 id="username-header" class="username-header">
-          {{ username }}
-        </h1>
+        <div class="user-header">
+          <NameCircle :initials="initials" />
+          <h1 id="username-header" class="username-header">
+            {{ username }}
+          </h1>
+        </div>
+        <div class="follow">
+          <button class="btn" @click="followUser" v-if="id === getUserId()">
+            Follow
+          </button>
+        </div>
       </div>
       <div class="set-list-and-header">
         <div class="set-list-header">
@@ -32,7 +38,8 @@
             <li v-for="set in sets" :key="set.name">
               <ProfileSetCard
                 :setId="set._id"
-                :owner="set.ownerId"
+                :ownerId="set.ownerId"
+                :owner="set.ownerName"
                 :setname="set.name"
                 :numterms="set.words.length"
                 :favorite="true"
@@ -47,13 +54,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { getSets } from '@/services/setService'
+import { getUserInfo } from '@/services/userService'
+import { getInitials } from '@/utils/utils'
 import Sidebar from '../components/Sidebar.vue'
 import NameCircle from '@/components/NameCircle.vue'
 import ProfileSetCard from '../components/ProfileSetCard.vue'
-import { getSets } from '@/services/setService'
-import { getUserInfo } from '@/services/userService'
-import { mapGetters } from 'vuex'
-import { getInitials } from '@/utils/utils'
 
 export default {
   name: 'Profile',
@@ -61,6 +68,9 @@ export default {
     Sidebar,
     NameCircle,
     ProfileSetCard,
+  },
+  props: {
+    id: String,
   },
   data() {
     return {
@@ -70,7 +80,7 @@ export default {
   },
   computed: {
     username() {
-      var data = this.getUserInfo()
+      const data = this.getUserInfo()
       if (data.firstName) {
         if (data.lastName)
           return data.firstName.concat(' ').concat(data.lastName)
@@ -86,36 +96,47 @@ export default {
     ...mapGetters('auth', ['getUserInfo']),
     ...mapGetters('settings', ['getLanguage']),
     ...mapGetters('auth', ['getUserId']),
+    followUser() {
+
+    },
   },
-  created() {
-    getSets(this.getUserId(), this.getLanguage()).then((setdata) => {
-      for (var i = 0; i < setdata.sets.length; i++) {
-        var set = setdata.sets[i]
-        if (set.ownerId == this.getUserId()) {
-          set.ownerId = ''
+  async mounted() {
+    try {
+      const { sets } = await getSets(this.getUserId(), this.getLanguage())
+      const userId = this.getUserId()
+      for (let set of sets) {
+        if (set.ownerId === userId) {
+          set['ownerName'] = ''
           this.sets.push(set)
         } else {
-          getUserInfo(set.ownerId).then((userdata) => {
-            if (userdata.firstName) {
-              if (userdata.lastName)
-                set.ownerId = userdata.firstName
-                  .concat(' ')
-                  .concat(userdata.lastName)
-              set.ownerId = userdata.firstName
-            } else {
-              set.ownerId = userdata.username
-            }
-            this.sets.push(set)
-          })
+          try {
+            const { firstName, lastName, username} = await getUserInfo(set.ownerId) 
+            let ownerName = ''
+              if (firstName) {
+                if (lastName) {
+                  ownerName = `${firstName} ${lastName}`
+                } else {
+                  ownerName = firstName
+                }
+              } else {
+                ownerName = username
+              }
+              set['ownerName'] = ownerName
+              this.sets.push(set)
+          } catch(err) {
+            console.error(err.response.data.error)
+          }
         }
       }
-    })
+    } catch(err) {
+      console.error(err.response.data.error)
+    }
   },
 }
 </script>
 
 <style scoped>
-@import "../assets/styles/utils.css";
+@import '../assets/styles/utils.css';
 
 .profile {
   display: flex;
@@ -129,14 +150,29 @@ export default {
 
 .user-banner {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   width: 100%;
   background: var(--white);
+  padding: 3rem 0 3rem 5rem;
 }
 
-.banner-spacing {
-  padding: 3em;
-  padding-top: 9em;
+.user-header {
+  display: flex;
+  align-items: center;
+}
+
+.btn {
+  background-color: var(--purple);
+  padding: 0.5rem 2rem;
+  color: var(--white);
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  margin-left: 7rem;
+  font-size: 1.25rem;
+  cursor: pointer;
 }
 
 .circle {
@@ -156,7 +192,7 @@ export default {
 }
 
 .set-list-and-header {
-  padding: 1em;
+  padding: 1em 5em;
 }
 
 .set-list-header {
@@ -165,7 +201,7 @@ export default {
   justify-content: space-between;
   padding-bottom: 0.5em;
   font-size: 25px;
-  padding: 1rem 4rem;
+  padding: 1rem 0;
 }
 
 .filter {
@@ -208,7 +244,7 @@ export default {
 .list {
   list-style-type: none;
   width: 100%;
-  padding: 0 4rem;
+  padding: 0 0rem;
 }
 
 li {

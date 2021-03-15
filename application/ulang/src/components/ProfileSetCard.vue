@@ -30,6 +30,7 @@ export default {
   },
   props: {
     setId: String,
+    ownerId: String,
     owner: String,
     setname: String,
     numterms: Number,
