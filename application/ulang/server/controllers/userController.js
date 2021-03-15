@@ -1,6 +1,6 @@
 const User = require('../models/User')
 const Set = require('../models/Set')
-const { capitalizeWord } = require('../utils/utils')
+const { capitalizeWord, filterFalseyValues } = require('../utils/utils')
 const bcrypt = require('bcrypt')
 
 const followUser = async (req, res) => {
@@ -137,10 +137,10 @@ const addLanguagesToUser = async (req, res) => {
 
 const updateUserInfo = async (req, res) => {
   const { id } = req.params
-  const updates = ({ email, password, firstName, lastName } = req.body)
-
+  const inputs = ({ email, password, firstName, lastName } = req.body)
+  const updates = filterFalseyValues(inputs)
   try {
-    // const updates = filterUpdates(inputs)
+    // const updates = filterFalseyValues(inputs)
     const user = await User.findByIdAndUpdate(id, updates, { new: true })
     res.status(200).json({
       success: true,
@@ -211,7 +211,6 @@ const changePassword = async (req, res) => {
 const deleteAccount = async (req, res) => {
   const { id } = req.params
   const { password } = req.body
-  console.log(id, password)
   try {
     const user = await User.findById(id)
     const success = await bcrypt.compare(password, user.password)
@@ -247,14 +246,35 @@ const searchNames = async (req, res) => {
         ]
       }
     )
+    // Return only the first 20 results
+    const maxResults = 20
     res.status(200).json({
       success: true,
-      users: users
+      users: users.slice(0, maxResults)
     })
   } catch (err) {
     res.status(400).json({
       success: false,
       error: err.message
+    })
+  }
+}
+
+const getQuickSets = async (req, res) => {
+  const { id, language } = req.params
+
+  try {
+    const user = await User.findById(id)
+    const quickAccessOfUser = user.quickAccess
+    const sets = await Set.find({ _id: { $in: quickAccessOfUser }, language: language })
+    res.status(200).json({
+      sets
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      message: 'Error getting user quick access sets'
     })
   }
 }
@@ -270,4 +290,5 @@ module.exports = {
   changePassword,
   deleteAccount,
   searchNames,
+  getQuickSets
 }

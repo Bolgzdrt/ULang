@@ -1,20 +1,11 @@
 <template>
   <div class="flashSetting">
     <div class="box">
-      <p class="titleP">Flash Cards</p>
+      <p class="titleP">Practice Conjugations</p>
       <div class="field">
         <p>Select Set:</p>
         <FilterSelect :options="sets" @selected="setSelect" />
         <p class="error" v-if="selectErr">Please select a set</p>
-      </div>
-      <div class="field">
-        <p class="radioTitle">Face First Displayed:</p>
-        <input type="radio" v-model="languageGiven" id="en" value="0" class="radioBtn">
-        <label for="en" class="radioLabel">English</label>
-        <input type="radio" v-model="languageGiven" id="fl" value="1" class="radioBtn">
-        <label for="fl" class="radioLabel">{{ this.currentLanguage }}</label>
-        <input type="radio" v-model="languageGiven" id="rand" value="2" class="radioBtn">
-        <label for="rand" class="radioLabel">Random</label>
       </div>
       <div class="buttonBox">
         <button class="submitButton" @click="startClick">Start</button>
@@ -26,20 +17,18 @@
 <script>
 import FilterSelect from '@/components/FilterSelect'
 import { mapGetters } from 'vuex'
-import { getSets } from '@/services/setService'
+import { getSetsWithVerbs } from '@/services/setService'
 import { updateRecentList } from "@/utils/utils"
 
 export default {
-  name: 'FlashCardsSettings',
+  name: 'ConjugationSettings',
   components: { FilterSelect },
   data() {
     return {
       setSelection: '',
-      languageGiven: '0',
-      currentLanguage: '',
+      selectErr: false,
       sets: [],
-      fromRoute: '',
-      selectErr: false
+      fromRoute: ''
     }
   },
   methods: {
@@ -52,17 +41,15 @@ export default {
       if (!this.setSelection) {
         this.selectErr = true
       } else {
-        updateRecentList("Flash Cards", this.setSelection, this.languageGiven)
-        this.$router.push({ name: 'FlashCards', params: { id: this.setSelection, setting: this.languageGiven } })
+        updateRecentList("Conjugations", this.setSelection)
+        this.$router.push({ name: 'Conjugation', params: { id: this.setSelection } })
       }
     }
   },
   created() {
-    getSets(this.getUserId(), this.getLanguage()).then(({sets}) => {
+    getSetsWithVerbs(this.getUserId(), this.getLanguage()).then(({sets}) => {
       this.sets = sets
     })
-    this.currentLanguage = this.getLanguage()
-    this.currentLanguage = this.currentLanguage.charAt(0).toUpperCase() + this.currentLanguage.slice(1)
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -99,55 +86,12 @@ export default {
   font-size: 2em;
 }
 
+.error {
+  color: red;
+}
+
 .selectDrop {
   height: 100px;
-}
-
-.field > select {
-  width: 60%;
-  border: 2px solid #000000;
-  background-color: transparent;
-  font-size: 1em;
-  outline: none;
-  border-radius: 5px;
-}
-
-.field > select:hover {
-  cursor: pointer;
-}
-
-.radioTitle {
-  margin-bottom: 10px;
-}
-
-.radioBtn {
-  opacity: 0;
-  position: fixed;
-  width: 0;
-  margin: 5px;
-}
-
-.radioLabel {
-  height: 36px;
-  width: 145px;
-  border-radius: 5px;
-  font-size: 0.7em;
-  transition: 0.1s;
-  outline: none;
-  border: none;
-  padding: 10px 20px;
-  margin: 0 5px 0 5px;
-  background-color: #ccc;
-  color: black;
-}
-
-.radioLabel:hover {
-  cursor: pointer;
-}
-
-.radioBtn:checked + label {
-  background-color: var(--purple);
-  color: white;
 }
 
 .buttonBox {
@@ -176,9 +120,5 @@ button:hover {
 
 .submitButton:hover {
   background: #5b49d0;
-}
-
-.error {
-  color: red;
 }
 </style>

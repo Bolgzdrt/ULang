@@ -32,6 +32,26 @@ export const checkIfValidPassword = (password) => {
   return regex.test(password)
 }
 
+export const updateRecentList = (event, setId, setting=-1) => {
+  const newEvent = {
+    event: event,
+    setId: setId,
+    setting: setting
+  }
+  var recentList = JSON.parse(window.localStorage.getItem('recentList')) || []
+  if (recentList.length < 4) {
+    recentList.push(newEvent)
+  } else {
+    recentList.shift()
+    recentList.push(newEvent)
+  }
+  window.localStorage.setItem('recentList', JSON.stringify(recentList))
+}
+
+export const getRecentList = () => {
+  return JSON.parse(window.localStorage.getItem('recentList')) || []
+}
+
 Vue.directive('click-outside', {
   bind: function(el, binding, vnode) {
     el.eventSetDrag = function() {

@@ -1,6 +1,7 @@
 const Set = require('../models/Set')
 const User = require('../models/User')
 const Word = require('../models/Word')
+const { filterFalseyValues } = require('../utils/utils')
 
 const createSet = async (req, res) => {
   const { name, language, words, description, ownerId, quickAccess } = req.body
@@ -68,6 +69,35 @@ const getSetById = async (req, res) => {
   }
 }
 
+const getSetsWithVerbs = async (req, res) => {
+  const { id, lang } = req.params
+  try {
+    const user = await User.findById(id)
+    const setsOfUser = user.sets;
+    const sets = await Set.find({ _id: { $in: setsOfUser }, language: lang })
+    let verbContainingSets = []
+    for (let s of sets) {
+      for (let w of s.words) {
+        const word = await Word.findById(w)
+        if (word.conjugationIds.length) {
+          verbContainingSets.push(s)
+          break
+        }
+      }
+    }
+    res.status(200).json({
+      success: true,
+      sets: verbContainingSets
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
 const getWordsInSet = async (req, res) => {
   const { id } = req.params
 
@@ -121,16 +151,17 @@ const toggleFavorite = async (req, res) => {
 const updateSet = async (req, res) => {
   const { id } = req.params
   const args = req.body
-  const updates = ({
+  const input = {
     name: args.name,
     language: args.language,
     words: args.words,
     favorite: args.favorite,
     description: args.description
-  } = req.body)
+  }
+  const updates = filterFalseyValues(input)
 
   try {
-    const updatedSet = await Set.findByIdAndUpdate(id, updates, { new: true, useFindAndModify: false })
+    const updatedSet = await Set.findByIdAndUpdate(id, updates, { new: true })
     res.status(200).json({
       success: true,
       set: updatedSet
@@ -161,6 +192,25 @@ const deleteSet = async (req, res) => {
   }
 }
 
+const getMostRecentSets = async (req, res) => {
+  const { id, lang } = req.params
+  try {
+    const user = await User.findById(id)
+    const setsOfUser = user.sets;
+    const sets = await Set.find({ _id: { $in: setsOfUser }, language: lang }).sort({ createdAt: -1 }).limit(4)
+    res.status(200).json({
+      success: true,
+      sets
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
 module.exports = {
   createSet,
   getAllSetsOfLanguage,
@@ -168,5 +218,7 @@ module.exports = {
   getWordsInSet,
   updateSet,
   toggleFavorite,
-  deleteSet
+  deleteSet,
+  getSetsWithVerbs,
+  getMostRecentSets
 }

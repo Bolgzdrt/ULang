@@ -18,6 +18,7 @@
 import FilterSelect from '@/components/FilterSelect'
 import { mapGetters } from 'vuex'
 import { getSets } from '@/services/setService'
+import { updateRecentList } from "@/utils/utils"
 
 export default {
   name: 'LearnSettings',
@@ -40,6 +41,7 @@ export default {
       if (!this.setSelection) {
         this.selectErr = true
       } else {
+        updateRecentList("Vocabulary", this.setSelection)
         this.$router.push({ name: 'Learn', params: { id: this.setSelection } })
       }
     }

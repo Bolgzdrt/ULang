@@ -1,22 +1,26 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Welcome from '../views/Welcome.vue'
-import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
-import Signup from '../views/Signup.vue'
-import Profile from '../views/Profile.vue'
-import Settings from '../views/Settings.vue'
+
+import AddLanguage from '../views/AddLanguage.vue'
+import Conjugation from '../views/Conjugation.vue'
+import ConjugationSettings from '../views/ConjugationSettings.vue'
+import CreateWord from '../views/CreateWord.vue'
+import CreateSet from '../views/CreateSet.vue'
 import FlashCardsSettings from '../views/FlashCardsSettings.vue'
 import FlashCards from '../views/FlashCards.vue'
+import Home from '../views/Home.vue'
 import LearnSettings from '../views/LearnSettings.vue'
 import Learn from '../views/Learn.vue'
-import CreateWord from '../views/CreateWord.vue'
-import AddLanguage from '../views/AddLanguage.vue'
-import CreateSet from '../views/CreateSet.vue'
-import Vocabulary from '../views/Vocabulary.vue'
-import Conjugations from '../views/Conjugations.vue'
+import Login from '../views/Login.vue'
+import Profile from '../views/Profile.vue'
+import PrivacyPolicy from '../views/PrivacyPolicy.vue'
 import Pronunciations from '../views/Pronunciations.vue'
 import Dictionary from '../views/Dictionary.vue'
+import Settings from '../views/Settings.vue'
+import Signup from '../views/Signup.vue'
+import Vocabulary from '../views/Vocabulary.vue'
+import Welcome from '../views/Welcome.vue'
+import Word from '../views/Word.vue'
 
 Vue.use(VueRouter)
 
@@ -95,9 +99,15 @@ const routes = [
     component: Vocabulary
   },
   {
-    path: '/conjugations',
-    name: 'Conjugations',
-    component: Conjugations
+    path: '/conjugation/:id',
+    name: 'Conjugation',
+    component: Conjugation,
+    props: true
+  },
+  {
+    path: '/conjugationSettings',
+    name: 'ConjugationSettings',
+    component: ConjugationSettings
   },
   {
     path: '/pronunciations',
@@ -109,6 +119,17 @@ const routes = [
     name: 'Dictionary',
     component: Dictionary,
     props: true
+  },
+  {
+    path: '/word/:id',
+    name: 'Word',
+    component: Word,
+    props: true
+  },
+  {
+    path: '/privacyPolicy',
+    name: 'PrivacyPolicy',
+    component: PrivacyPolicy
   }
 ]
 

@@ -5,11 +5,12 @@
     <div class="pageLinks">
       <router-link :to="{ name: 'FlashCardsSettings' }">Flash Cards</router-link>
       <router-link :to="{ name: 'LearnSettings' }">Vocabulary</router-link>
-      <router-link :to="{ name: 'Conjugations' }">Conjugations</router-link>
+      <router-link :to="{ name: 'ConjugationSettings' }">Conjugations</router-link>
       <router-link :to="{ name: 'Pronunciations' }">Pronunciations</router-link>
     </div>
     <hr>
     <div class="pageLinks">
+      <router-link :to="{ name: 'Profile', params: { id: userId } }">Profile</router-link>
       <router-link :to="{ name: 'CreateSet' }">New Set</router-link>
       <router-link :to="{ name: 'CreateWord' }">New Word</router-link>
     </div>
@@ -25,13 +26,14 @@
         <a href="#" class="viewAll">View All Friends</a>
     </div>
     <div id="ppLink">
-      <a href="#">Privacy Policy</a>
+      <router-link :to="{ name: 'PrivacyPolicy' }">Privacy Policy</router-link>
     </div>
   </div>
 </template>
 
 <script>
 import NameCircle from '@/components/NameCircle.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: "Sidebar",
@@ -45,6 +47,14 @@ export default {
         { name: 'Name Name', pic: 'NN' },
         { name: 'Place Holder', pic: 'PH' }
       ],
+    }
+  },
+  methods: {
+    ...mapGetters('auth', ['getUserId']),
+  },
+  computed: {
+    userId() {
+      return this.getUserId()
     }
   }
 }

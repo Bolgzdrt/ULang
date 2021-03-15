@@ -48,3 +48,8 @@ export const searchNames = async (query) => {
     return { users: [] }
   }
 }
+
+export const getQuickSets = async (userId, language) => {
+  const res = await axios.get(`user/getQuickSets/${userId}/${language}`)
+  return res.data
+}

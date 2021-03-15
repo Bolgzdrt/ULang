@@ -223,7 +223,7 @@ export default {
       definition: '',
       partOfSpeech: '',
       conjugationData: [
-        { title: 'Table 1', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }
+        { title: 'Table 1', tl: '', ml: '', bl: '', tr: '', mr: '', br: '' }
       ],
       conjugationIndex: 0,
       sets: [],
@@ -282,7 +282,7 @@ export default {
           this.requiredErrorTrans = err.message
           this.requiredErrorPoS = err.message
           this.conjugationData = [
-            { title: 'Table 1', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }
+            { title: 'Table 1', tl: '', ml: '', bl: '', tr: '', mr: '', br: '' }
           ]
         })
     },
@@ -296,7 +296,7 @@ export default {
           bl: '',
           tr: '',
           mr: '',
-          bl: ''
+          br: ''
         })
         this.conjugationIndex++
         if (!this.conjugationData[this.conjugationIndex].title)
@@ -327,7 +327,7 @@ export default {
       this.definition = ''
       this.partOfSpeech = ''
       this.conjugationData = [
-        { title: 'Table 1', tl: '', ml: '', bl: '', tr: '', mr: '', bl: '' }
+        { title: 'Table 1', tl: '', ml: '', bl: '', tr: '', mr: '', br: '' }
       ]
       this.conjugationIndex = 0
       this.anotherWordModal = false
@@ -338,7 +338,7 @@ export default {
       // this.$router.go()
     },
     conjugationPresenceCheck() {
-      const positions = ['tl', 'ml', 'bl', 'tr', 'mr', 'bl']
+      const positions = ['tl', 'ml', 'bl', 'tr', 'mr', 'br']
       let invalidIndices = []
       this.conjugationData.forEach((conj, index) => {
         if (!positions.filter((pos) => conj[pos] !== '').length) {
