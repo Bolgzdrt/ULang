@@ -1,10 +1,14 @@
 <template>
   <div class="home">
-    <div class="quickStart">  
+    <div class="quickStart">
       <h1>Recent Activity</h1>
       <div class="recentActRow">
         <div class="recentCard" v-for="act in recentActivity" :key="act._id">
-          <QuickStartCard :setId="act.setId" :event="act.event" :eventSetting="act.setting" />
+          <QuickStartCard
+            :setId="act.setId"
+            :event="act.event"
+            :eventSetting="act.setting"
+          />
         </div>
         <!-- <div class="cardColumn">
           <QuickStartCard :setId="recentActivity[3].setId" :event="recentActivity[3].event" :eventSetting="recentActivity[3].setting" />
@@ -39,20 +43,19 @@ import SetCard from '@/components/SetCard.vue'
 import { getQuickSets } from '@/services/userService'
 import { getMostRecentSets } from '@/services/setService'
 import { mapGetters } from 'vuex'
-import { getRecentList } from "@/utils/utils"
-
+import { getRecentList } from '@/utils/utils'
 
 export default {
   name: 'Home',
   components: {
     QuickStartCard,
-    SetCard
+    SetCard,
   },
   data() {
     return {
       quickAccessList: [],
       recentSetList: [],
-      recentActivity: []
+      recentActivity: [],
     }
   },
   // computed: {
@@ -65,21 +68,31 @@ export default {
   // },
   methods: {
     ...mapGetters('settings', ['getLanguage']),
-    ...mapGetters('auth', ['getUserId'])
+    ...mapGetters('auth', ['getUserId']),
   },
   mounted() {
-    getQuickSets(this.getUserId(), this.getLanguage()).then(({sets}) => {
-      this.quickAccessList = sets
-    })
-    getMostRecentSets(this.getUserId(), this.getLanguage()).then(({sets}) => {
-      this.recentSetList = sets
-    })
+    getQuickSets(this.getUserId(), this.getLanguage())
+      .then(({ sets }) => {
+        this.quickAccessList = sets
+      })
+      .catch(err => {
+        console.error(err.response.data.error)
+      })
+    getMostRecentSets(this.getUserId(), this.getLanguage())
+      .then(({ sets }) => {
+        this.recentSetList = sets
+      })
+      .catch(err => {
+        console.error(err.response.data.error)
+      })
     this.recentActivity = getRecentList()
-  }
+  },
 }
 </script>
 
 <style scoped>
+@import "../assets/styles/utils.css";
+
 .quickStart {
   text-align: left;
 }
