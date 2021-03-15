@@ -63,9 +63,6 @@ export default {
     },
   },
   created() {
-    if (!this.id) {
-      this.$router.push({name: "FlashCardSettings"})
-    }
     const settings = this.setting || 0
     getWordsInSet(this.id).then(({words}) => {
       this.words = words.map(word => { 

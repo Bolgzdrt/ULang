@@ -1,7 +1,7 @@
 <template>
-  <div class="learnSetting">
+  <div class="pronuncSetting">
     <div class="box">
-      <p class="titleP">Learn Vocabulary</p>
+      <p class="titleP">Practice Pronunciations</p>
       <div class="field">
         <p>Select Set:</p>
         <FilterSelect :options="sets" @selected="setSelect" />
@@ -21,7 +21,7 @@ import { getSets } from '@/services/setService'
 import { updateRecentList } from "@/utils/utils"
 
 export default {
-  name: 'LearnSettings',
+  name: 'PronunciationsSettings',
   components: { FilterSelect },
   data() {
     return {
@@ -41,8 +41,8 @@ export default {
       if (!this.setSelection) {
         this.selectErr = true
       } else {
-        updateRecentList("Vocabulary", this.setSelection)
-        this.$router.push({ name: 'Learn', params: { id: this.setSelection } })
+        updateRecentList("Pronunciations", this.setSelection)
+        this.$router.push({ name: 'Pronunciations', params: { id: this.setSelection } })
       }
     }
   },
@@ -60,7 +60,7 @@ export default {
 </script>
 
 <style scoped>
-.learnSetting {
+.pronuncSetting {
   display: flex;
   flex-direction: column;
   justify-content: center;
