@@ -67,7 +67,7 @@ export default {
     ...mapGetters('settings', ['getLanguage']),
     ...mapGetters('auth', ['getUserId'])
   },
-  created() {
+  mounted() {
     getQuickSets(this.getUserId(), this.getLanguage()).then(({sets}) => {
       this.quickAccessList = sets
     })
