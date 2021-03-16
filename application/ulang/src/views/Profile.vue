@@ -9,7 +9,7 @@
           </h1>
         </div>
         <div class="follow">
-          <button class="btn" @click="followUser" v-if="id === getUserId()">
+          <button class="btn" @click="followUser" v-if="id !== getUserId()">
             Follow
           </button>
         </div>
