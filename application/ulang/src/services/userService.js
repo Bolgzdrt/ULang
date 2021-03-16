@@ -77,3 +77,8 @@ export const getFollowing = async (userId) => {
   const res = await axios.get(`user/getFollowing/${userId}`)
   return res.data
 }
+
+export const getFollowingInfo = async (userId) => {
+  const res = await axios.get(`user/getFollowingInfo/${userId}`)
+  return res.data
+}

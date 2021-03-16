@@ -58,7 +58,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import { getSets } from '@/services/setService'
 import { getUserInfo, followUser, unfollowUser, getFollowing } from '@/services/userService'
-import { getInitials } from '@/utils/utils'
+import { getInitials, getName } from '@/utils/utils'
 import Sidebar from '../components/Sidebar.vue'
 import NameCircle from '@/components/NameCircle.vue'
 import ProfileSetCard from '../components/ProfileSetCard.vue'
@@ -107,13 +107,6 @@ export default {
         })
         .catch(err => console.error(err.response.data.error))
     },
-    getName({ firstName, lastName, username }) {
-      if (firstName) {
-        if (lastName) return `${firstName} ${lastName}`
-        return firstName
-      }
-      return username
-    },
   },
   async mounted() {
     try {
@@ -122,7 +115,7 @@ export default {
       if (userId !== this.getUserId()) {
         try {
           this.userInfo = await this.getUserInfo(userId)
-          this.username = this.getName(this.userInfo)
+          this.username = getName(this.userInfo)
           const { following } = await getFollowing(this.getUserId())
           if (following) {
             const match = following.filter(id => id === userId)
@@ -142,20 +135,8 @@ export default {
           this.sets.push(set)
         } else {
           try {
-            const { firstName, lastName, username } = await getUserInfo(
-              set.ownerId
-            )
-            let ownerName = ''
-            if (firstName) {
-              if (lastName) {
-                ownerName = `${firstName} ${lastName}`
-              } else {
-                ownerName = firstName
-              }
-            } else {
-              ownerName = username
-            }
-            set['ownerName'] = ownerName
+            const res = await getUserInfo(set.ownerId)
+            set['ownerName'] = getName(res)
             this.sets.push(set)
           } catch (err) {
             console.error(err.response.data.error)

@@ -46,6 +46,9 @@ const unfollowUser = async (req, res) => {
   }
 }
 
+/**
+ * Get a list of followed user ids
+ */
 const getFollowingList = async (req, res) => {
   const { id } = req.params
 
@@ -55,6 +58,26 @@ const getFollowingList = async (req, res) => {
       success: true,
       following: user.following,
       user
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: 'Error getting followed users'
+    })
+  }
+}
+
+// Get followed user information
+const getFolledUserInfo = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const user = await User.findById(id)
+    const followedUsers = await User.find({ _id: { $in: user.following }, })
+    res.status(200).json({
+      success: true,
+      following: followedUsers
     })
   } catch (err) {
     console.log(err)
@@ -292,6 +315,7 @@ module.exports = {
   followUser,
   unfollowUser,
   getFollowingList,
+  getFolledUserInfo,
   getUserInfo,
   getUserLanguages,
   addLanguagesToUser,
