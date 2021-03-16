@@ -1,9 +1,11 @@
 <template>
   <nav v-bind:class="getClass()">
-    <span @click="logoClick" id="logo-container">
-      <Logo id="logo" />
+    <div id="logo-search-container">
+      <span @click="logoClick">
+        <Logo id="logo" />
+      </span>
       <UserSearch v-if="userId" />
-    </span>
+    </div>
     <div v-if="userId" class="nav-items">
       <Plus />
       <LanguageSelector />
@@ -110,12 +112,17 @@ nav {
   z-index: 100;
 }
 
-#logo-container {
+#logo-search-container {
   height: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+
+#logo-search-container span {
+  width: 100%;
+  height: 100%;
 }
 
 #logo {

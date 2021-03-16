@@ -78,7 +78,7 @@ export default {
       sets: [],
       userId: '',
       username: '',
-      userInfo: { username: 'Loading...' },
+      userInfo: { username: '' },
       following: false,
     }
   },
@@ -90,7 +90,6 @@ export default {
   methods: {
     ...mapGetters('auth', ['getUserInfo', 'getUserId']),
     ...mapGetters('settings', ['getLanguage']),
-    ...mapActions('auth', ['getUserInfo']),
     followUser() {
       followUser(this.id, this.getUserId())
         .then(() => {
@@ -111,14 +110,13 @@ export default {
   async mounted() {
     try {
       const { sets } = await getSets(this.id, this.getLanguage())
-      const userId = this.id
-      if (userId !== this.getUserId()) {
+      if (this.id !== this.getUserId()) {
         try {
-          this.userInfo = await this.getUserInfo(userId)
+          this.userInfo = await getUserInfo(this.id)
           this.username = getName(this.userInfo)
           const { following } = await getFollowing(this.getUserId())
-          if (following) {
-            const match = following.filter(id => id === userId)
+          if (following.length) {
+            const match = following.filter(id => id === this.id)
             if (match.length) {
               this.following = true
             }
@@ -128,9 +126,10 @@ export default {
         }
       } else {
         this.userInfo = this.getUserInfo()
+        this.username = getName(this.userInfo)
       }
       for (let set of sets) {
-        if (set.ownerId === userId) {
+        if (set.ownerId === this.getUserId()) {
           set['ownerName'] = ''
           this.sets.push(set)
         } else {

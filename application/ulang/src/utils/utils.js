@@ -11,15 +11,13 @@ export const languages = [
   'romanian'
 ]
 
-export const getInitials = (data) => {
-  const { firstName, lastName, username } = data
-  let initials
+export const getInitials = ({ firstName, lastName, username }) => {
   if (firstName && lastName) {
-    initials = `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`
-  } else {
-    initials = username[0].toUpperCase()
+    return `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`
+  } else if (username) {
+    return username[0].toUpperCase()
   }
-  return initials
+  return ''
 }
 
 export const getName = (data) => {

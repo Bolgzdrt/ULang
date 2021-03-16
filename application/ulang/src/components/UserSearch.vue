@@ -10,12 +10,12 @@
         placeholder="Search for users"
         v-model="query"
         @focus="() => { focused = true }"
-        @blur="() => { focused = false }"
+        @blur="onBlur"
       />
       <div v-if="focused" class="backdrop">
         <div class="results-container" :style="{ display: results.length ? 'block' : 'none' }">
           <ul class="results-list">
-            <li class="result" v-for="result in results" :key="result._id">
+            <li class="result" v-for="result in results" :key="result._id" @click="goToPage(result._id)">
               {{ formatResult(result) }}
               <span v-if="result.firstName || result.lastName">({{ result.username }})</span>
             </li>
@@ -72,6 +72,16 @@ export default {
       }
       return resultStr
     },
+    onBlur() {
+      setTimeout(() => {
+        this.focused = false
+      }, 100)
+    },
+    goToPage(id) {
+      this.query = ''
+      this.focused = false
+      this.$router.replace({ name: 'Profile', params: { id } })
+    }
   }
 }
 </script>
