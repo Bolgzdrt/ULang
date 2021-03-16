@@ -30,6 +30,7 @@
 import { debounce } from 'lodash'
 import Search from '@/assets/svgs/search.vue'
 import { searchNames } from '@/services/userService'
+import { getName } from '@/utils/utils'
 
 export default {
   name: 'UserSearch',
@@ -57,20 +58,7 @@ export default {
         .catch((err) => console.error(err))
     },
     formatResult(res) {
-      const { username, firstName, lastName } = res
-      let resultStr = ''
-      if (firstName) {
-        resultStr += firstName
-        if (lastName) {
-          resultStr += ` ${lastName}`
-        }
-      } else if (lastName) {
-        resultStr += `lastName`
-      } else {
-        // username required for an account so this is the fallback
-        resultStr += username
-      }
-      return resultStr
+      return getName(res)
     },
     onBlur() {
       setTimeout(() => {
