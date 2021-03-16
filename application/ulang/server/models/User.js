@@ -32,9 +32,8 @@ const userSchema = new mongoose.Schema(
     quickAccess: {
       type: [String] // List of IDs of sets for home page display
     },
-    // TODO: Maybe change this to a list of following and followers
-    friendsList: {
-      type: String // List of IDs of friends
+    following: {
+      type: [String], // List of IDs of friends
     },
     recentList: {
       type: [String]

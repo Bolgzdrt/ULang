@@ -5,6 +5,7 @@ const router = Router()
 
 router.post('/followUser', userController.followUser)
 router.post('/unfollowUser', userController.unfollowUser)
+router.get('/getFollowing/:id', userController.getFollowingList)
 router.get('/getUserInfo/:id', userController.getUserInfo)
 router.get('/getUserLanguages/:id', userController.getUserLanguages)
 router.post('/addLanguagesToUser/:id', userController.addLanguagesToUser)

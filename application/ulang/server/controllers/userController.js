@@ -8,13 +8,10 @@ const followUser = async (req, res) => {
   const { userId, followUserId } = req.body
 
   try {
-    const user = await User.findById(userId)
     await User.findByIdAndUpdate(
       userId,
-      {
-        friendsList: [...user.friendsList, followUserId]
-      },
-      { new: true, useFindAndModify: false }
+      { $push: { following: followUserId } },
+      { new: true }
     )
     res.status(200).json({
       success: true
@@ -32,26 +29,38 @@ const unfollowUser = async (req, res) => {
   const { userId, unfollowUserId } = req.body
 
   try {
-    const user = await User.findById(userId)
-    const newFriendsList = user.friendsList.filter(
-      (friend) => friend._id !== unfollowUserId
-    )
     await User.findByIdAndUpdate(
       userId,
-      {
-        friendsList: newFriendsList
-      },
-      { new: true, useFindAndModify: false }
+      { $pull: { following : unfollowUserId } },
+      { new: true }
     )
     res.status(200).json({
       success: true,
-      message: 'Followed User'
     })
   } catch (err) {
     console.log(err)
     res.status(400).json({
       success: false,
       error: err.message
+    })
+  }
+}
+
+const getFollowingList = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const user = await User.findById(id)
+    res.status(200).json({
+      success: true,
+      following: user.following,
+      user
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: 'Error getting followed users'
     })
   }
 }
@@ -66,7 +75,7 @@ const getUserInfo = async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       username: user.username,
-      createdDate: user.createdAt
+      createdDate: user.createdAt,
     })
   } catch (err) {
     console.log(err)
@@ -282,6 +291,7 @@ const getQuickSets = async (req, res) => {
 module.exports = {
   followUser,
   unfollowUser,
+  getFollowingList,
   getUserInfo,
   getUserLanguages,
   addLanguagesToUser,

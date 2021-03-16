@@ -12,7 +12,7 @@ const state = {
   username: '',
   email: '',
   firstName: '',
-  lastName: ''
+  lastName: '',
 }
 
 const getters = {

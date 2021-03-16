@@ -8,11 +8,12 @@
             {{ username }}
           </h1>
         </div>
-        <div class="follow">
-          <button class="btn" @click="followUser" v-if="id !== getUserId()">
-            Follow
-          </button>
-        </div>
+        <button class="btn followBtn" @click="followUser" v-if="id !== getUserId() && !following">
+          Follow
+        </button>
+        <button class="btn unfollowBtn" @click="unfollowUser" v-else-if="id !== getUserId() && following">
+          Unfollow
+        </button>
       </div>
       <div class="set-list-and-header">
         <div class="set-list-header">
@@ -54,9 +55,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { getSets } from '@/services/setService'
-import { getUserInfo } from '@/services/userService'
+import { getUserInfo, followUser, unfollowUser, getFollowing } from '@/services/userService'
 import { getInitials } from '@/utils/utils'
 import Sidebar from '../components/Sidebar.vue'
 import NameCircle from '@/components/NameCircle.vue'
@@ -76,60 +77,93 @@ export default {
     return {
       sets: [],
       userId: '',
+      username: '',
+      userInfo: { username: 'Loading...' },
+      following: false,
     }
   },
   computed: {
-    username() {
-      const data = this.getUserInfo()
-      if (data.firstName) {
-        if (data.lastName)
-          return data.firstName.concat(' ').concat(data.lastName)
-        return data.firstName
-      }
-      return data.username
-    },
     initials() {
-      return getInitials(this.getUserInfo())
+      return getInitials(this.userInfo)
     },
   },
   methods: {
-    ...mapGetters('auth', ['getUserInfo']),
+    ...mapGetters('auth', ['getUserInfo', 'getUserId']),
     ...mapGetters('settings', ['getLanguage']),
-    ...mapGetters('auth', ['getUserId']),
+    ...mapActions('auth', ['getUserInfo']),
     followUser() {
-
+      followUser(this.id, this.getUserId())
+        .then(() => {
+          this.following = true
+        })
+        .catch(err => {
+          console.error(err.response.data.error)
+        })
+    },
+    unfollowUser() {
+      unfollowUser(this.id, this.getUserId())
+        .then(() => {
+          this.following = false
+        })
+        .catch(err => console.error(err.response.data.error))
+    },
+    getName({ firstName, lastName, username }) {
+      if (firstName) {
+        if (lastName) return `${firstName} ${lastName}`
+        return firstName
+      }
+      return username
     },
   },
   async mounted() {
     try {
-      const { sets } = await getSets(this.getUserId(), this.getLanguage())
-      const userId = this.getUserId()
+      const { sets } = await getSets(this.id, this.getLanguage())
+      const userId = this.id
+      if (userId !== this.getUserId()) {
+        try {
+          this.userInfo = await this.getUserInfo(userId)
+          this.username = this.getName(this.userInfo)
+          const { following } = await getFollowing(this.getUserId())
+          if (following) {
+            const match = following.filter(id => id === userId)
+            if (match.length) {
+              this.following = true
+            }
+          }
+        } catch (err) {
+          console.error(err.response.data.error)
+        }
+      } else {
+        this.userInfo = this.getUserInfo()
+      }
       for (let set of sets) {
         if (set.ownerId === userId) {
           set['ownerName'] = ''
           this.sets.push(set)
         } else {
           try {
-            const { firstName, lastName, username} = await getUserInfo(set.ownerId) 
+            const { firstName, lastName, username } = await getUserInfo(
+              set.ownerId
+            )
             let ownerName = ''
-              if (firstName) {
-                if (lastName) {
-                  ownerName = `${firstName} ${lastName}`
-                } else {
-                  ownerName = firstName
-                }
+            if (firstName) {
+              if (lastName) {
+                ownerName = `${firstName} ${lastName}`
               } else {
-                ownerName = username
+                ownerName = firstName
               }
-              set['ownerName'] = ownerName
-              this.sets.push(set)
-          } catch(err) {
+            } else {
+              ownerName = username
+            }
+            set['ownerName'] = ownerName
+            this.sets.push(set)
+          } catch (err) {
             console.error(err.response.data.error)
           }
         }
       }
-    } catch(err) {
-      console.error(err.response.data.error)
+    } catch (err) {
+      console.error(err)
     }
   },
 }
@@ -163,9 +197,7 @@ export default {
 }
 
 .btn {
-  background-color: var(--purple);
   padding: 0.5rem 2rem;
-  color: var(--white);
   outline: none;
   border: none;
   border-radius: 4px;
@@ -173,6 +205,16 @@ export default {
   margin-left: 7rem;
   font-size: 1.25rem;
   cursor: pointer;
+}
+
+.followBtn {
+  background-color: var(--purple);
+  color: var(--white);
+}
+
+.unfollowBtn {
+  background-color: #e0e0e0;
+  color: var(--black);
 }
 
 .circle {
