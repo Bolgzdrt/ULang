@@ -80,7 +80,7 @@ export default {
     goToPage(id) {
       this.query = ''
       this.focused = false
-      this.$router.replace({ name: 'Profile', params: { id } })
+      this.$router.push({ name: 'Profile', params: { id } })
     }
   }
 }
