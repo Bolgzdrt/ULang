@@ -78,7 +78,6 @@ export default {
     triggerLogout() {
       this.logout()
       this.$router.push({ name: 'Welcome' })
-      this.$forceUpdate()
     },
     logoClick() {
       if (this.userId) {
