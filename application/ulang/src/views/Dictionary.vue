@@ -5,16 +5,15 @@
     <div class="wordList">
       <div class="wordListHeader">
         <p class="titleP">{{setName}}</p>
-        <Tooltip text="Use the checkbox to select any words the set should include. New words can be created for the set after clicking the 'Create' button.">
-          <div class="helpButton">?</div>
-        </Tooltip>
       </div>
       <!--<div class="filterField">
         <input type="text" id="filter" placeholder="Filter words..." onfocus="this.placeholder=''" onblur="this.placeholder='Filter words...'" v-model="filter" value="" @input="filterList" class="inputField"><br>
       </div>-->
       <div class="rowContainer">
         <div class="row" v-for="word in setWords" :key="word._id">
-          <input type="checkbox" value="word.selected" v-model="word.selected">
+          <div class="dots" @click="openDotsPopup()">
+            <span id="dots-popup" class="dots-popup">help plz...</span>
+          </div>
           <div class="word"><p>{{ word.english }} / {{ word.word }}</p></div>
           <div class="definition"><p>{{ word.definition }}</p></div>
         </div>
@@ -60,7 +59,12 @@ export default {
     addWords(){
 
     },
-    newWords(){}
+    newWords(){},
+    openDotsPopup(){
+      var popup = document.getElementById("dots-popup");
+      popup.classList.toggle("show");
+      console.log("haelp");
+    }
   }
   
 }
@@ -160,6 +164,59 @@ export default {
 .row > .definition {
   width: 70%;
 }
+
+.dots{
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+.dots:after{
+  content: '\2807';
+  font-size: inherit;
+}
+
+.dots .dots-popup{
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+.dots .dots-popup:after{
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.dots .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s
+}
+
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
 button {
   height: 43px;
   width: 145px;
