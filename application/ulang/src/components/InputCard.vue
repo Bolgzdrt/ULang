@@ -15,8 +15,8 @@
           <p class="correct" v-if="correct">Correct!</p>
           <div class="incorrect" v-if="!correct">
             <p class="result">Incorrect</p>
-            <p>The correct word is:</p>
-            <p>{{ translation }}</p>
+            <p>Correct answer:</p>
+            <p>{{ answer }}</p>
           </div>
           <div class="buttonBox">
             <button class="submitButton" @click="cont">Continue</button>
@@ -33,7 +33,7 @@ import AccentButtons from '@/components/AccentButtons.vue'
 export default {
   name: 'InputCard',
   components: { AccentButtons },
-  props: ['word', 'translation'],
+  props: ['word', 'answer'],
   data() {
     return {
       input: '',
@@ -48,11 +48,12 @@ export default {
     },
     correctCheck() {
       if (this.input) {
-        if (this.input === this.translation) {
+        if (this.input === this.answer) {
           this.correct = true
         } else {
           this.correct = false
         }
+        console.log(this.correct)
         this.resultModal = true
         if (this.entryErr) {this.entryErr = false}
       } else {
@@ -168,5 +169,10 @@ button:hover {
 
 .incorrect > .result {
   color: red;
+}
+
+/* Adding styles to accentButtons to make it centered below the input box */
+.accentButtons {
+  justify-content: center;
 }
 </style>

@@ -10,6 +10,8 @@ router.post('/createSet', setController.createSet)
  * @param {string} lang - language code to filter with
  */
 router.get('/getSetsOfLang/:id/:lang', setController.getAllSetsOfLanguage)
+router.get('/getMostRecentSets/:id/:lang', setController.getMostRecentSets)
+router.get('/getSetsWithVerbs/:id/:lang', setController.getSetsWithVerbs)
 router.get('/getSet/:id', setController.getSetById)
 router.get('/getWordsInSet/:id', setController.getWordsInSet)
 router.put('/updateSet/:id', setController.updateSet)

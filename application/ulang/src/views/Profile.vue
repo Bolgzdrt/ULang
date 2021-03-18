@@ -2,20 +2,29 @@
   <div class="profile">
     <div class="profile-content">
       <div class="user-banner">
-        <span class="banner-spacing"/>
-        <NameCirclePurple class= "name-circle" :userId="userId" :initials="initials" />
-        <header class="username-header" id="username-header" v-text="username"></header>
+        <div class="user-header">
+          <NameCircle :initials="initials" />
+          <h1 id="username-header" class="username-header">
+            {{ username }}
+          </h1>
+        </div>
+        <button class="btn followBtn" @click="followUser" v-if="id !== getUserId() && !following">
+          Follow
+        </button>
+        <button class="btn unfollowBtn" @click="unfollowUser" v-else-if="id !== getUserId() && following">
+          Unfollow
+        </button>
       </div>
       <div class="set-list-and-header">
         <div class="set-list-header">
-            <input
-              class="filter"
-              type="text"
-              name="filter"
-              id="filter"
-              placeholder="Filter"
-            />
-          <div class="sort-drop-down" >
+          <input
+            class="filter"
+            type="text"
+            name="filter"
+            id="filter"
+            placeholder="Filter"
+          />
+          <div class="sort-drop-down">
             <label class="sort-label" for="sort">Sort</label>
             <select class="sort" name="sort" id="sort">
               <option value="recent">Most Recent</option>
@@ -26,15 +35,18 @@
           </div>
         </div>
         <div class="set-list">
-          <ul id=list class=list>
+          <ul id="list" class="list">
             <li v-for="set in sets" :key="set.name">
-              <ProfileSetCard 
-              :setId="set._id"
-              :owner="set.ownerId"
-              :setname="set.name"
-              :numterms="set.words.length"
-              :favorite="true"
-              :quickaccess="true" />
+              <ProfileSetCard
+                :setId="set._id"
+                :ownerId="set.ownerId"
+                :owner="set.ownerName"
+                :setname="set.name"
+                :numterms="set.words.length"
+                :favorite="true"
+                :quickAccess="set.quickAccess"
+                @click="quickAccessToggle"
+              />
             </li>
           </ul>
         </div>
@@ -44,130 +56,204 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+import { getSets } from '@/services/setService'
+import { getUserInfo, followUser, unfollowUser, getFollowing, addQuickSet, removeQuickSet } from '@/services/userService'
+import { getInitials, getName } from '@/utils/utils'
 import Sidebar from '../components/Sidebar.vue'
-import NameCirclePurple from '@/components/NameCirclePurple.vue'
+import NameCircle from '@/components/NameCircle.vue'
 import ProfileSetCard from '../components/ProfileSetCard.vue'
-import {getSets}  from '@/services/setService'
-import {getUserInfo} from '@/services/userService'
-import {mapGetters} from 'vuex'
-import { getInitials } from '@/utils/utils'
+import { getQuickSets } from '@/services/userService'
 
 export default {
   name: 'Profile',
-  components: { 
+  components: {
     Sidebar,
-    NameCirclePurple,
-    ProfileSetCard
-  
+    NameCircle,
+    ProfileSetCard,
+  },
+  props: {
+    id: String,
   },
   data() {
     return {
-      sets:[],
-      userId:''
+      sets: [],
+      userId: '',
+      username: '',
+      userInfo: { username: '' },
+      following: false,
+      quickAccessList: []
     }
   },
   computed: {
-    username(){
-      var data = this.getUserInfo();
-      if(data.firstName)
-      {
-        if(data.lastName)
-          return data.firstName.concat(" ").concat(data.lastName);
-        return data.firstName;
-      }
-      return data.username;
-    },
     initials() {
-      return getInitials(this.getUserInfo())
-    }
+      return getInitials(this.userInfo)
+    },
   },
   methods: {
-    ...mapGetters('auth', ['getUserInfo']),
+    ...mapGetters('auth', ['getUserInfo', 'getUserId']),
     ...mapGetters('settings', ['getLanguage']),
-    ...mapGetters('auth', ['getUserId'])
+    followUser() {
+      followUser(this.id, this.getUserId())
+        .then(() => {
+          this.following = true
+        })
+        .catch(err => {
+          console.error(err.response.data.error)
+        })
+    },
+    unfollowUser() {
+      unfollowUser(this.id, this.getUserId())
+        .then(() => {
+          this.following = false
+        })
+        .catch(err => console.error(err.response.data.error))
+    },
+    quickAccessToggle(currId) {
+      var index = this.sets.findIndex(x => x._id === currId)
+      this.sets[index].quickAccess = !this.sets[index].quickAccess
+      if (this.sets[index].quickAccess) {
+        addQuickSet(this.getUserId(), currId)
+      } else {
+        removeQuickSet(this.getUserId(), currId)
+      }
+    }
   },
-  created() {
-    getSets(this.getUserId(), this.getLanguage())
-      .then(setdata =>{
-        for (var i = 0; i < setdata.sets.length; i++){
-          var set = setdata.sets[i];
-          if(set.ownerId == this.getUserId())
-          {
-            set.ownerId = '';
-            this.sets.push(set);
+  async mounted() {
+    try {
+      const { sets } = await getSets(this.id, this.getLanguage())
+      if (this.id !== this.getUserId()) {
+        try {
+          this.userInfo = await getUserInfo(this.id)
+          this.username = getName(this.userInfo)
+          const { following } = await getFollowing(this.getUserId())
+          if (following.length) {
+            const match = following.filter(id => id === this.id)
+            if (match.length) {
+              this.following = true
+            }
           }
-          else
-          {
-            getUserInfo(set.ownerId)
-            .then(userdata =>{
-              if(userdata.firstName)
-              {
-                if(userdata.lastName)
-                  set.ownerId = userdata.firstName.concat(" ").concat(userdata.lastName);
-                set.ownerId = userdata.firstName;
-              }
-              else
-              {
-              set.ownerId = userdata.username;
-              } 
-              this.sets.push(set)
-            })
+        } catch (err) {
+          console.error(err.response.data.error)
+        }
+      } else {
+        this.userInfo = this.getUserInfo()
+        this.username = getName(this.userInfo)
+      }
+      for (let set of sets) {
+        if (set.ownerId === this.getUserId()) {
+          set['ownerName'] = ''
+          this.sets.push(set)
+        } else {
+          try {
+            const res = await getUserInfo(set.ownerId)
+            set['ownerName'] = getName(res)
+            this.sets.push(set)
+          } catch (err) {
+            console.error(err.response.data.error)
           }
         }
-      })
-  }
+      }
+      getQuickSets(this.getUserId(), this.getLanguage())
+          .then(({ sets }) => {
+            this.quickAccessList = sets.map((set) => set._id)
+            this.sets = this.sets.map((set) => {
+              if(this.quickAccessList.includes(set._id)) {
+                return { ...set, quickAccess: true}
+              } else {
+                return { ...set, quickAccess: false}
+              }
+            })
+          })
+          .catch((err) => {
+            console.error(err.response.data.error)
+          })
+    } catch (err) {
+      console.error(err)
+    }
+  },
 }
-
 </script>
- 
-<style scoped>
 
-.profile{
+<style scoped>
+@import '../assets/styles/utils.css';
+
+.profile {
   display: flex;
 }
 
-.profile-content{
+.profile-content {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-.user-banner{
+.user-banner {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   width: 100%;
   background: var(--white);
+  padding: 3rem 0 3rem 5rem;
 }
 
-.banner-spacing{
-  padding: 3em;
-  padding-top: 9em;
+.user-header {
+  display: flex;
+  align-items: center;
 }
 
-.name-circle{
+.btn {
+  padding: 0.5rem 2rem;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  margin-left: 7rem;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.followBtn {
+  background-color: var(--purple);
+  color: var(--white);
+}
+
+.unfollowBtn {
+  background-color: #e0e0e0;
+  color: var(--black);
+}
+
+.circle {
   vertical-align: middle;
-  font-size: 3.5em;
+  font-size: 2.5rem;
   padding: 1.2em;
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--purple);
+  color: #fff;
 }
 
-.username-header{
-  font-size: 4em;
-  padding: .25em;
+.username-header {
+  font-size: 3em;
+  padding: 0.25em;
+  font-weight: normal;
 }
 
-.set-list-and-header{
-  padding: 1em;
+.set-list-and-header {
+  padding: 1em 5em;
 }
 
-.set-list-header{
+.set-list-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: .5em;
+  padding-bottom: 0.5em;
   font-size: 25px;
+  padding: 1rem 0;
 }
 
-.filter{ /* make class for label as well? */
+.filter {
+  /* make class for label as well? */
   justify-self: left;
   font-size: inherit;
   font-family: inherit;
@@ -175,30 +261,41 @@ export default {
   background: none;
   border-bottom: 1px solid var(--black);
   outline: none;
-  border-radius: 0;
   -webkit-appearance: none;
 }
 
-.sort{
+.filter::placeholder {
+  font-weight: 300;
+}
+
+.sort-drop-down {
+  display: flex;
+  align-items: center;
+}
+
+.sort {
   font-family: inherit;
   font-size: inherit;
   color: var(--grey);
   border: none;
+  font-size: 1.2rem;
+  padding: 0.25rem 2rem 0.25rem 0.25rem;
+  font-weight: 300;
 }
 
-.sort-label{
+.sort-label {
   padding-right: 1em;
-  color: var(--black)
+  font-size: 1.5rem;
+  color: var(--black);
 }
 
-.list{
+.list {
   list-style-type: none;
-  width:100%;
-  padding: 4em;
+  width: 100%;
+  padding: 0 0rem;
 }
 
-li{
+li {
   margin: 15px 0;
 }
-
 </style>

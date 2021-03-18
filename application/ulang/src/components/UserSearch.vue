@@ -10,12 +10,12 @@
         placeholder="Search for users"
         v-model="query"
         @focus="() => { focused = true }"
-        @blur="() => { focused = false }"
+        @blur="onBlur"
       />
       <div v-if="focused" class="backdrop">
         <div class="results-container" :style="{ display: results.length ? 'block' : 'none' }">
           <ul class="results-list">
-            <li class="result" v-for="result in results" :key="result._id">
+            <li class="result" v-for="result in results" :key="result._id" @click="goToPage(result._id)">
               {{ formatResult(result) }}
               <span v-if="result.firstName || result.lastName">({{ result.username }})</span>
             </li>
@@ -30,6 +30,7 @@
 import { debounce } from 'lodash'
 import Search from '@/assets/svgs/search.vue'
 import { searchNames } from '@/services/userService'
+import { getName } from '@/utils/utils'
 
 export default {
   name: 'UserSearch',
@@ -57,21 +58,18 @@ export default {
         .catch((err) => console.error(err))
     },
     formatResult(res) {
-      const { username, firstName, lastName } = res
-      let resultStr = ''
-      if (firstName) {
-        resultStr += firstName
-        if (lastName) {
-          resultStr += ` ${lastName}`
-        }
-      } else if (lastName) {
-        resultStr += `lastName`
-      } else {
-        // username required for an account so this is the fallback
-        resultStr += username
-      }
-      return resultStr
+      return getName(res)
     },
+    onBlur() {
+      setTimeout(() => {
+        this.focused = false
+      }, 100)
+    },
+    goToPage(id) {
+      this.query = ''
+      this.focused = false
+      this.$router.push({ name: 'Profile', params: { id } })
+    }
   }
 }
 </script>

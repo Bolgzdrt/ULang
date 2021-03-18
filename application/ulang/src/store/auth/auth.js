@@ -12,7 +12,7 @@ const state = {
   username: '',
   email: '',
   firstName: '',
-  lastName: ''
+  lastName: '',
 }
 
 const getters = {
@@ -97,17 +97,17 @@ const mutations = {
       window.localStorage.setItem('lastName', lastName)
   },
   logout: (state) => {
-    state.email = ''
-    state.username = ''
-    state.userId = ''
-    state.firstName = ''
-    state.lastName = ''
     window.localStorage.removeItem('email')
     window.localStorage.removeItem('username')
     window.localStorage.removeItem('language')
     window.localStorage.removeItem('firstName')
     window.localStorage.removeItem('lastName')
     Vue.$cookies.remove('userId')
+    state.userId = ''
+    state.email = ''
+    state.username = ''
+    state.firstName = ''
+    state.lastName = ''
   }
 }
 

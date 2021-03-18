@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 <div class="dictionary">
   <div class="set-box">
     <header class="set-name" ></header>
@@ -16,46 +17,74 @@
           </div>
           <div class="word"><p>{{ word.english }} / {{ word.word }}</p></div>
           <div class="definition"><p>{{ word.definition }}</p></div>
+=======
+  <div class="dictionary">
+    <div class="set-box">
+      <header class="set-name"></header>
+      <div class="wordList">
+        <div class="wordListHeader">
+          <p class="titleP">{{ setName }}</p>
+          <Tooltip
+            text="Use the checkbox to select any words the set should include. New words can be created for the set after clicking the 'Create' button."
+          >
+            <div class="helpButton">?</div>
+          </Tooltip>
+        </div>
+        <!--<div class="filterField">
+        <input type="text" id="filter" placeholder="Filter words..." onfocus="this.placeholder=''" onblur="this.placeholder='Filter words...'" v-model="filter" value="" @input="filterList" class="inputField"><br>
+      </div>-->
+        <div class="rowContainer">
+          <div class="row" v-for="word in setWords" :key="word._id">
+            <input
+              type="checkbox"
+              value="word.selected"
+              v-model="word.selected"
+            />
+            <div class="word">
+              <p>{{ word.english }} / {{ word.word }}</p>
+            </div>
+            <div class="definition">
+              <p>{{ word.definition }}</p>
+            </div>
+          </div>
+>>>>>>> 3265635a7d4a0ce23f814b4043911522ba787f77
         </div>
       </div>
+      <div class="buttonBox">
+        <button class="add-words" @click="addWords">Add Words</button>
+        <button class="new-word" @click="newWords">New Word</button>
+      </div>
     </div>
-    <div class="buttonBox">
-      <button class="add-words" @click="addWords">Add Words</button>
-      <button class="new-word" @click="newWords">New Word</button>
-    </div>
+    <div class="add-words-box"></div>
   </div>
-  <div class="add-words-box">
-  </div>
-</div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-import {getWordsInSet, getSetById} from '@/services/setService'
+import { mapGetters } from 'vuex'
+import { getWordsInSet, getSetById } from '@/services/setService'
 import Tooltip from '@/components/Tooltip.vue'
 
 export default {
-  name: "Dictionary",
-  components: {Tooltip},
+  name: 'Dictionary',
+  components: { Tooltip },
   props: ['id', 'setId'],
   data() {
-    return{
+    return {
       setName: '',
       setWords: [],
     }
   },
   created() {
-    getWordsInSet(this.setId)
-    .then(data =>{
+    getWordsInSet(this.setId).then((data) => {
       this.setWords = data.words
     })
-    getSetById(this.setId)
-    .then(data =>{
-      this.setName = data.set.name;
+    getSetById(this.setId).then((data) => {
+      this.setName = data.set.name
     })
   },
   methods: {
     ...mapGetters('auth', ['getUserId']),
+<<<<<<< HEAD
     addWords(){
 
     },
@@ -67,22 +96,29 @@ export default {
     }
   }
   
+=======
+    addWords() {},
+    newWords() {},
+  },
+>>>>>>> 3265635a7d4a0ce23f814b4043911522ba787f77
 }
 </script>
 
 <style scoped>
-.dictionary{
+@import '../assets/styles/utils.css';
+
+.dictionary {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 2%
+  padding: 2%;
 }
 
 .titleP {
   font-size: 2em;
 }
 
-.set-box{
+.set-box {
   display: flex;
   flex-direction: column;
   background-color: var(--white);

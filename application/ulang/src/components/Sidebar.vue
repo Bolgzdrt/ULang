@@ -5,33 +5,38 @@
     <div class="pageLinks">
       <router-link :to="{ name: 'FlashCardsSettings' }">Flash Cards</router-link>
       <router-link :to="{ name: 'LearnSettings' }">Vocabulary</router-link>
-      <router-link :to="{ name: 'Conjugations' }">Conjugations</router-link>
+      <router-link :to="{ name: 'ConjugationSettings' }">Conjugations</router-link>
       <router-link :to="{ name: 'Pronunciations' }">Pronunciations</router-link>
     </div>
     <hr>
     <div class="pageLinks">
+      <router-link :to="{ name: 'Profile', params: { id: userId } }">Profile</router-link>
       <router-link :to="{ name: 'CreateSet' }">New Set</router-link>
       <router-link :to="{ name: 'CreateWord' }">New Word</router-link>
     </div>
     <hr>
     <p id="friends">Friends</p>
     <div class="friendLink"> 
-        <a href="#" v-for="friend in friends" :key="friend.id">
+        <router-link :to="{ name: 'Profile', params: { id: following._id } }" v-for="following in followedUsers" :key="following.id">
           <div class="user">
-            <NameCircle :initials="friend.pic" />
-            <div class="name">{{ friend.name }}</div>
+            <NameCircle :initials="following.pic" />
+            <div class="name">{{ following.name }}</div>
           </div>
-        </a>
-        <a href="#" class="viewAll">View All Friends</a>
+        </router-link>
+        <!-- Commenting out for now and just making the list scroll but can make a friends list page later -->
+        <!-- <a href="#" class="viewAll">View All Friends</a> -->
     </div>
     <div id="ppLink">
-      <a href="#">Privacy Policy</a>
+      <router-link :to="{ name: 'PrivacyPolicy' }">Privacy Policy</router-link>
     </div>
   </div>
 </template>
 
 <script>
 import NameCircle from '@/components/NameCircle.vue'
+import { mapGetters } from 'vuex'
+import { getFollowingInfo } from '@/services/userService'
+import { getInitials, getName } from '@/utils/utils'
 
 export default {
   name: "Sidebar",
@@ -40,12 +45,33 @@ export default {
   },
   data() {
     return {
-      friends: [
-        { name: 'Joe Schmo', pic: 'JS' },
-        { name: 'Name Name', pic: 'NN' },
-        { name: 'Place Holder', pic: 'PH' }
-      ],
+      followedUsers: [
+        { name: '', pic: '', _id: `1` },
+      ]
     }
+  },
+  methods: {
+    ...mapGetters('auth', ['getUserId']),
+  },
+  computed: {
+    userId() {
+      return this.getUserId()
+    }
+  },
+  mounted() {
+    getFollowingInfo(this.getUserId())
+      .then(({ following }) => {
+        this.followedUsers = following.map(user => {
+          return {
+            pic: getInitials(user),
+            name: getName(user),
+            _id: user._id
+          }
+        })
+      })
+      .catch(err => {
+        console.error(err.response.data.error)
+      })
   }
 }
 </script>
@@ -83,6 +109,8 @@ a:hover {
 
 .friendLink{
   font-size: 18px;
+  overflow-y: auto;
+  margin-bottom: 3rem;
 }
 
 hr {

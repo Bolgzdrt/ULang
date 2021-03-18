@@ -11,15 +11,28 @@ export const languages = [
   'romanian'
 ]
 
-export const getInitials = (data) => {
-  const { firstName, lastName, username } = data
-  let initials
+export const getInitials = ({ firstName, lastName, username }) => {
   if (firstName && lastName) {
-    initials = `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`
-  } else {
-    initials = username[0].toUpperCase()
+    return `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`
+  } else if (username) {
+    return username[0].toUpperCase()
   }
-  return initials
+  return ''
+}
+
+export const getName = (data) => {
+  const { firstName, lastName, username } = data
+  let name = ''
+  if (firstName) {
+    if (lastName) {
+      name = `${firstName} ${lastName}`
+    } else {
+      name = firstName
+    }
+  } else {
+    name = username
+  }
+  return name
 }
 
 export const checkIfEmail = (email) => {
@@ -30,6 +43,52 @@ export const checkIfEmail = (email) => {
 export const checkIfValidPassword = (password) => {
   const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/
   return regex.test(password)
+}
+
+export const updateRecentList = (event, setId, setting=-1) => {
+  const currentUserId = Vue.$cookies.get('userId')
+  const newEvent = {
+    event,
+    setId,
+    setting,
+    userId: currentUserId
+  }
+  let recentList = JSON.parse(window.localStorage.getItem('recentList')) || []
+  
+  if (recentList.length < 4) {
+    const sameItems = recentList.filter(item => {
+      if (
+        item.event  === event 
+        && item.setId === setId 
+        && item.setting === setting
+      ) {
+        return item
+      }
+    })
+    if (!sameItems.length) {
+      recentList.push(newEvent)
+    }
+  } else {
+    recentList.shift()
+    recentList.push(newEvent)
+  }
+  window.localStorage.setItem('recentList', JSON.stringify(recentList))
+}
+
+export const getRecentList = () => {
+  let recentList = JSON.parse(window.localStorage.getItem('recentList')) || []
+
+  // If the current "recentList" items belong to another user, empty the list
+  const currentUserId = Vue.$cookies.get('userId')
+  for (let item of recentList) {
+    if (item.userId !== currentUserId) {
+      window.localStorage.removeItem('recentList')
+      window.localStorage.setItem('recentList', JSON.stringify([]))
+      recentList = []
+      break
+    }
+  }
+  return recentList
 }
 
 Vue.directive('click-outside', {

@@ -1,6 +1,6 @@
 const User = require('../models/User')
 const Set = require('../models/Set')
-const { capitalizeWord } = require('../utils/utils')
+const { capitalizeWord, filterFalseyValues } = require('../utils/utils')
 const bcrypt = require('bcrypt')
 
 const followUser = async (req, res) => {
@@ -8,13 +8,10 @@ const followUser = async (req, res) => {
   const { userId, followUserId } = req.body
 
   try {
-    const user = await User.findById(userId)
     await User.findByIdAndUpdate(
       userId,
-      {
-        friendsList: [...user.friendsList, followUserId]
-      },
-      { new: true, useFindAndModify: false }
+      { $push: { following: followUserId } },
+      { new: true }
     )
     res.status(200).json({
       success: true
@@ -32,26 +29,61 @@ const unfollowUser = async (req, res) => {
   const { userId, unfollowUserId } = req.body
 
   try {
-    const user = await User.findById(userId)
-    const newFriendsList = user.friendsList.filter(
-      (friend) => friend._id !== unfollowUserId
-    )
     await User.findByIdAndUpdate(
       userId,
-      {
-        friendsList: newFriendsList
-      },
-      { new: true, useFindAndModify: false }
+      { $pull: { following : unfollowUserId } },
+      { new: true }
     )
     res.status(200).json({
       success: true,
-      message: 'Followed User'
     })
   } catch (err) {
     console.log(err)
     res.status(400).json({
       success: false,
       error: err.message
+    })
+  }
+}
+
+/**
+ * Get a list of followed user ids
+ */
+const getFollowingList = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const user = await User.findById(id)
+    res.status(200).json({
+      success: true,
+      following: user.following,
+      user
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: 'Error getting followed users'
+    })
+  }
+}
+
+// Get followed user information
+const getFolledUserInfo = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const user = await User.findById(id)
+    const followedUsers = await User.find({ _id: { $in: user.following }, })
+    res.status(200).json({
+      success: true,
+      following: followedUsers
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: 'Error getting followed users'
     })
   }
 }
@@ -66,7 +98,7 @@ const getUserInfo = async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       username: user.username,
-      createdDate: user.createdAt
+      createdDate: user.createdAt,
     })
   } catch (err) {
     console.log(err)
@@ -137,10 +169,10 @@ const addLanguagesToUser = async (req, res) => {
 
 const updateUserInfo = async (req, res) => {
   const { id } = req.params
-  const updates = ({ email, password, firstName, lastName } = req.body)
-
+  const inputs = ({ email, password, firstName, lastName } = req.body)
+  const updates = filterFalseyValues(inputs)
   try {
-    // const updates = filterUpdates(inputs)
+    // const updates = filterFalseyValues(inputs)
     const user = await User.findByIdAndUpdate(id, updates, { new: true })
     res.status(200).json({
       success: true,
@@ -211,7 +243,6 @@ const changePassword = async (req, res) => {
 const deleteAccount = async (req, res) => {
   const { id } = req.params
   const { password } = req.body
-  console.log(id, password)
   try {
     const user = await User.findById(id)
     const success = await bcrypt.compare(password, user.password)
@@ -247,11 +278,74 @@ const searchNames = async (req, res) => {
         ]
       }
     )
+    // Return only the first 20 results
+    const maxResults = 20
     res.status(200).json({
       success: true,
-      users: users
+      users: users.slice(0, maxResults)
     })
   } catch (err) {
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
+const getQuickSets = async (req, res) => {
+  const { id, language } = req.params
+
+  try {
+    const user = await User.findById(id)
+    const quickAccessOfUser = user.quickAccess
+    const sets = await Set.find({ _id: { $in: quickAccessOfUser }, language: language })
+    res.status(200).json({
+      sets
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      message: 'Error getting user quick access sets'
+    })
+  }
+}
+
+const addQuickSet = async (req, res) => {
+  const { userId, setId } = req.body
+
+  try {
+    await User.findByIdAndUpdate(
+      userId,
+      { $push: { quickAccess: setId } },
+      { new: true }
+    )
+    res.status(200).json({
+      success: true
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
+const removeQuickSet = async (req, res) => {
+  const { userId, setId } = req.body
+
+  try {
+    await User.findByIdAndUpdate(
+      userId,
+      { $pull: { quickAccess : setId } },
+      { new: true }
+    )
+    res.status(200).json({
+      success: true,
+    })
+  } catch (err) {
+    console.log(err)
     res.status(400).json({
       success: false,
       error: err.message
@@ -262,6 +356,8 @@ const searchNames = async (req, res) => {
 module.exports = {
   followUser,
   unfollowUser,
+  getFollowingList,
+  getFolledUserInfo,
   getUserInfo,
   getUserLanguages,
   addLanguagesToUser,
@@ -270,4 +366,7 @@ module.exports = {
   changePassword,
   deleteAccount,
   searchNames,
+  getQuickSets,
+  addQuickSet,
+  removeQuickSet
 }
