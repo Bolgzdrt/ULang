@@ -54,6 +54,22 @@ export const getQuickSets = async (userId, language) => {
   return res.data
 }
 
+export const addQuickSet = async (userId, setId) => {
+  const res = await axios.post(`user/addQuickSet`, {
+    userId,
+    setId
+  })
+  return res.data
+}
+
+export const removeQuickSet = async (userId, setId) => {
+  const res = await axios.post(`user/removeQuickSet`, {
+    userId,
+    setId
+  })
+  return res.data
+}
+
 /**
  * @param {string} followUserId - the id of the user to be followed
  * @param {string} userId - the id of the logged in user
