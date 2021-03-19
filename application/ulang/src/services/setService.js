@@ -29,3 +29,8 @@ export const getMostRecentSets = async (userId, language) => {
   const res = await axios.get(`set/getMostRecentSets/${userId}/${language}`)
   return res.data
 }
+
+export const updateSet = async (setId, updates) => {
+  const res = await axios.put(`set/updateSet/${setId}`, updates)
+  return res.data
+}
