@@ -3,7 +3,7 @@
     <div class="set-box">
       <div class="wordList">
         <div class="wordListHeader">
-          <p class="titleP">{{ setName }}</p>
+          <ClickToEdit class="titleP" :value="setName" @input="updateSetName" />
         </div>
         <!--<div class="filterField">
         <input type="text" id="filter" placeholder="Filter words..." onfocus="this.placeholder=''" onblur="this.placeholder='Filter words...'" v-model="filter" value="" @input="filterList" class="inputField"><br>
@@ -68,11 +68,11 @@
 import { mapGetters } from 'vuex'
 import { getWordsInSet, getSetById, updateSet } from '@/services/setService'
 import { getWords } from '@/services/wordService'
-import Tooltip from '@/components/Tooltip.vue'
+import ClickToEdit from '../components/ClickToEdit'
 
 export default {
   name: 'Dictionary',
-  components: { Tooltip },
+  components: { ClickToEdit },
   props: ['id', 'setId'],
   data() {
     return {
@@ -112,7 +112,7 @@ export default {
     },
     add(){
       const requestPayload = {
-        name: this.name,
+        name: this.setName,
         description: this.description,
         ownerId: this.getUserId(),
         quickAccess: this.quickAccess,
@@ -153,7 +153,7 @@ export default {
     },
     remove(wordId){
       const requestPayload = {
-        name: this.name,
+        name: this.setName,
         description: this.description,
         ownerId: this.getUserId(),
         quickAccess: this.quickAccess,
@@ -163,6 +163,18 @@ export default {
       this.dictionary.push(this.setWords[index]);
       this.setWords.splice(index,1);
       requestPayload["words"] = this.setWords;
+      updateSet(this.setId, requestPayload);
+    },
+    updateSetName(input){
+      const requestPayload = {
+        name: input,
+        description: this.description,
+        ownerId: this.getUserId(),
+        quickAccess: this.quickAccess,
+        language: this.getLanguage(),
+        words: this.setWords
+      };
+      
       updateSet(this.setId, requestPayload);
     }
   }
