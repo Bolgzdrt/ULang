@@ -1,5 +1,6 @@
 const User = require('../models/User')
 const Set = require('../models/Set')
+const Word = require('../models/Word')
 const { capitalizeWord, filterFalseyValues } = require('../utils/utils')
 const bcrypt = require('bcrypt')
 
@@ -247,7 +248,25 @@ const deleteAccount = async (req, res) => {
     const user = await User.findById(id)
     const success = await bcrypt.compare(password, user.password)
     if (success) {
-      await User.findByIdAndDelete(id)
+      let deletePromises = []
+      for (let s of user.sets) {
+        const set = await Set.findById(s)
+        if (set.ownerId === id) {
+          deletePromises.push(
+            Word.deleteMany({ _id: { $in: set.words }, ownerId: id })
+          )
+          deletePromises.push(
+            Set.findByIdAndDelete(s)
+          )
+        }
+      }
+      deletePromises.push(
+        Set.deleteMany({ _id: { $in: user.dictionaries } })
+      )
+      deletePromises.push(
+        User.findByIdAndDelete(id)
+      )
+      await Promise.all(deletePromises)
       res.status(200).json({
         success: true,
         message: 'Account Successfully Deleted'
