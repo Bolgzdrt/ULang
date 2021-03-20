@@ -44,7 +44,8 @@
                 :setname="set.name"
                 :numterms="set.words.length"
                 :favorite="true"
-                :quickaccess="true"
+                :quickAccess="set.quickAccess"
+                @click="quickAccessToggle"
               />
             </li>
           </ul>
@@ -57,11 +58,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { getSets } from '@/services/setService'
-import { getUserInfo, followUser, unfollowUser, getFollowing } from '@/services/userService'
+import { getUserInfo, followUser, unfollowUser, getFollowing, addQuickSet, removeQuickSet } from '@/services/userService'
 import { getInitials, getName } from '@/utils/utils'
 import Sidebar from '../components/Sidebar.vue'
 import NameCircle from '@/components/NameCircle.vue'
 import ProfileSetCard from '../components/ProfileSetCard.vue'
+import { getQuickSets } from '@/services/userService'
 
 export default {
   name: 'Profile',
@@ -80,6 +82,7 @@ export default {
       username: '',
       userInfo: { username: '' },
       following: false,
+      quickAccessList: []
     }
   },
   computed: {
@@ -106,6 +109,15 @@ export default {
         })
         .catch(err => console.error(err.response.data.error))
     },
+    quickAccessToggle(currId) {
+      var index = this.sets.findIndex(x => x._id === currId)
+      this.sets[index].quickAccess = !this.sets[index].quickAccess
+      if (this.sets[index].quickAccess) {
+        addQuickSet(this.getUserId(), currId)
+      } else {
+        removeQuickSet(this.getUserId(), currId)
+      }
+    }
   },
   async mounted() {
     try {
@@ -142,6 +154,20 @@ export default {
           }
         }
       }
+      getQuickSets(this.getUserId(), this.getLanguage())
+          .then(({ sets }) => {
+            this.quickAccessList = sets.map((set) => set._id)
+            this.sets = this.sets.map((set) => {
+              if(this.quickAccessList.includes(set._id)) {
+                return { ...set, quickAccess: true}
+              } else {
+                return { ...set, quickAccess: false}
+              }
+            })
+          })
+          .catch((err) => {
+            console.error(err.response.data.error)
+          })
     } catch (err) {
       console.error(err)
     }

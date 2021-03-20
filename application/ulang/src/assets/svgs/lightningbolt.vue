@@ -1,7 +1,6 @@
 <template>
   <svg
-    @click="toggle"
-    :fill="[isFilled ? 'var(--yellow)' : 'var(--white)']"
+    :fill="[fill ? 'var(--yellow)' : 'var(--white)']"
     stroke="var(--yellow)"
     stroke-width="3"
     viewBox="0 0 64 64"
@@ -18,17 +17,6 @@ export default {
   name: 'lightningbolt',
   props: {
     fill: Boolean,
-  },
-  data() {
-    return {
-      isFilled: 'fill',
-    }
-  },
-  methods: {
-    toggle() {
-      this.isFilled = !this.isFilled
-      /* TODO: Add call to like/dislike set */
-    },
-  },
+  }
 }
 </script>

@@ -12,7 +12,7 @@
       </span>
     </div>
     <div class="buttons">
-      <Lightningbolt class="lightningbolt" v-bind:fill="quickaccess" />
+      <Lightningbolt class="lightningbolt" v-bind:fill="quickAccess" @click.native="quickAccessToggle"/>
       <Heart class="heart" v-bind:fill="favorite" />
     </div>
   </div>
@@ -22,6 +22,7 @@
 import Heart from '@/assets/svgs/heart.vue'
 import Lightningbolt from '@/assets/svgs/lightningbolt.vue'
 import { mapGetters } from 'vuex'
+
 export default {
   name: 'ProfileSetCard',
   components: {
@@ -35,7 +36,7 @@ export default {
     setname: String,
     numterms: Number,
     favorite: Boolean,
-    quickaccess: Boolean,
+    quickAccess: Boolean,
   },
   data() {
     return {
@@ -48,6 +49,9 @@ export default {
     ...mapGetters('auth', ['getUserId']),
     openSet() {
       this.$router.push({ name: 'Dictionary', params: { setId: this.setId } })
+    },
+    quickAccessToggle() {
+      this.$emit('click', this.setId)
     }
   },
 }

@@ -339,6 +339,48 @@ const getQuickSets = async (req, res) => {
   }
 }
 
+const addQuickSet = async (req, res) => {
+  const { userId, setId } = req.body
+
+  try {
+    await User.findByIdAndUpdate(
+      userId,
+      { $push: { quickAccess: setId } },
+      { new: true }
+    )
+    res.status(200).json({
+      success: true
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
+const removeQuickSet = async (req, res) => {
+  const { userId, setId } = req.body
+
+  try {
+    await User.findByIdAndUpdate(
+      userId,
+      { $pull: { quickAccess : setId } },
+      { new: true }
+    )
+    res.status(200).json({
+      success: true,
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
 module.exports = {
   followUser,
   unfollowUser,
@@ -352,5 +394,7 @@ module.exports = {
   changePassword,
   deleteAccount,
   searchNames,
-  getQuickSets
+  getQuickSets,
+  addQuickSet,
+  removeQuickSet
 }

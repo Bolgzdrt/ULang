@@ -16,6 +16,8 @@ router.put('/changePassword/:id', userController.changePassword)
 router.delete('/deleteAccount/:id', userController.deleteAccount)
 router.get('/searchNames/:query', userController.searchNames)
 router.get('/getQuickSets/:id/:language', userController.getQuickSets)
+router.post('/addQuickSet', userController.addQuickSet)
+router.post('/removeQuickSet', userController.removeQuickSet)
 
 module.exports = {
   userRouter: router
