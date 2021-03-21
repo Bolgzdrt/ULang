@@ -363,9 +363,7 @@ export default {
       deleteAccount(userId, this.confirmDeletePassword)
         .then(() => {
           this.logout()
-          setTimeout(() => {
-            this.$router.push({ name: "Welcome" })
-          }, 500)
+          this.$router.push({ name: "Welcome" })
         })
         .catch(err => {
           console.error(err.response.data.message)
