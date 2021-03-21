@@ -26,7 +26,7 @@
           />
           <div class="sort-drop-down">
             <label class="sort-label" for="sort">Sort</label>
-            <select class="sort" name="sort" id="sort">
+            <select class="sort" name="sort" id="sort" @change="sortSets($event)" >
               <option value="recent">Most Recent</option>
               <option value="oldest">Oldest</option>
               <option value="az">A - Z</option>
@@ -131,6 +131,50 @@ export default {
         addSet(this.getUserId(), setId)
         this.sets[index].favorite = true
       }
+    },
+    sortSets(event){
+      console.log(event)
+      var order = event.target.value
+      switch(order){
+        case "recent":
+          this.sets.sort(function(a,b){
+            if(a.updatedAt > b.updatedAt)
+              return -1
+            if(a.updatedAt < b.updatedAt)
+              return 1
+            return 0
+          })
+          break;
+        case "oldest":
+          this.sets.sort(function(a,b){
+            if(a.updatedAt > b.updatedAt)
+              return 1
+            if(a.updatedAt < b.updatedAt)
+              return -1
+            return 0
+          })
+          break;
+        case "az":
+          this.sets.sort(function(a,b){
+            if(a.name > b.name)
+              return 1
+            if(a.name < b.name)
+              return -1
+            return 0
+          })
+          break;
+        case "za":this.sets.sort(function(a,b){
+            if(a.name > b.name)
+              return -1
+            if(a.name < b.name)
+              return 1
+            return 0
+          })
+          break;
+      }
+    },
+    filter(event){
+      
     }
   },
   async mounted() {
@@ -199,7 +243,13 @@ export default {
           .catch((err) => {
             console.error(err.response.data.error)
           })
-      
+      this.sets.sort(function(a,b){
+            if(a.updatedAt > b.updatedAt)
+              return -1
+            if(a.updatedAt < b.updatedAt)
+              return 1
+            return 0
+          })
     } catch (err) {
       console.error(err)
     }
