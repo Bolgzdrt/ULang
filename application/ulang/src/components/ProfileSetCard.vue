@@ -13,7 +13,7 @@
     </div>
     <div class="buttons">
       <Lightningbolt class="lightningbolt" v-bind:fill="quickAccess" @click.native="quickAccessToggle"/>
-      <Heart class="heart" v-bind:fill="favorite" />
+      <Heart class="heart" v-bind:fill="favorite" v-show="showHeart" @click.native="favoriteToggle" />
     </div>
   </div>
 </template>
@@ -43,17 +43,22 @@ export default {
       setOwner: this.owner == '' ? '' : this.owner.concat("'s Set"),
       setName: this.setname,
       numTerms: this.numterms.toString().concat(' Terms'),
+      showHeart: this.getUserId() != this.ownerId ? true : false,
     }
   },
   methods: {
     ...mapGetters('auth', ['getUserId']),
     openSet() {
-      this.$router.push({ name: 'Dictionary', params: { setId: this.setId } })
+      this.$router.push({ name: 'Dictionary', params: { setId: this.setId, setOwnerId: this.ownerId } })
     },
     quickAccessToggle() {
-      this.$emit('click', this.setId)
+      this.$emit('quickAccessToggle', this.setId)
+    },
+    favoriteToggle() {
+      this.$emit('favoriteToggle', this.setId)
     }
-  },
+  }
+  
 }
 </script>
 

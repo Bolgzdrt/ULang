@@ -7,7 +7,7 @@
            v-on:keyup="onKeyup"
            v-on:keyup.enter="onBlurOrEnter"
              />
-        <p v-else @click="edit = true;">
+        <p v-else @click="edit = editable ? true:false;">
           {{valueLocal}}
         </p>
     </div>
@@ -16,7 +16,7 @@
 <script>
   export default {
   name: "ClickToEdit",
-  props: ['value'],
+  props: ['value', 'editable'],
 
   data () {
   return {

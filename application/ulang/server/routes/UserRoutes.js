@@ -18,6 +18,8 @@ router.get('/searchNames/:query', userController.searchNames)
 router.get('/getQuickSets/:id/:language', userController.getQuickSets)
 router.post('/addQuickSet', userController.addQuickSet)
 router.post('/removeQuickSet', userController.removeQuickSet)
+router.post('/addSet', userController.addSet)
+router.post('/removeSet', userController.removeSet)
 
 module.exports = {
   userRouter: router

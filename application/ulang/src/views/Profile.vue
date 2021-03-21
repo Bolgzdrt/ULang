@@ -43,9 +43,10 @@
                 :owner="set.ownerName"
                 :setname="set.name"
                 :numterms="set.words.length"
-                :favorite="true"
+                :favorite="set.favorite"
                 :quickAccess="set.quickAccess"
-                @click="quickAccessToggle"
+                @quickAccessToggle="quickAccessToggle"
+                @favoriteToggle="favoriteToggle"
               />
             </li>
           </ul>
@@ -63,7 +64,7 @@ import { getInitials, getName } from '@/utils/utils'
 import Sidebar from '../components/Sidebar.vue'
 import NameCircle from '@/components/NameCircle.vue'
 import ProfileSetCard from '../components/ProfileSetCard.vue'
-import { getQuickSets } from '@/services/userService'
+import { getQuickSets, addSet, removeSet } from '@/services/userService'
 
 export default {
   name: 'Profile',
@@ -82,7 +83,8 @@ export default {
       username: '',
       userInfo: { username: '' },
       following: false,
-      quickAccessList: []
+      quickAccessList: [],
+      userSets: []
     }
   },
   computed: {
@@ -116,6 +118,18 @@ export default {
         addQuickSet(this.getUserId(), currId)
       } else {
         removeQuickSet(this.getUserId(), currId)
+      }
+    },
+    favoriteToggle(setId){
+      console.log(setId)
+      console.log(this.sets)
+      var index = this.sets.findIndex(x => x._id === setId)
+      if(this.sets[index].favorite){
+        removeSet(this.getUserId(), setId)
+        this.sets[index].favorite = false
+      }else{
+        addSet(this.getUserId(), setId)
+        this.sets[index].favorite = true
       }
     }
   },
@@ -154,6 +168,23 @@ export default {
           }
         }
       }
+      if(this.getUserId() != this.id)
+      {
+      getSets(this.getUserId(), this.getLanguage())
+          .then(({sets}) => {
+            this.userSets = sets.map((set) => set._id)
+            this.sets = this.sets.map((set) => {
+              if(this.userSets.includes(set._id)) {
+                return { ...set, favorite: true}
+              } else {
+                return { ...set, favorite: false}
+              }
+            })
+          })
+      }
+      else{
+        this.sets = this.sets.map((set) => {return {...set, favorite: true}})
+      }
       getQuickSets(this.getUserId(), this.getLanguage())
           .then(({ sets }) => {
             this.quickAccessList = sets.map((set) => set._id)
@@ -168,6 +199,7 @@ export default {
           .catch((err) => {
             console.error(err.response.data.error)
           })
+      
     } catch (err) {
       console.error(err)
     }
