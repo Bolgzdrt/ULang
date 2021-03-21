@@ -98,3 +98,19 @@ export const getFollowingInfo = async (userId) => {
   const res = await axios.get(`user/getFollowingInfo/${userId}`)
   return res.data
 }
+
+export const addSet = async (userId, setId) => {
+  const res = await axios.post( `user/addSet` , {
+    userId,
+    setId
+  })
+  return res.data
+}
+
+export const removeSet = async (userId, setId) => {
+  const res = await axios.post( `user/removeSet` , {
+    userId,
+    setId
+  })
+  return res.data
+}

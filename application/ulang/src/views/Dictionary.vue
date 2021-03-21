@@ -3,7 +3,7 @@
     <div class="set-box">
       <div class="wordList">
         <div class="wordListHeader">
-          <p class="titleP">{{ setName }}</p>
+          <ClickToEdit class="titleP" :value="setName" @input="updateSetName" :editable="isSetOwner"/>
         </div>
         <!--<div class="filterField">
         <input type="text" id="filter" placeholder="Filter words..." onfocus="this.placeholder=''" onblur="this.placeholder='Filter words...'" v-model="filter" value="" @input="filterList" class="inputField"><br>
@@ -11,7 +11,7 @@
         <div class="rowContainer">
           <div class="row" v-for="word in setWords" :key="word._id">
             <div class="dots-dropdown">
-              <div class="dots" ></div>
+              <div class="dots" v-show="isSetOwner"></div>
               <div class="dropdown" id="dropdown">
                 <router-link :to="{ name: 'Word', params: {id: word._id} }">Edit</router-link>
                 <a href="#" @click="remove(word._id)">Remove</a>
@@ -26,7 +26,7 @@
           </div>
         </div>
       </div>
-      <div class="buttonBox">
+      <div class="buttonBox" v-show="isSetOwner">
         <button class="add-words" name="add-words-button" @click="addWords"
         v-bind:style="this.dictionary.length===0 ? 'opacity:50%;' : 'opacity:100%'">Add Words</button>
         <button class="new-word" @click="newWords">New Word</button>
@@ -68,18 +68,19 @@
 import { mapGetters } from 'vuex'
 import { getWordsInSet, getSetById, updateSet } from '@/services/setService'
 import { getWords } from '@/services/wordService'
-import Tooltip from '@/components/Tooltip.vue'
+import ClickToEdit from '../components/ClickToEdit'
 
 export default {
   name: 'Dictionary',
-  components: { Tooltip },
-  props: ['id', 'setId'],
+  components: { ClickToEdit },
+  props: ['id', 'setId', 'setOwnerId'],
   data() {
     return {
       setName: '',
       setWords: [],
       dictionary: [],
-      addWordsMessage: ''
+      addWordsMessage: '',
+      isSetOwner: this.getUserId() == this.setOwnerId
     }
   },
   created() {
@@ -112,7 +113,7 @@ export default {
     },
     add(){
       const requestPayload = {
-        name: this.name,
+        name: this.setName,
         description: this.description,
         ownerId: this.getUserId(),
         quickAccess: this.quickAccess,
@@ -153,7 +154,7 @@ export default {
     },
     remove(wordId){
       const requestPayload = {
-        name: this.name,
+        name: this.setName,
         description: this.description,
         ownerId: this.getUserId(),
         quickAccess: this.quickAccess,
@@ -163,6 +164,18 @@ export default {
       this.dictionary.push(this.setWords[index]);
       this.setWords.splice(index,1);
       requestPayload["words"] = this.setWords;
+      updateSet(this.setId, requestPayload);
+    },
+    updateSetName(input){
+      const requestPayload = {
+        name: input,
+        description: this.description,
+        ownerId: this.getUserId(),
+        quickAccess: this.quickAccess,
+        language: this.getLanguage(),
+        words: this.setWords
+      };
+      
       updateSet(this.setId, requestPayload);
     }
   }
