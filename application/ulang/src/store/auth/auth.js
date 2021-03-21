@@ -74,7 +74,7 @@ const mutations = {
   /**
    * Possible improvement that can be made here is to attach a ttl to
    * each item that will allow to only get the item from local storage if
-   * it's within the time to live time.
+   * it's within the time to live window.
    */
   setEmail: (state, email) => {
     state.email = email

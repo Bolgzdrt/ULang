@@ -172,7 +172,7 @@
         <section class="delete-account">
           <p class="setting-title title">Delete Account</p>
           <div class="delete-account-content content">
-            <p>Permanently Delete {Username}</p>
+            <p>Permanently Delete {{ username }}</p>
             <div class="delete-account-input input-group">
               <input
                 type="password"
@@ -236,6 +236,11 @@ export default {
         confirmNewPasswordErrorMessage: "",
         deleteAccountPasswordErrorMessage: ""
       }
+    }
+  },
+  computed: {
+    username() {
+      return this.$store.getters['auth/getUserInfo'].username
     }
   },
   methods: {
