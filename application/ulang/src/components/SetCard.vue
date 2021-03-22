@@ -21,15 +21,15 @@ export default {
         description: ''
       })
     }
-  },data() {
+  },
+  data() {
     return {
       desc: 'No description provided'
     }
   },
   methods: {
     selectCard() {
-      // TODO: update when set page is created
-      this.$router.push({ name: this.set.name, params: {id: this.set.setId} })
+      this.$router.push({ name: 'Dictionary', params: { setId: this.set._id, setOwnerId: this.set.ownerId } })
     }
   }
 }
