@@ -39,7 +39,7 @@ describe('Word Tests', () => {
       },
       methods: {
         getWordInfo() {
-          console.log('\n\n\n\n\n\nmocked test\n\n\n\n\n')
+          // console.log('\n\n\n\n\n\nmocked test\n\n\n\n\n')
         },
         getUserID() {
           return '123'
