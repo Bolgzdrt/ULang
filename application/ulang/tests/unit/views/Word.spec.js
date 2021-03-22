@@ -14,7 +14,11 @@ describe('Word Tests', () => {
       getUserId: () => '123'
     }
     store = new Vuex.Store({
-      getters
+      modules: {
+        auth: {
+          getters
+        }
+      }
     })
   })
 
