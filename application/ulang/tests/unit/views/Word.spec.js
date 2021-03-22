@@ -16,6 +16,7 @@ describe('Word Tests', () => {
     store = new Vuex.Store({
       modules: {
         auth: {
+          namespaced: true,
           getters
         }
       }
