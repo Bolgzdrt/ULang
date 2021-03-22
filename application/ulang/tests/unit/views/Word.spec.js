@@ -11,7 +11,7 @@ describe('Word Tests', () => {
 
   beforeEach(() => {
     getters = {
-      getUserId: () => '123'
+      getUserId: () => '12345'
     }
     store = new Vuex.Store({
       modules: {
