@@ -10,12 +10,11 @@ services:
       - ./server:/usr/app
       - /usr/app/node_modules
     environment:
-      # This might be a cosmos
+      # This might be a cosmosdb connection string if done that way
       - DBURI=mongodb://db:27017/ulang
       - PORT=80
     ports: ['80:80']
 
-  # I don't know about this part
   db:
     container_name: db
     image: mongo:4.0
@@ -31,5 +30,5 @@ services:
     ports:
       - '8080:8080'
     environment:
-      # I don't know about this part
+      # Pretty sure there's no port because it's on port 80, which is the default HTTP
       - SERVER_URL="http://localhost/"
