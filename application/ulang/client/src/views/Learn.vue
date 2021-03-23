@@ -2,8 +2,14 @@
   <div class="learn">
     <BackButton :fromRoute="fromRoute" />
     <div v-if="!done">
-      <div style="padding-bottom: 30px;"><SetProg :curr="index + 1" :total="total" :setName="setName" /></div>
-      <InputCard :word="wordList[index].english" :answer="wordList[index].word" @nextCard="nextCard"/>
+      <div style="padding-bottom: 30px;">
+        <SetProg :curr="index + 1" :total="total" :setName="setName" />
+      </div>
+      <InputCard
+        :word="wordList[index].english"
+        :answer="wordList[index].word"
+        @nextCard="nextCard"
+      />
     </div>
     <div class="learnResult" v-if="done">
       <div>
@@ -13,7 +19,9 @@
       <div class="resultList">
         <div class="word" v-for="word in wordList" :key="word._id">
           <p>{{ word.english }}/{{ word.word }}:</p>
-          <p :class="word.correct == true?'correct':'incorrect'">{{ word.correct == true?"Correct" : "Incorrect" }}</p>
+          <p :class="word.correct == true ? 'correct' : 'incorrect'">
+            {{ word.correct == true ? 'Correct' : 'Incorrect' }}
+          </p>
         </div>
       </div>
     </div>
@@ -32,14 +40,14 @@ export default {
   props: ['id'],
   data() {
     return {
-      wordList: [{english: ''}],
+      wordList: [{ english: '' }],
       setName: '',
       index: 0,
       total: 0,
       resultModal: false,
       done: false,
       resPercent: '',
-      fromRoute: ''
+      fromRoute: '',
     }
   },
   methods: {
@@ -53,32 +61,32 @@ export default {
       if (this.index >= this.total) {
         this.done = true
         var correctTally = 0
-        this.wordList.forEach(element => {
+        this.wordList.forEach((element) => {
           if (element.correct) {
             correctTally += 1
           }
         })
-        this.resPercent = ((correctTally/this.total) * 100).toFixed(0)
+        this.resPercent = ((correctTally / this.total) * 100).toFixed(0)
       }
-    }
+    },
   },
   mounted() {
     if (!this.id) {
-      this.$router.push({name: "LearnSettings"})
+      this.$router.push({ name: 'LearnSettings' })
     }
-    getWordsInSet(this.id).then(({words}) => {
-      this.wordList = words.map(word => ({ ...word, correct: false }))
-      this.total = this.wordList.length;
+    getWordsInSet(this.id).then(({ words }) => {
+      this.wordList = words.map((word) => ({ ...word, correct: false }))
+      this.total = this.wordList.length
     })
-    getSetById(this.id).then(({set}) => {
+    getSetById(this.id).then(({ set }) => {
       this.setName = set.name
     })
   },
   beforeRouteEnter(to, from, next) {
-    next(vm => {
+    next((vm) => {
       vm.fromRoute = from
     })
-  }
+  },
 }
 </script>
 
@@ -125,7 +133,7 @@ export default {
   font-size: 1.5em;
 }
 
-.correct, 
+.correct,
 .incorrect {
   padding-left: 10px;
 }

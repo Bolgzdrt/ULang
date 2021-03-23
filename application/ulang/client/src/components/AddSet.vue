@@ -3,35 +3,77 @@
     <div class="default">
       <p class="titleP">Create a New Set</p>
       <div class="field">
-        <input type="text" id="name" placeholder="Enter a name..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a name...'" v-model="name" class="inputField" value=""><br>
+        <input
+          type="text"
+          id="name"
+          placeholder="Enter a name..."
+          onfocus="this.placeholder=''"
+          onblur="this.placeholder='Enter a name...'"
+          v-model="name"
+          class="inputField"
+          value=""
+        /><br />
         <label for="name" class="required inputFieldLabel">Set Name</label>
         <p class="error" v-if="requiredError">Set must have a name</p>
       </div>
       <div class="field">
-        <input type="text" id="description" placeholder="Enter a description..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a description...'" v-model="description" class="inputField"><br>
+        <input
+          type="text"
+          id="description"
+          placeholder="Enter a description..."
+          onfocus="this.placeholder=''"
+          onblur="this.placeholder='Enter a description...'"
+          v-model="description"
+          class="inputField"
+        /><br />
         <label for="description" class="inputFieldLabel">Set Description</label>
       </div>
       <div class="checkField">
         <Bolt :selected="quickAccess" />
         <label for="">Add Set to Quick Access?</label>
-        <input type="checkbox" value="quickAccess" v-model="quickAccess" class="checkBox">
+        <input
+          type="checkbox"
+          value="quickAccess"
+          v-model="quickAccess"
+          class="checkBox"
+        />
       </div>
     </div>
     <div class="wordList">
       <div class="wordListHeader">
         <p class="titleP">Select words to include in set</p>
-        <Tooltip text="Use the checkbox to select any words the set should include. New words can be created for the set after clicking the 'Create' button.">
+        <Tooltip
+          text="Use the checkbox to select any words the set should include. New words can be created for the set after clicking the 'Create' button."
+        >
           <div class="helpButton">?</div>
         </Tooltip>
       </div>
       <div class="filterField">
-        <input type="text" id="filter" placeholder="Filter words..." onfocus="this.placeholder=''" onblur="this.placeholder='Filter words...'" v-model="filter" value="" @input="filterList" class="inputField"><br>
+        <input
+          type="text"
+          id="filter"
+          placeholder="Filter words..."
+          onfocus="this.placeholder=''"
+          onblur="this.placeholder='Filter words...'"
+          v-model="filter"
+          value=""
+          @input="filterList"
+          class="inputField"
+        /><br />
       </div>
       <div class="rowContainer">
         <div class="row" v-for="word in filteredWords" :key="word._id">
-          <input type="checkbox" value="word.selected" v-model="word.selected">
-          <div class="word"><p>{{ word.english }} / {{ word.word }}</p></div>
-          <div class="definition"><p>{{ word.definition }}</p></div>
+          <input
+            type="checkbox"
+            value="word.selected"
+            v-model="word.selected"
+          />
+          <div class="word">
+            <p>{{ word.english }} / {{ word.word }}</p>
+          </div>
+          <div class="definition">
+            <p>{{ word.definition }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -45,7 +87,9 @@
           <p class="titleP">Add new words for this set?</p>
           <div class="buttonBox">
             <button class="cancelButton" @click="cancel">No</button>
-            <router-link :to="{ name: 'CreateWord' }"><button class="submitButton">Yes</button></router-link>
+            <router-link :to="{ name: 'CreateWord' }"
+              ><button class="submitButton">Yes</button></router-link
+            >
           </div>
         </div>
       </div>
@@ -73,14 +117,17 @@ export default {
       addWordModal: false,
       words: [],
       filteredWords: [],
-      requiredError: false
+      requiredError: false,
     }
   },
   methods: {
     ...mapGetters('settings', ['getLanguage']),
     ...mapGetters('auth', ['getUserId']),
     filterList() {
-      this.filteredWords = this.words.filter(word => word.english.includes(this.filter) || word.word.includes(this.filter))
+      this.filteredWords = this.words.filter(
+        (word) =>
+          word.english.includes(this.filter) || word.word.includes(this.filter)
+      )
     },
     submit() {
       const requestPayload = {
@@ -88,41 +135,43 @@ export default {
         description: this.description,
         ownerId: this.getUserId(),
         quickAccess: this.quickAccess,
-        language: this.getLanguage()
-      };
+        language: this.getLanguage(),
+      }
       const wordIds = this.filteredWords.reduce((acc, curr) => {
         if (curr.selected) {
           return [...acc, curr._id]
         } else {
           return acc
         }
-      },
-      []
-      );
-      requestPayload["words"] = wordIds
-      createSet(requestPayload).then(data => {
-        this.addWordModal = true;
-      }).catch(err => {
-        console.log(err);
-        const errorMsg = err.message
-        this.requiredError = errorMsg
-      });
+      }, [])
+      requestPayload['words'] = wordIds
+      createSet(requestPayload)
+        .then((data) => {
+          this.addWordModal = true
+        })
+        .catch((err) => {
+          console.log(err)
+          const errorMsg = err.message
+          this.requiredError = errorMsg
+        })
     },
     cancel() {
       if (this.fromRoute) {
         this.$router.push(this.fromRoute)
-      } else  {
-        this.$router.push({name: "Home"})
+      } else {
+        this.$router.push({ name: 'Home' })
       }
-    }
+    },
   },
   created() {
-    getWords(this.getUserId(), this.getLanguage()).then(({ words }) => {
-      this.words = words.map(set => ({ ...set, selected: false }))
-      this.filteredWords = this.words
-    }).catch(err => {
-      console.log(err.response.data.error)
-    })
+    getWords(this.getUserId(), this.getLanguage())
+      .then(({ words }) => {
+        this.words = words.map((set) => ({ ...set, selected: false }))
+        this.filteredWords = this.words
+      })
+      .catch((err) => {
+        console.log(err.response.data.error)
+      })
   },
 }
 </script>
@@ -169,7 +218,7 @@ export default {
 }
 
 .required:after {
-  content:" *";
+  content: ' *';
   color: red;
 }
 
@@ -330,7 +379,7 @@ button:hover {
 }
 
 .modal {
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 2px 2px 20px 1px;
   overflow-x: auto;
   display: flex;

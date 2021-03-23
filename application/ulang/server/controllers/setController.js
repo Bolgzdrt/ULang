@@ -12,22 +12,30 @@ const createSet = async (req, res) => {
       language,
       words,
       description,
-      ownerId
+      ownerId,
     })
     if (quickAccess) {
-      User.findByIdAndUpdate(user._id, { $push: { sets: set._id, quickAccess: set._id }}, { useFindAndModify: false }).exec()
+      User.findByIdAndUpdate(
+        user._id,
+        { $push: { sets: set._id, quickAccess: set._id } },
+        { useFindAndModify: false }
+      ).exec()
     } else {
-      User.findByIdAndUpdate(user._id, { $push: { sets: set._id }}, { useFindAndModify: false }).exec()
+      User.findByIdAndUpdate(
+        user._id,
+        { $push: { sets: set._id } },
+        { useFindAndModify: false }
+      ).exec()
     }
     res.status(201).json({
       success: true,
-      id: set._id
+      id: set._id,
     })
   } catch (err) {
     console.log(err)
     res.status(400).json({
       success: false,
-      error: err.message
+      error: err.message,
     })
   }
 }
@@ -36,17 +44,17 @@ const getAllSetsOfLanguage = async (req, res) => {
   const { id, lang } = req.params
   try {
     const user = await User.findById(id)
-    const setsOfUser = user.sets;
+    const setsOfUser = user.sets
     const sets = await Set.find({ _id: { $in: setsOfUser }, language: lang })
     res.status(200).json({
       success: true,
-      sets
+      sets,
     })
   } catch (err) {
     console.log(err)
     res.status(400).json({
       success: false,
-      error: err.message
+      error: err.message,
     })
   }
 }
@@ -58,13 +66,13 @@ const getSetById = async (req, res) => {
     const set = await Set.findById(id)
     res.status(200).json({
       success: true,
-      set
+      set,
     })
   } catch (err) {
     console.log(err)
     res.status(400).json({
       success: false,
-      error: err.message
+      error: err.message,
     })
   }
 }
@@ -73,7 +81,7 @@ const getSetsWithVerbs = async (req, res) => {
   const { id, lang } = req.params
   try {
     const user = await User.findById(id)
-    const setsOfUser = user.sets;
+    const setsOfUser = user.sets
     const sets = await Set.find({ _id: { $in: setsOfUser }, language: lang })
     let verbContainingSets = []
     for (let s of sets) {
@@ -87,13 +95,13 @@ const getSetsWithVerbs = async (req, res) => {
     }
     res.status(200).json({
       success: true,
-      sets: verbContainingSets
+      sets: verbContainingSets,
     })
   } catch (err) {
     console.log(err)
     res.status(400).json({
       success: false,
-      error: err.message
+      error: err.message,
     })
   }
 }
@@ -104,17 +112,17 @@ const getWordsInSet = async (req, res) => {
   try {
     const set = await Set.findById(id)
     const setWordIds = set.words
-    const wordPromises = setWordIds.map(word => Word.findById(word))
+    const wordPromises = setWordIds.map((word) => Word.findById(word))
     const words = await Promise.all(wordPromises)
     res.status(200).json({
       success: true,
-      words
+      words,
     })
   } catch (err) {
     console.log(err)
     res.status(400).json({
       success: false,
-      error: err.message
+      error: err.message,
     })
   }
 }
@@ -137,13 +145,13 @@ const toggleFavorite = async (req, res) => {
     )
     res.status(200).json({
       success: true,
-      set: updatedSet
+      set: updatedSet,
     })
   } catch (err) {
     console.log(err)
     res.status(400).json({
       success: false,
-      error: err.message
+      error: err.message,
     })
   }
 }
@@ -156,7 +164,7 @@ const updateSet = async (req, res) => {
     language: args.language,
     words: args.words,
     favorite: args.favorite,
-    description: args.description
+    description: args.description,
   }
   const updates = filterFalseyValues(input)
 
@@ -164,13 +172,13 @@ const updateSet = async (req, res) => {
     const updatedSet = await Set.findByIdAndUpdate(id, updates, { new: true })
     res.status(200).json({
       success: true,
-      set: updatedSet
+      set: updatedSet,
     })
   } catch (err) {
     console.log(err)
     res.status(400).json({
       success: false,
-      error: err.message
+      error: err.message,
     })
   }
 }
@@ -181,13 +189,13 @@ const deleteSet = async (req, res) => {
   try {
     await Set.findByIdAndDelete(id)
     res.status(200).json({
-      success: true
+      success: true,
     })
   } catch (err) {
     console.log(err)
     res.status(400).json({
       success: false,
-      error: err.message
+      error: err.message,
     })
   }
 }
@@ -196,17 +204,19 @@ const getMostRecentSets = async (req, res) => {
   const { id, lang } = req.params
   try {
     const user = await User.findById(id)
-    const setsOfUser = user.sets;
-    const sets = await Set.find({ _id: { $in: setsOfUser }, language: lang }).sort({ createdAt: -1 }).limit(4)
+    const setsOfUser = user.sets
+    const sets = await Set.find({ _id: { $in: setsOfUser }, language: lang })
+      .sort({ createdAt: -1 })
+      .limit(4)
     res.status(200).json({
       success: true,
-      sets
+      sets,
     })
   } catch (err) {
     console.log(err)
     res.status(400).json({
       success: false,
-      error: err.message
+      error: err.message,
     })
   }
 }
@@ -220,5 +230,5 @@ module.exports = {
   toggleFavorite,
   deleteSet,
   getSetsWithVerbs,
-  getMostRecentSets
+  getMostRecentSets,
 }
