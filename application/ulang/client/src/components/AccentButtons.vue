@@ -1,6 +1,8 @@
 <template>
   <div class="accentButtons">
-    <div @click="shiftButton"><p class="shift">{{ this.shiftCont[this.shiftToggle] }}</p></div>
+    <div @click="shiftButton">
+      <p class="shift">{{ this.shiftCont[this.shiftToggle] }}</p>
+    </div>
     <div v-for="(char, index) in displayed" :key="index" @click="$emit('buttonClicked', char)">
       <p>{{ char }}</p>
     </div>
@@ -83,9 +85,9 @@ p {
   width: 1.5em;
   line-height: 1.7em;
   cursor: pointer;
-  -webkit-user-select: none;  
-  -moz-user-select: none;    
-  -ms-user-select: none;      
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 }
 
