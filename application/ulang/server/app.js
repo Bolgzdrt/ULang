@@ -10,9 +10,9 @@ const { wordRouter } = require('./routes/wordRoutes')
 const { userRouter } = require('./routes/userRoutes')
 
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config({ path: '../.env.local' })
+  require('dotenv').config({ path: './.env.local' })
 } else {
-  require('dotenv').config({ path: '../.env.production' })
+  require('dotenv').config({ path: './.env.production' })
 }
 
 const app = express()
