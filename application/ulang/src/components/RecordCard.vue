@@ -112,6 +112,7 @@ export default {
     },
     showInfo(s) {
       this.entryErr = true;
+      this.img_path = require('@/assets/pngs/Mic_grey.png')
       switch(s) {
         case "info_no_speech":
           this.info_message = "No speech was detected. You may need to adjust your microphone settings";
@@ -133,6 +134,8 @@ export default {
           break;
         case "":
           this.info_message = "";
+          this.img_path = require('@/assets/pngs/Mic_grey.png')
+
           this.entryErr = false;
           break;
       }
