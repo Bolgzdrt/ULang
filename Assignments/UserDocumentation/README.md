@@ -24,7 +24,7 @@
 
     3.1 [Flash Cards](./activities/flash_card.md)
 
-    3.2 [Learn](./activities/learn.md)
+    3.2 [Vocabulary](./activities/learn.md)
 
     3.3 [Conjugation Practice](./activities/conjugation.md)
 

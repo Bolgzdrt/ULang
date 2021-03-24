@@ -24,3 +24,9 @@ On the set edit page you can view the set name and list of words.
 - Words can be removed by hovering over the three dots beside the word and selecting "Remove". 
 
 - Words can be edited by hovering over the three dots beside the word and selecting "Edit".
+
+![Edit Remove Words](./images/edit_set_options.png)
+
+- Upon selecting "Edit" you can change the definition and notes for the selected word by typing in the respective fields and selecting the checkmark. You may delete the word by selectin the trashcan on the top right of the page.
+
+![Edit Word](./images/word.png)
