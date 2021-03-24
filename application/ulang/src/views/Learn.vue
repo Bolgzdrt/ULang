@@ -62,7 +62,10 @@ export default {
       }
     }
   },
-  created: function(){
+  mounted() {
+    if (!this.id) {
+      this.$router.push({name: "LearnSettings"})
+    }
     getWordsInSet(this.id).then(({words}) => {
       this.wordList = words.map(word => ({ ...word, correct: false }))
       this.total = this.wordList.length;

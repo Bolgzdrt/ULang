@@ -33,14 +33,28 @@ export const checkIfValidPassword = (password) => {
 }
 
 export const updateRecentList = (event, setId, setting=-1) => {
+  const currentUserId = Vue.$cookies.get('userId')
   const newEvent = {
-    event: event,
-    setId: setId,
-    setting: setting
+    event,
+    setId,
+    setting,
+    userId: currentUserId
   }
-  var recentList = JSON.parse(window.localStorage.getItem('recentList')) || []
+  let recentList = JSON.parse(window.localStorage.getItem('recentList')) || []
+  
   if (recentList.length < 4) {
-    recentList.push(newEvent)
+    const sameItems = recentList.filter(item => {
+      if (
+        item.event  === event 
+        && item.setId === setId 
+        && item.setting === setting
+      ) {
+        return item
+      }
+    })
+    if (!sameItems.length) {
+      recentList.push(newEvent)
+    }
   } else {
     recentList.shift()
     recentList.push(newEvent)
@@ -49,7 +63,19 @@ export const updateRecentList = (event, setId, setting=-1) => {
 }
 
 export const getRecentList = () => {
-  return JSON.parse(window.localStorage.getItem('recentList')) || []
+  let recentList = JSON.parse(window.localStorage.getItem('recentList')) || []
+
+  // If the current "recentList" items belong to another user, empty the list
+  const currentUserId = Vue.$cookies.get('userId')
+  for (let item of recentList) {
+    if (item.userId !== currentUserId) {
+      window.localStorage.removeItem('recentList')
+      window.localStorage.setItem('recentList', JSON.stringify([]))
+      recentList = []
+      break
+    }
+  }
+  return recentList
 }
 
 Vue.directive('click-outside', {
