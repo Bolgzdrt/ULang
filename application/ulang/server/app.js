@@ -37,7 +37,7 @@ app.use(cookieParser())
 const PORT = process.env.PORT || 8081
 const dbUri = process.env.DBURI
 mongoose
-  .connect("mongodb://localhost:27017/ulang", {
+  .connect(dbUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

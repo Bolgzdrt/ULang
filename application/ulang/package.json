@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "if-env NODE_ENV=production ?? npm run start:prod || npm run start:dev",
-    "start:prod": "concurrently \"npm run serve\" \"npm run server:prod\"",
-    "start:dev": "concurrently \"npm run serve\" \"npm run server:dev\"",
+    "start:prod": "concurrently \"npm --prefix client run serve\" \"npm run server:prod\"",
+    "start:dev": "concurrently \"npm --prefix client run serve\" \"npm run server:dev\"",
     "serve": "npm --prefix client run serve",
     "server:dev": "npm --prefix server run server:dev",
     "server:prod": "npm --prefix server run start",
