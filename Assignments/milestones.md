@@ -2,25 +2,25 @@
 
 ## Milestone List
 
-#### **1. Complete Research**
+### 1. Complete Research
 
 Research and decide on database paradigm, cloud platforms, natural language processing, and testing frameworks we want to use for the application.
 
-#### **2. Implementation Design**
+### 2. Implementation Design
 
 Create design diagrams and templates for the database, framework, UI, and functionalities of the application.
 
-#### **3. Build Application**
+### 3. Build Application
 
 Implement the web application, including specified functionalities, and integrate it with the database.
 
 <u>Deliverable</u>: Beta application.
 
-#### **4. Test**
+### 4. Test
 
 Test the beta application for bugs and usability using the testing methods researched in milestone 1.
 
-#### **5. Deploy**
+### 5. Deploy
 
 Deploy the application to a cloud platform to make it accessible from anywhere.
 
