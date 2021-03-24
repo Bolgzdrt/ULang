@@ -31,7 +31,7 @@ Deploy the application to a cloud platform to make it accessible from anywhere.
 ## Timeline
 
 |Task|Assignee|Start Date|End Date|
-|:----|:-------|:----------:|:--------:|
+|:---|:-------|:--------:|:------:|
 |Research database paradigm|Jantzen|10/5/2020|11/2/2020|
 |Research cloud platforms (Azure, Firebase, AWS)|Robert|10/5/2020|11/2/2020|
 |Research natural language processing|Messmer|10/5/2020|11/2/2020|
