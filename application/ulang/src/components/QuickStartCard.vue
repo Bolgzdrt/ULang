@@ -45,9 +45,12 @@ export default {
     } else if (this.event === "Conjugations") {
       this.eventName = "Conjugations"
       this.eventRoute = "Conjugation"
-    } else {
+    } else if (this.event === "Vocabulary") {
       this.eventName = "Vocabulary"
       this.eventRoute = "Learn"
+    } else {
+      this.eventName = "Pronunciations"
+      this.eventRoute = "Pronunciations"
     }
   }
 }
