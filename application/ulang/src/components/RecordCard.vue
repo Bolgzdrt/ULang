@@ -6,9 +6,9 @@
     </div>
     <div class="entry">
       <div>
-        <img src="@/assets/pngs/Mic.png" alt="recording microphone" class="microphone" @click="startButton($event)">
+        <img :src="img_path" alt="recording microphone" class="microphone" @click="startButton($event)">
       </div>
-      <p class="error" v-if="entryErr">Please enter a translation</p>
+      <p class="error" v-if="entryErr">{{info_message}}</p>
     </div>
     <transition name="modalFade" v-if="resultModal">
       <div class="modalBackdrop">
@@ -45,7 +45,8 @@ export default {
       final_transcript: '',
       ignore_onend: false,
       start_timestamp: '',
-      info_message: ''
+      info_message: '',
+      img_path: require('@/assets/pngs/Mic.png')
     }
   },
   methods: {
@@ -89,13 +90,12 @@ export default {
         ['Romanian', 'ro-RO'],
         // TODO: Find Swedish
       ]
-
+      this.showInfo("")
       this.final_transcript = ''
       this.recognition.lang = langs.find(entry => { return entry[0] == this.getLanguage()})
       this.recognition.start()
       this.ignore_onend = false
       console.log("mic slash?")
-      this.showInfo('info_allow')
       this.start_timestamp = event.timeStamp
     },
     linebreak(s) {
@@ -111,13 +111,8 @@ export default {
       })
     },
     showInfo(s) {
+      this.entryErr = true;
       switch(s) {
-        case "info_start":
-          this.info_message = "Click on the microphone icon and begin speaking.";
-          break;
-        case "info_speak_now":
-          this.info_message = "Speak now.";
-          break;
         case "info_no_speech":
           this.info_message = "No speech was detected. You may need to adjust your microphone settings";
           break;
@@ -136,6 +131,10 @@ export default {
         case "info_upgrade":
           this.info_message = "Web Speech API is not supported by this browser.";
           break;
+        case "":
+          this.info_message = "";
+          this.entryErr = false;
+          break;
       }
     },
   },
@@ -143,7 +142,6 @@ export default {
     //TODO: get phonetic spelling somehow
     //this.phonetic = "phonetic spelling goes here"
 
-    this.showInfo('info_start')
     if (!('webkitSpeechRecognition' in window)) {
       // Tell the user that they need to upgrade their browser
       console.log("gotta blur the mic")
@@ -156,21 +154,18 @@ export default {
 
       this.recognition.onstart = function () {
         pronunciations.recognizing = true
-        // Prompt user to speak
-        pronunciations.showInfo('info_speak_now')
-        // Show hot mic image (maybe just turn it red or something)
-        console.log("show hot mic")
+        pronunciations.img_path = require('@/assets/pngs/Mic_orange.png')
       }
 
       // Error handling
       this.recognition.onerror = function (event) {
         if (event.error == 'no-speech') {
-          console.log("show normal mic")
+          pronunciations.img_path = require('@/assets/pngs/Mic.png')
           pronunciations.showInfo('info_no_speech')
           pronunciations.ignore_onend = true
         }
         if (event.error == 'audio-capture') {
-          console.log("show normal mic")
+          pronunciations.img_path = require('@/assets/pngs/Mic.png')
           pronunciations.showInfo('info_no_microphone')
           pronunciations.ignore_onend = true
         }
@@ -190,10 +185,9 @@ export default {
           return
         }
         // Go back to base mic image
-        console.log("show normal mic")
+        pronunciations.img_path = require('@/assets/pngs/Mic.png')
         // If no words were picked up
         if (!pronunciations.final_transcript) {
-          pronunciations.showInfo('info_start')
           return
         }
         // No info to show
