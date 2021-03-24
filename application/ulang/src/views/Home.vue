@@ -18,7 +18,7 @@
         <div class="quickCard" v-for="set in quickAccessList" :key="set._id">
           <SetCard :set="set" />
         </div>
-        <div class="infoCard" v-if="!hasQuickAccess">
+        <div id="quickAccessInstruct" class="infoCard" v-if="!hasQuickAccess">
           Sets selected for quick access will appear here. From the user profile pages, click the lightning bolt icon to add the set to your quick access list.
         </div>
       </div>
@@ -27,7 +27,7 @@
         <div class="quickCard" v-for="set in recentSetList" :key="set._id">
           <SetCard :set="set" />
         </div>
-        <div class="infoCard" v-if="!hasSetList">
+        <div id="createSetLink" class="infoCard" v-if="!hasSetList">
           <p>You do not have any created sets.</p>
           <div class="buttonBox">
             <button class="submitButton" @click="createSet">Create a Set</button>
@@ -93,6 +93,10 @@ export default {
           .catch((err) => {
             console.error(err.response.data.error)
           })
+        this.recentActivity = getRecentList()
+        if(this.recentActivity.length > 0) {
+          this.hasRecentList = true
+        }
       } else {
         setTimeout(() => this.retrieveInfo(++tryNumber), 1000)
       }
@@ -103,10 +107,10 @@ export default {
   },
   mounted() {
     this.retrieveInfo(1)
-    this.recentActivity = getRecentList()
-    if(this.recentActivity.length > 0) {
-      this.hasRecentList = true
-    }
+    // this.recentActivity = getRecentList()
+    // if(this.recentActivity.length > 0) {
+    //   this.hasRecentList = true
+    // }
   }
 }
 </script>

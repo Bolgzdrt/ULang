@@ -18,7 +18,7 @@
             <Edit />
           </span>
         </span>
-        <p>{{ wordInfo.definition }}</p>
+        <p class="wordDef">{{ wordInfo.definition }}</p>
       </div>
       <div v-else class="attribute-container">
         <label for="def">Definition</label>
@@ -44,7 +44,7 @@
             <Edit />
           </span>
         </span>
-        <p>{{ wordInfo.notes }}</p>
+        <p class="wordNote">{{ wordInfo.notes }}</p>
       </div>
       <div v-else class="attribute-container">
         <label for="notes">Notes</label>
