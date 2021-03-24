@@ -64,9 +64,6 @@ export default {
     }
   },
   created: function(){
-    if (!this.id) {
-      this.$router.push({name: "ConjugationSettings"})
-    }
     getWordsInSet(this.id).then(({words}) => {
       this.wordList = words
       this.wordList.forEach((element) => {
