@@ -1,6 +1,7 @@
 # Project Constraints
 
 ## Economic Cost
+
 * Cloud Hosting
   * Constant cost when running.
   * Mitigated during development by free hosting time given to students.
@@ -9,7 +10,9 @@
 * Potential Cost
   * Depending on what Natural Language processing API is used there may be a cost per call.
   * Mitigated by a limited number of free calls for students.
+
 ## Time
+
 * Semester Constraint
   * Hard cutoff. Eliminates possibility of delaying deployment.
   * Manageable according to our timeline
@@ -19,12 +22,14 @@
   * Extra Curriculars.
 
 ## Scope
+
 * Scope of Project
   * Defined in task List
   * Set hard boundary at an amount of work achievable within the time constraint
 * Scope of Team Memeber Contributions
   * Defined in Effort Matrix
   * Limits memebers to a reasonable share of the work
+
 ## Technical Expertise
 
 * Elegant Database Design

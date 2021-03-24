@@ -15,6 +15,8 @@ import Login from '../views/Login.vue'
 import Profile from '../views/Profile.vue'
 import PrivacyPolicy from '../views/PrivacyPolicy.vue'
 import Pronunciations from '../views/Pronunciations.vue'
+import Dictionary from '../views/Dictionary.vue'
+import PronunciationsSettings from '../views/PronunciationsSettings.vue'
 import Settings from '../views/Settings.vue'
 import Signup from '../views/Signup.vue'
 import Vocabulary from '../views/Vocabulary.vue'
@@ -75,6 +77,14 @@ const routes = [
     redirect: '/flashCardsSettings'
   },
   {
+    path: '/flashcards',
+    redirect: '/flashCardsSettings'
+  },
+  {
+    path: '/flashcards/:anything',
+    redirect: '/flashCardsSettings'
+  },
+  {
     path: '/learnSettings',
     name: 'LearnSettings',
     component: LearnSettings
@@ -84,6 +94,10 @@ const routes = [
     name: 'Learn',
     component: Learn,
     props: true
+  },
+  {
+    path: '/learn',
+    redirect: '/learnSettings'
   },
   {
     path: '/createWord',
@@ -117,9 +131,29 @@ const routes = [
     component: ConjugationSettings
   },
   {
-    path: '/pronunciations',
+    path: '/conjugation',
+    redirect: '/conjugationSettings'
+  },
+  {
+    path: '/pronunciations/:id',
     name: 'Pronunciations',
-    component: Pronunciations
+    component: Pronunciations,
+    props: true
+  },
+  {
+    path: '/pronunciationsSettings',
+    name: 'PronunciationsSettings',
+    component: PronunciationsSettings
+  },
+  {
+    path: '/pronunciations',
+    redirect: '/pronunciationsSettings'
+  },
+  {
+    path: '/profile/:setOwnerId/:setId',
+    name: 'Dictionary',
+    component: Dictionary,
+    props: true
   },
   {
     path: '/word/:id',

@@ -1,5 +1,6 @@
 const User = require('../models/User')
 const Set = require('../models/Set')
+const Word = require('../models/Word')
 const { capitalizeWord, filterFalseyValues } = require('../utils/utils')
 const bcrypt = require('bcrypt')
 
@@ -8,13 +9,10 @@ const followUser = async (req, res) => {
   const { userId, followUserId } = req.body
 
   try {
-    const user = await User.findById(userId)
     await User.findByIdAndUpdate(
       userId,
-      {
-        friendsList: [...user.friendsList, followUserId]
-      },
-      { new: true, useFindAndModify: false }
+      { $push: { following: followUserId } },
+      { new: true }
     )
     res.status(200).json({
       success: true
@@ -32,26 +30,61 @@ const unfollowUser = async (req, res) => {
   const { userId, unfollowUserId } = req.body
 
   try {
-    const user = await User.findById(userId)
-    const newFriendsList = user.friendsList.filter(
-      (friend) => friend._id !== unfollowUserId
-    )
     await User.findByIdAndUpdate(
       userId,
-      {
-        friendsList: newFriendsList
-      },
-      { new: true, useFindAndModify: false }
+      { $pull: { following : unfollowUserId } },
+      { new: true }
     )
     res.status(200).json({
       success: true,
-      message: 'Followed User'
     })
   } catch (err) {
     console.log(err)
     res.status(400).json({
       success: false,
       error: err.message
+    })
+  }
+}
+
+/**
+ * Get a list of followed user ids
+ */
+const getFollowingList = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const user = await User.findById(id)
+    res.status(200).json({
+      success: true,
+      following: user.following,
+      user
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: 'Error getting followed users'
+    })
+  }
+}
+
+// Get followed user information
+const getFolledUserInfo = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const user = await User.findById(id)
+    const followedUsers = await User.find({ _id: { $in: user.following }, })
+    res.status(200).json({
+      success: true,
+      following: followedUsers
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: 'Error getting followed users'
     })
   }
 }
@@ -66,7 +99,7 @@ const getUserInfo = async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       username: user.username,
-      createdDate: user.createdAt
+      createdDate: user.createdAt,
     })
   } catch (err) {
     console.log(err)
@@ -79,7 +112,6 @@ const getUserInfo = async (req, res) => {
 
 const getUserLanguages = async (req, res) => {
   const { id } = req.params
-
   try {
     const user = await User.findById(id)
     res.status(200).json({
@@ -216,7 +248,34 @@ const deleteAccount = async (req, res) => {
     const user = await User.findById(id)
     const success = await bcrypt.compare(password, user.password)
     if (success) {
-      await User.findByIdAndDelete(id)
+      let deletePromises = []
+      for (let d of user.dictionaries) {
+        const dict = await Set.findById(d)
+        deletePromises.push(
+          Word.deleteMany({ _id: { $in: dict.words }, ownerId: id })
+        )
+      }
+      deletePromises.push(
+        Set.deleteMany({ _id: { $in: user.sets }, ownerId: id })
+      )
+      // for (let s of user.sets) {
+      //   const set = await Set.findById(s)
+      //   if (set.ownerId === id) {
+      //     deletePromises.push(
+      //       Word.deleteMany({ _id: { $in: set.words }, ownerId: id })
+      //     )
+      //     deletePromises.push(
+      //       Set.findByIdAndDelete(s)
+      //     )
+      //   }
+      // }
+      deletePromises.push(
+        Set.deleteMany({ _id: { $in: user.dictionaries } })
+      )
+      deletePromises.push(
+        User.findByIdAndDelete(id)
+      )
+      await Promise.all(deletePromises)
       res.status(200).json({
         success: true,
         message: 'Account Successfully Deleted'
@@ -280,9 +339,93 @@ const getQuickSets = async (req, res) => {
   }
 }
 
+const addQuickSet = async (req, res) => {
+  const { userId, setId } = req.body
+
+  try {
+    await User.findByIdAndUpdate(
+      userId,
+      { $push: { quickAccess: setId } },
+      { new: true }
+    )
+    res.status(200).json({
+      success: true
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
+const removeQuickSet = async (req, res) => {
+  const { userId, setId } = req.body
+
+  try {
+    await User.findByIdAndUpdate(
+      userId,
+      { $pull: { quickAccess : setId } },
+      { new: true }
+    )
+    res.status(200).json({
+      success: true,
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
+const addSet = async (req, res) => {
+  const { userId, setId} = req.body
+  try {
+    await User.findByIdAndUpdate(
+      userId,
+      { $push: { sets : setId}  },
+      { new: true }
+    )
+    res.status(200).json({
+      success: true,
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
+const removeSet = async (req, res) => {
+  const { userId, setId} = req.body
+  try {
+    await User.findByIdAndUpdate(
+      userId,
+      { $pull: { sets : setId}  },
+      { new: true }
+    )
+    res.status(200).json({
+      success: true,
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
+
 module.exports = {
   followUser,
   unfollowUser,
+  getFollowingList,
+  getFolledUserInfo,
   getUserInfo,
   getUserLanguages,
   addLanguagesToUser,
@@ -291,5 +434,9 @@ module.exports = {
   changePassword,
   deleteAccount,
   searchNames,
-  getQuickSets
+  getQuickSets,
+  addQuickSet,
+  removeQuickSet,
+  addSet,
+  removeSet
 }

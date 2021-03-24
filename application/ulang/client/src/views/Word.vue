@@ -7,18 +7,18 @@
             wordInfo.partOfSpeech
           }})
         </p>
-        <span class="trash-icon" @click="initiateDelete">
+        <span v-if="isCurrentUsersWord()" class="trash-icon" @click="initiateDelete">
           <Trash />
         </span>
       </div>
       <div v-if="!editBools.definition" class="attribute-container">
         <span class="attribute">
           <p>Definition</p>
-          <span class="edit-container" @click="toggleEdit('definition')">
+          <span v-if="isCurrentUsersWord()" class="edit-container" @click="toggleEdit('definition')">
             <Edit />
           </span>
         </span>
-        <p>{{ wordInfo.definition }}</p>
+        <p class="wordDef">{{ wordInfo.definition }}</p>
       </div>
       <div v-else class="attribute-container">
         <label for="def">Definition</label>
@@ -40,11 +40,11 @@
       <div v-if="!editBools.notes" class="attribute-container">
         <span class="attribute">
           <p>Notes</p>
-          <span class="edit-container" @click="toggleEdit('notes')">
+          <span v-if="isCurrentUsersWord()" class="edit-container" @click="toggleEdit('notes')">
             <Edit />
           </span>
         </span>
-        <p>{{ wordInfo.notes }}</p>
+        <p class="wordNote">{{ wordInfo.notes }}</p>
       </div>
       <div v-else class="attribute-container">
         <label for="notes">Notes</label>
@@ -78,7 +78,7 @@
             v-model="editInputs.conjugations[conjugationIndex].title"
           />
         </div>
-        <span @click="toggleEdit('conjugation')" id="conjugationEdit">
+        <span v-if="isCurrentUsersWord()" @click="toggleEdit('conjugation')" id="conjugationEdit">
           <Edit />
         </span>
         <div class="table">
@@ -217,6 +217,7 @@ import {
   createConjugationForWord,
   deleteWord,
 } from '@/services/wordService'
+import { mapGetters } from 'vuex'
 import { isEqual } from 'lodash'
 
 export default {
@@ -231,6 +232,7 @@ export default {
         partOfSpeech: '',
         notes: '',
         definition: '',
+        ownerId: '',
         conjugations: [],
       },
       editBools: {
@@ -252,6 +254,7 @@ export default {
     }
   },
   methods: {
+    ...mapGetters('auth', ['getUserId']),
     getWordInfo() {
       getWordById(this.id)
         .then((res) => {
@@ -262,19 +265,26 @@ export default {
             'description',
             'notes',
             'definition',
+            'ownerId',
           ].forEach((info) => {
             if (res.word[info]) {
               this.wordInfo[info] = res.word[info]
               this.editInputs[info] = res.word[info]
             }
           })
-          this.wordInfo.conjugations =
-            res.conjugations.map((conj) => ({ ...conj, new: false })) || null
-          this.editInputs.conjugations = res.conjugations
+          if (this.wordInfo.conjugations.length) {
+            this.wordInfo.conjugations =
+              res.conjugations.map((conj) => ({ ...conj, new: false })) || null
+            this.editInputs.conjugations = res.conjugations
+          }
         })
         .catch((err) => {
-          console.error(err.response.data.error)
+          console.log(err)
+          // console.error(err.response.data.error)
         })
+    },
+    isCurrentUsersWord() {
+      return this.wordInfo.ownerId === this.getUserId()
     },
     toggleEdit(property) {
       this.editBools[property] = !this.editBools[property]

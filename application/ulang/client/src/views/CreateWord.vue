@@ -65,7 +65,7 @@
                 <option value="interjection">Interjection</option> </select
               ><br />
               <label for="partOfSpeech" class="required wordEntryLabel"
-                >Part of speech</label
+                >Part of Speech</label
               >
               <p class="error" v-if="requiredErrorPoS">
                 Word must have a selected part of speech
@@ -169,7 +169,7 @@
             <div class="row" v-for="set in sets" :key="set._id">
               <input type="checkbox" value="set.selected" v-model="set.selected" />
               <div class="name">
-                <p>{{ set.name }}</p>
+                <p class="setName">{{ set.name }}</p>
               </div>
               <div class="length">
                 <p>{{ set.words.length }} words</p>

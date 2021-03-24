@@ -22,7 +22,7 @@ export default {
     userId() {
       return this.$store.getters['auth/getUserId']
     }
-  }
+  },
 }
 </script>
 

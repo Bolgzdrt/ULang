@@ -5,7 +5,7 @@
         <section class="profile">
           <p class="setting-title title">My Profile</p>
           <div class="profile-content content">
-            <NameCircle :initials="initials" background="#7666D8" :radius="4" />
+            <NameCircle :initials="initials"/>
             <!-- TODO: Do the moving label thing -->
             <div class="name-input input-group">
               <input
@@ -172,7 +172,7 @@
         <section class="delete-account">
           <p class="setting-title title">Delete Account</p>
           <div class="delete-account-content content">
-            <p>Permanently Delete {Username}</p>
+            <p>Permanently Delete {{ username }}</p>
             <div class="delete-account-input input-group">
               <input
                 type="password"
@@ -236,6 +236,11 @@ export default {
         confirmNewPasswordErrorMessage: "",
         deleteAccountPasswordErrorMessage: ""
       }
+    }
+  },
+  computed: {
+    username() {
+      return this.$store.getters['auth/getUserInfo'].username
     }
   },
   methods: {
