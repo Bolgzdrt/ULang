@@ -2,19 +2,25 @@
 
 Select the profile button at the top right of the page to access the profile page. 
 
-<!-- TODO: Add profile page when implemented -->
----- TODO: Add profile page when implemented ----
 
 The profile page will list the sets in your dicitonary.
+
+![Profile](./images/profile.png)
+
 -  You can filter and sort your lists using the filter entry box, and sort drop menu respectively. 
 - A set can be marked for quick access by clicking the lightning bolt on the set, this will add it to the quick access section on the home page. 
 - Selecting a set will allow you to edit it.
 
-On the set edit page you can view the set name, description, and list of words.
-- The set name or description may be changed by selecting them and editing them.
+On the set edit page you can view the set name and list of words.
 
-- Words can be added to the set by clicking the Plus symbol above the list, a word may be selected form your dictionary or a new word may be added by selecting "Create New Word". 
+![Edit Set](./images/edit_set.png)
 
-- Words can be removed by selecting "Remove" on the word entry in the word list. 
+- The set name may be changed by selecting it and editing it.
 
-- Words can be edited by selecting "Edit on the word entry in the word list.
+- Words can be added to the set by clicking "Add Words", words may be selected form your dictionary and added by clicking "Add". A new word may be added by selecting "New Word". 
+
+![Add Words](./images/edit_set_add_words.png)
+
+- Words can be removed by hovering over the three dots beside the word and selecting "Remove". 
+
+- Words can be edited by hovering over the three dots beside the word and selecting "Edit".
