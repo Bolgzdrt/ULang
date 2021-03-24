@@ -23,6 +23,7 @@ app.use(
     {
       origin: [
         "http://localhost:8080",
+        "http://localhost:5000",
         "http://127.0.0.1",
         // TODO: Wherever production is hosted
       ],
@@ -36,7 +37,7 @@ app.use(cookieParser())
 const PORT = process.env.PORT || 8081
 const dbUri = process.env.DBURI
 mongoose
-  .connect(dbUri, {
+  .connect("mongodb://localhost:27017/ulang", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

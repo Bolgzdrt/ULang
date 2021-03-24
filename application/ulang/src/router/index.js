@@ -15,6 +15,7 @@ import Login from '../views/Login.vue'
 import Profile from '../views/Profile.vue'
 import PrivacyPolicy from '../views/PrivacyPolicy.vue'
 import Pronunciations from '../views/Pronunciations.vue'
+import Dictionary from '../views/Dictionary.vue'
 import PronunciationsSettings from '../views/PronunciationsSettings.vue'
 import Settings from '../views/Settings.vue'
 import Signup from '../views/Signup.vue'
@@ -147,6 +148,12 @@ const routes = [
   {
     path: '/pronunciations',
     redirect: '/pronunciationsSettings'
+  },
+  {
+    path: '/profile/:setOwnerId/:setId',
+    name: 'Dictionary',
+    component: Dictionary,
+    props: true
   },
   {
     path: '/word/:id',

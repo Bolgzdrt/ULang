@@ -5,6 +5,8 @@ const router = Router()
 
 router.post('/followUser', userController.followUser)
 router.post('/unfollowUser', userController.unfollowUser)
+router.get('/getFollowing/:id', userController.getFollowingList)
+router.get('/getFollowingInfo/:id', userController.getFolledUserInfo)
 router.get('/getUserInfo/:id', userController.getUserInfo)
 router.get('/getUserLanguages/:id', userController.getUserLanguages)
 router.post('/addLanguagesToUser/:id', userController.addLanguagesToUser)
@@ -14,6 +16,10 @@ router.put('/changePassword/:id', userController.changePassword)
 router.delete('/deleteAccount/:id', userController.deleteAccount)
 router.get('/searchNames/:query', userController.searchNames)
 router.get('/getQuickSets/:id/:language', userController.getQuickSets)
+router.post('/addQuickSet', userController.addQuickSet)
+router.post('/removeQuickSet', userController.removeQuickSet)
+router.post('/addSet', userController.addSet)
+router.post('/removeSet', userController.removeSet)
 
 module.exports = {
   userRouter: router
