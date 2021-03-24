@@ -2,15 +2,14 @@
   <div class="recordCard">
     <div class="word">
       <p>{{ word }}</p>
-      <p>[{{ phonetic }}]</p>
+      <p>{{ phonetic }}</p>
     </div>
     <div class="entry">
       <div>
-        <img src="@/assets/pngs/Mic.png" alt="recording microphone" class="microphone">
+        <img src="@/assets/pngs/Mic.png" alt="recording microphone" class="microphone" @click="startButton($event)">
       </div>
       <p class="error" v-if="entryErr">Please enter a translation</p>
     </div>
-    <button class="submitButton" @click="correctCheck">Submit</button>
     <transition name="modalFade" v-if="resultModal">
       <div class="modalBackdrop">
         <div class="modal">
@@ -29,6 +28,7 @@
 
 <script>
 import AccentButtons from '@/components/AccentButtons.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'RecordCard',
@@ -39,17 +39,21 @@ export default {
       phonetic: '',
       correct: false,
       entryErr: false,
-      resultModal: false
+      resultModal: false,
+      recognition: {},
+      recognizing: false,
+      final_transcript: '',
+      ignore_onend: false,
+      start_timestamp: '',
+      info_message: ''
     }
   },
   methods: {
-    appendChar(char){
-      this.input += char;
-    },
+    ...mapGetters('settings', ['getLanguage']),
     //TODO: Update to check recording correctness
     correctCheck() {
-      if (this.input) {
-        if (this.input === this.answer) {
+      if (this.final_transcript) {
+        if (this.final_transcript === this.$props.word) {
           this.correct = true
         } else {
           this.correct = false
@@ -63,13 +67,153 @@ export default {
     },
     cont() {
       this.resultModal = false
-      this.input = ''
+      this.final_transcript = ''
       this.$emit('nextCard', this.correct)
-    }
+    },
+    startButton(event) {
+      // If listening, turn off listening
+      if (this.recognizing) {
+        this.recognition.stop()
+        return
+      }
+      console.log(this.recognition)
+      const langs = [
+        ['Deutsch', 'de-DE'],
+        ['English', 'en-US'],
+        ['Spanish', 'es-MX'],
+        ['French', 'fr-FR'],
+        ['Italian', 'it-IT'],
+        ['Dutch', 'nl-NL'],
+        ['Polish', 'pl-PL'],
+        ['Portuguese', 'pt-PT'],
+        ['Romanian', 'ro-RO'],
+        // TODO: Find Swedish
+      ]
+
+      this.final_transcript = ''
+      this.recognition.lang = langs.find(entry => { return entry[0] == this.getLanguage()})
+      this.recognition.start()
+      this.ignore_onend = false
+      console.log("mic slash?")
+      this.showInfo('info_allow')
+      this.start_timestamp = event.timeStamp
+    },
+    linebreak(s) {
+      const two_line = /\n\n/g
+      const one_line = /\n/g
+      return s.replace(two_line, '<p></p>').replace(one_line, '<br>')
+    },
+    capitalize(s) {
+        const first_char = /\S/
+
+      return s.replace(first_char, function (m) {
+        return m.toUpperCase()
+      })
+    },
+    showInfo(s) {
+      switch(s) {
+        case "info_start":
+          this.info_message = "Click on the microphone icon and begin speaking.";
+          break;
+        case "info_speak_now":
+          this.info_message = "Speak now.";
+          break;
+        case "info_no_speech":
+          this.info_message = "No speech was detected. You may need to adjust your microphone settings";
+          break;
+        case "info_no_microphone":
+          this.info_message = " No microphone was found. Ensure that a microphone is installed and that microphone settings are configured correctly.";
+          break;
+        case "info_allow":
+          this.info_message = "Click the 'Allow' button above to enable your microphone";
+          break;
+        case "info_denied":
+          this.info_message = "Permission to use microphone was denied.";
+          break;
+        case "info_blocked":
+          this.info_message = "Permission to use microphone is blocked.";
+          break;
+        case "info_upgrade":
+          this.info_message = "Web Speech API is not supported by this browser.";
+          break;
+      }
+    },
   },
   created() {
     //TODO: get phonetic spelling somehow
-    this.phonetic = "phonetic spelling goes here"
+    //this.phonetic = "phonetic spelling goes here"
+
+    this.showInfo('info_start')
+    if (!('webkitSpeechRecognition' in window)) {
+      // Tell the user that they need to upgrade their browser
+      console.log("gotta blur the mic")
+      this.showInfo('info_upgrade')
+    } else {
+      console.log("mic unblur")
+      this.recognition = new webkitSpeechRecognition()
+      this.recognition.continuous = true
+      var pronunciations = this
+
+      this.recognition.onstart = function () {
+        pronunciations.recognizing = true
+        // Prompt user to speak
+        pronunciations.showInfo('info_speak_now')
+        // Show hot mic image (maybe just turn it red or something)
+        console.log("show hot mic")
+      }
+
+      // Error handling
+      this.recognition.onerror = function (event) {
+        if (event.error == 'no-speech') {
+          console.log("show normal mic")
+          pronunciations.showInfo('info_no_speech')
+          pronunciations.ignore_onend = true
+        }
+        if (event.error == 'audio-capture') {
+          console.log("show normal mic")
+          pronunciations.showInfo('info_no_microphone')
+          pronunciations.ignore_onend = true
+        }
+        if (event.error == 'not-allowed') {
+          if (event.timeStamp - pronunciations.start_timestamp < 100) {
+            pronunciations.showInfo('info_blocked')
+          } else {
+            pronunciations.showInfo('info_denied')
+          }
+          pronunciations.ignore_onend = true
+        }
+      }
+
+      this.recognition.onend = function () {
+        pronunciations.recognizing = false
+        if (pronunciations.ignore_onend) {
+          return
+        }
+        // Go back to base mic image
+        console.log("show normal mic")
+        // If no words were picked up
+        if (!pronunciations.final_transcript) {
+          pronunciations.showInfo('info_start')
+          return
+        }
+        // No info to show
+        pronunciations.showInfo('')
+      }
+
+      this.recognition.onresult = function (event) {
+        for (var i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            pronunciations.final_transcript += event.results[i][0].transcript
+          } 
+        }
+        pronunciations.final_transcript = pronunciations.capitalize(pronunciations.final_transcript)
+        if (pronunciations.final_transcript) {
+          console.log(pronunciations.final_transcript)
+          this.stop()
+          pronunciations.correctCheck()
+        }
+      }
+    }
   }
 }
 </script>

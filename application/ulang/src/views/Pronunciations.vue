@@ -3,8 +3,8 @@
     <BackButton :fromRoute="fromRoute" />
     <div v-if="!done">
       <div style="padding-bottom: 30px;"><SetProg :curr="index + 1" :total="total" :setName="setName" /></div>
-      <RecordCard :word="wordList[index].word" @nextCard="nextCard"/>
-    </div>
+      <RecordCard :word="wordList[index].word" @nextCard="nextCard" />
+     </div>
     <div class="pronuncResult" v-if="done">
       <div>
         <p class="title">Results:</p>
@@ -26,6 +26,7 @@ import SetProg from '@/components/SetProg.vue'
 import RecordCard from '@/components/RecordCard.vue'
 import { getWordsInSet, getSetById } from '@/services/setService'
 
+
 export default {
   name: 'Pronunciations',
   components: { BackButton, SetProg, RecordCard },
@@ -40,9 +41,11 @@ export default {
       done: false,
       resPercent: '',
       fromRoute: ''
+
     }
   },
   methods: {
+
     nextCard(correct) {
       if (this.index < this.total) {
         if (correct) {
@@ -60,7 +63,9 @@ export default {
         })
         this.resPercent = ((correctTally/this.total) * 100).toFixed(0)
       }
-    }
+    },
+    
+
   },
   created: function(){
     getWordsInSet(this.id).then(({words}) => {
@@ -70,6 +75,8 @@ export default {
     getSetById(this.id).then(({set}) => {
       this.setName = set.name
     })
+    
+    
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
