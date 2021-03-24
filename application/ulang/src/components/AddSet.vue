@@ -3,8 +3,8 @@
     <div class="default">
       <p class="titleP">Create a New Set</p>
       <div class="field">
-        <input type="text" id="name" placeholder="Enter a name..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a name...'" v-model="name" class="inputField" value=""><br>
-        <label for="name" class="required inputFieldLabel">Set Name</label>
+        <input type="text" id="setName" placeholder="Enter a name..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter a name...'" v-model="name" class="inputField" value=""><br>
+        <label for="setName" class="required inputFieldLabel">Set Name</label>
         <p class="error" v-if="requiredError">Set must have a name</p>
       </div>
       <div class="field">
@@ -30,7 +30,7 @@
       <div class="rowContainer">
         <div class="row" v-for="word in filteredWords" :key="word._id">
           <input type="checkbox" value="word.selected" v-model="word.selected">
-          <div class="word"><p>{{ word.english }} / {{ word.word }}</p></div>
+          <div class="word"><p class="transWord">{{ word.english }} / {{ word.word }}</p></div>
           <div class="definition"><p>{{ word.definition }}</p></div>
         </div>
       </div>
