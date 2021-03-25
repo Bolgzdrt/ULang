@@ -20,11 +20,13 @@
 
     2.4 [Copying Sets](./dictionary_management/copy_user_sets.md)
 
+    2.5 [Study Another Language](./dictionary_management/new_language.md)
+
 3. Activities
 
     3.1 [Flash Cards](./activities/flash_card.md)
 
-    3.2 [Learn](./activities/learn.md)
+    3.2 [Vocabulary](./activities/learn.md)
 
     3.3 [Conjugation Practice](./activities/conjugation.md)
 

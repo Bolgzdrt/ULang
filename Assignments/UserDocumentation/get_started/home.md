@@ -1,7 +1,7 @@
 # Home
 
-<!-- TODO: Add final image of homepage when completed -->
----- TODO: Add final image of homepage when completed ----
+![Homepage](./images/homepage.png)
+
 
 ## Navigation Bar
 
@@ -10,6 +10,8 @@
 - Add button - Plus symbol at top right for adding sets and words.
 
 - Language selection - Flag at top right displays current language, select the arrow beside it to change language.
+
+- User Search - Search bar at the top left allows you to search for other users by entering their username.
 
 ## Side Bar
 
