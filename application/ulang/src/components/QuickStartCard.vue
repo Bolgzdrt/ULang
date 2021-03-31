@@ -25,6 +25,7 @@ export default {
     }
   },
   methods: {
+    // redirects to the corresponding page listed on the card
     selectCard() {
       if (this.eventRoute === "FlashCards") {
         updateRecentList(this.event, this.setId, this.eventSetting)

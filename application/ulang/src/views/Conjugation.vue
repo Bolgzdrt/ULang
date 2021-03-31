@@ -44,6 +44,7 @@ export default {
     }
   },
   methods: {
+    // sets correct value on word and progresses to next word, displays results after last word in set
     nextCard(correct) {
       if (this.index < this.conjList.length) {
         if (correct) {

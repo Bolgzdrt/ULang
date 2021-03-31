@@ -28,6 +28,7 @@ export default {
     }
   },
   methods: {
+    // redirects to dictionary page for set listed on card
     selectCard() {
       this.$router.push({ name: 'Dictionary', params: { setId: this.set._id, setOwnerId: this.set.ownerId } })
     }

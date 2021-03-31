@@ -24,6 +24,7 @@ export default {
     }
   },
   methods: {
+    // filters set list based on entered characters in input field
     filterList() {
       if (!this.filter) {
         this.slimList = this.options
@@ -31,16 +32,19 @@ export default {
       }
       this.slimList = this.options.filter(set => set.name.toLowerCase().includes(this.filter.toLowerCase()))
     },
+    // sets set as selected when clicked in drop down
     setSelect(set) {
       this.$emit('selected', set._id)
       this.filter = set.name
       this.setList = false
     },
+    // displays set list when input field is clicked
     showSelection() {
       this.setList = true
       this.filter = ''
       this.filterList()
     },
+    // hides set list when unfocused or set selected
     hideSelection(){
       this.setList = false
     }

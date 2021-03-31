@@ -108,9 +108,11 @@ export default {
     }
   },
   methods: {
+    // adds accent letter to translation field when an accent button is clicked
     appendChar(char) {
       this.input += char
     },
+    // checks whether input conjugation matches the correct answer and sets correct/incorrect for results
     correctCheck() {
       if (this.input) {
         if (this.input === this.conjObj.conjugation[this.conjObj.selected]) {
@@ -126,6 +128,7 @@ export default {
         this.entryErr = true
       }
     },
+    // progress to the next table in set
     cont() {
       this.resultModal = false
       this.input = ''

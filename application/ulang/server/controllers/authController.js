@@ -3,7 +3,9 @@ const Set = require('../models/Set')
 const jwt = require('jsonwebtoken')
 const { capitalizeWord } = require('../utils/utils')
 
-// handle errors
+/**
+ * method to handle errors in other methods
+ */
 const handleErrors = (err) => {
   console.log(err)
   let errors = { email: '', password: '', username: '' }
@@ -32,6 +34,9 @@ const handleErrors = (err) => {
   return errors
 }
 
+/**
+ * creates authentication token
+ */
 const maxAge = 60 * 60 * 24
 const createToken = (id) => {
   return jwt.sign({ id }, "vSlkqh4X4EMtYW4iemp3zA09nKJ3SH3zQgnX1fOrkt1@8HCnLMfQIUHb8Z6O1%yQ7zggPIlEE*!*iYMaCbPdCgPxJ%*QYH5V97E", {
@@ -39,6 +44,9 @@ const createToken = (id) => {
   })
 }
 
+/**
+ * method that handles new user creation for the database
+ */
 const signup = async (req, res) => {
   let { email, username, password, primaryLanguage } = req.body
   if (!primaryLanguage) {
@@ -75,6 +83,9 @@ const signup = async (req, res) => {
   }
 }
 
+/**
+ * method that authenticates attempted login
+ */
 const login = async (req, res) => {
   const { username, password } = req.body
 

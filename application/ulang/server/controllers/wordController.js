@@ -8,6 +8,9 @@ const {
 } = require('../utils/utils')
 const { findByIdAndUpdate } = require('../models/Word')
 
+/**
+ * add word to language dictionary and potentially other sets with supplied info
+ */
 const createWord = async (req, res) => {
   const {
     word,
@@ -65,6 +68,9 @@ const createWord = async (req, res) => {
   }
 }
 
+/**
+ * get a list of all words a user has created for set creation set
+ */
 const getAllWordsOfUser = async (req, res) => {
   const { id, language } = req.params
   try {
@@ -89,6 +95,9 @@ const getAllWordsOfUser = async (req, res) => {
   }
 }
 
+/**
+ * retrieve word information for given word id
+ */
 const getWordById = async (req, res) => {
   const { id } = req.params
 
@@ -125,6 +134,9 @@ const getWordById = async (req, res) => {
   }
 }
 
+/**
+ * retreive all conjugation data for given word id
+ */
 const getConjugation = async (req, res) => {
   const { id } = req.params
 
@@ -144,6 +156,9 @@ const getConjugation = async (req, res) => {
   }
 }
 
+/**
+ * update word in db with supplied information
+ */
 const updateWord = async (req, res) => {
   const { id } = req.params
   const args = req.body
@@ -175,6 +190,9 @@ const updateWord = async (req, res) => {
   }
 }
 
+/**
+ * update conjugation data for a given word with supplied information
+ */
 const updateConjugation = async (req, res) => {
   const { id } = req.params
   const args = req.params
@@ -208,6 +226,9 @@ const updateConjugation = async (req, res) => {
   }
 }
 
+/**
+ * add new conjugation table data to existing word
+ */
 const createConjugationForWord = async (req, res) => {
   // word id
   const { id } = req.params
@@ -240,6 +261,9 @@ const createConjugationForWord = async (req, res) => {
   }
 }
 
+/**
+ * remove word from db
+ */
 const deleteWord = async (req, res) => {
   const { id } = req.params
 

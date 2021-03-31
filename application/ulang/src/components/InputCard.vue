@@ -43,9 +43,11 @@ export default {
     }
   },
   methods: {
+    // adds accent letter to translation field when an accent button is clicked
     appendChar(char){
       this.input += char;
     },
+    // checks whether input string is correct and sets correct/incorrect for correct tally
     correctCheck() {
       if (this.input) {
         if (this.input === this.answer) {
@@ -60,6 +62,7 @@ export default {
         this.entryErr = true
       }
     },
+    // progress to next word in set after result modal
     cont() {
       this.resultModal = false
       this.input = ''

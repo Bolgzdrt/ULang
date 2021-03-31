@@ -45,9 +45,11 @@ export default {
   methods: {
     ...mapGetters('settings', ['getLanguage']),
     ...mapGetters('auth', ['getUserId']),
+    // sets selected set for use in conj. practice
     setSelect(value) {
       this.setSelection = value
     },
+    // starts flash cards with selected set
     startClick() {
       if (!this.setSelection) {
         this.selectErr = true

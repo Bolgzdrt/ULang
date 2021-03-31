@@ -45,7 +45,7 @@ export default {
     }
   },
   methods: {
-
+    // proceed to the next word in set when next button in modal is clicked
     nextCard(correct) {
       if (this.index < this.total) {
         if (correct) {

@@ -65,6 +65,7 @@ export default {
   methods: {
     ...mapGetters('settings', ['getLanguage']),
     ...mapGetters('auth', ['getUserId']),
+    // retrieves recent set list, quick access set list, and recent activity list
     retrieveInfo(tryNumber) {
       const userId = this.getUserId()
       const language = this.getLanguage()

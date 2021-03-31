@@ -38,9 +38,11 @@ export default {
     }
   },
   methods: {
+    // flip the shown card face
     toggleCard() {
       this.flipped = !this.flipped;
     },
+    // go to next card by clicking right arrow
     nextCard() {
       if (!(this.index >= this.total - 1)) {
         if (this.flipped == true){
@@ -51,6 +53,7 @@ export default {
         }, 100);
       }
     },
+    // got to previous card by clicking left arrow
     prevCard() {
       if (!(this.index == 0)) {
         if (this.flipped == true){
