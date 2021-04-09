@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - ulang
+name: Build and deploy container app to Azure Web App - ULang
 
 on:
   push:
@@ -11,27 +11,26 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: 'ubuntu-latest'
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up Node.js version
-      uses: actions/setup-node@v1
-      with:
-        node-version: '12.x'
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
 
-    - name: npm install, build, and test
-      run: |
-        npm install
-        npm run build --if-present
-        npm run test --if-present
-
-    - name: Upload artifact for deployment job
-      uses: actions/upload-artifact@v2
+    - uses: azure/docker-login@v1
       with:
-        name: node-app
-        path: .
+        login-server: https://index.docker.io/v1/
+        username: ${{ secrets.AzureAppService_ContainerUsername_b906c2f49ef341e89736c1bffdd5a59d }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_d3a46ca25bcc43ca998b1ee910f0e0f4 }}
+
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@v2.2.1
+      with:
+        push: true
+        tags: node:${{ github.sha }}
+        file: ./Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
@@ -41,16 +40,11 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-    - name: Download artifact from build job
-      uses: actions/download-artifact@v2
-      with:
-        name: node-app
-
-    - name: 'Deploy to Azure Web App'
+    - name: Deploy to Azure Web App
       id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'ulang'
+        app-name: 'ULang'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_80208c2f2198416e885b6c481b1dc098 }}
-        package: .
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_edd65cd509cf4f2d84a710dc47b39137 }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_b906c2f49ef341e89736c1bffdd5a59d }}/node:${{ github.sha }}'
