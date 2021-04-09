@@ -1,0 +1,20 @@
+{
+  "name": "ulang",
+  "version": "1.0.0",
+  "description": "## Team Members",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd application/ulang && npm run start",
+    "postinstall": "cd application/ulang && (npm install); (cd client && npm install); (cd server && npm install)"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jantzeca/ULang.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jantzeca/ULang/issues"
+  },
+  "homepage": "https://github.com/jantzeca/ULang#readme"
+}
