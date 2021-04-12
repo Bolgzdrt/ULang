@@ -31,6 +31,8 @@ ULang is an application for mastering foreign languages with practice tools and 
 
 * [Initial Assessment](./Assignments/chrisjantzen/chrisJantzenIndividualAssessment.pdf)
 
+* [Final Assessment](./Assignments/chrisjantzen/chrisjantzen_final_self_assessment.pdf)
+
 ### Robert Bolgzds
 
 * [Initial Assessment](./Assignments/robertbolgzds/robertbolgzds_IndividualAssessment.pdf)
