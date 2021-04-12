@@ -5,7 +5,7 @@
     </div>
     <div class="entry">
       <input class="textBox" type="text" placeholder="Enter translation here..." onfocus="this.placeholder=''" onblur="this.placeholder='Enter translation here...'" v-model="input" @keyup.enter="correctCheck">
-      <AccentButtons @buttonClicked="appendChar" />
+      <AccentButtons @buttonClicked="appendChar" :language="language"/>
       <p class="error" v-if="entryErr">Please enter a translation</p>
     </div>
     <button class="submitButton" @click="correctCheck">Submit</button>
@@ -29,11 +29,17 @@
 
 <script>
 import AccentButtons from '@/components/AccentButtons.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'InputCard',
   components: { AccentButtons },
   props: ['word', 'answer'],
+  computed: {
+    language() {
+      return this.getLanguage()
+    },
+  },
   data() {
     return {
       input: '',
@@ -43,6 +49,7 @@ export default {
     }
   },
   methods: {
+    ...mapGetters('settings', ['getLanguage']),
     // adds accent letter to translation field when an accent button is clicked
     appendChar(char){
       this.input += char;
