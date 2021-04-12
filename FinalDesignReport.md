@@ -15,7 +15,7 @@ ULang is an application for mastering foreign languages with practice tools and 
 
 ## User Manual
 
-[Documentation](./Assignments/userrDocumentation/../../README.md)
+[Documentation](./Assignments/userDocumentation/../../README.md)
 
 ## Spring Final PPT Presentation
 
