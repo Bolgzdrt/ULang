@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "cd application/ulang && npm run start",
+    "docker-up": "cd application/ulang; docker-compose up -d",
+    "docker-down": "cd application/ulang; docker-compose down",
     "postinstall": "cd application/ulang && (npm install); (cd client && npm install); (cd server && npm install)"
   },
   "repository": {
