@@ -51,6 +51,7 @@ export default {
     }
   },
   methods: {
+    // progress to next card on submit click 
     nextCard(correct) {
       if (this.index < this.total) {
         if (correct) {

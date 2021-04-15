@@ -34,9 +34,11 @@ export default {
   methods: {
     ...mapGetters('settings', ['getLanguage']),
     ...mapGetters('auth', ['getUserId']),
+    // sets selected set for use in conj. practice
     setSelect(value) {
       this.setSelection = value
     },
+    // starts vocabulary practice with selected set
     startClick() {
       if (!this.setSelection) {
         this.selectErr = true

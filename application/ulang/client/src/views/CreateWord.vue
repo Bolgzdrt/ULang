@@ -236,6 +236,7 @@ export default {
   methods: {
     ...mapGetters('auth', ['getUserId']),
     ...mapGetters('settings', ['getLanguage']),
+    // create word in db when submit button is pressed
     submit() {
       let requestPayload
       // TODO: Possibly use this to point out incorrect tables with an error icon in the conjugation display
@@ -286,6 +287,7 @@ export default {
           ]
         })
     },
+    // view the next conjugation table by clicking the right button
     nextClick() {
       if (this.conjugationIndex === this.conjugationData.length - 1) {
         // going with topleft, middleleft, etc. cus they don't always mean the same thing from language to langauge.
@@ -306,14 +308,17 @@ export default {
         this.conjugationIndex++
       }
     },
+    // view the previous conjugation table by clicking left button
     backClick() {
       if (this.conjugationIndex > 0) {
         this.conjugationIndex--
       }
     },
+    // adds accent letter to translation field when an accent button is clicked
     appendChar(char) {
       this.translation += char
     },
+    // returns to the previous page when cancel button is clicked
     cancel() {
       if (this.fromRoute) {
         this.$router.push(this.fromRoute)
@@ -321,6 +326,7 @@ export default {
         this.$router.push({ name: 'Home' })
       }
     },
+    // clears input fields when add another word button is clicked
     clear() {
       this.english = ''
       this.translation = ''
@@ -337,6 +343,7 @@ export default {
       this.requiredErrorPoS = ''
       // this.$router.go()
     },
+    // checks whether conjugation data exists and returns the invalid tables' indices
     conjugationPresenceCheck() {
       const positions = ['tl', 'ml', 'bl', 'tr', 'mr', 'br']
       let invalidIndices = []
@@ -347,11 +354,13 @@ export default {
       })
       return invalidIndices
     },
+    // clears default table name when clicking conjugation table name
     focusTitleInput(e) {
       if (e.target.value.includes('Table ')) {
         e.target.value = ''
       }
     },
+    // fills default table name when name field empty and unfocussed
     blurTitleInput(e) {
       if (!e.target.value) {
         e.target.value = `Table ${this.conjugationIndex + 1}`

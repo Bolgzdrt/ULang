@@ -52,18 +52,18 @@ export default {
     }
   },
   methods: {
+    // alters the accent buttons to display the upper or lower case letters
     shiftButton() {
       if (this.shiftToggle == "lower") {
         this.shiftToggle = "upper"
       } else {
         this.shiftToggle = "lower"
       }
-      this.displayed = this["french"/* this.language */][this.shiftToggle]
+      this.displayed = this[this.language][this.shiftToggle]
     }
   },
   created() {
-    // this.displayed = this[this.language].lower
-    this.displayed = this['french'].lower
+    this.displayed = this[this.language].lower
   }
 }
 </script>

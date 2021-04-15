@@ -3,6 +3,9 @@ const User = require('../models/User')
 const Word = require('../models/Word')
 const { filterFalseyValues } = require('../utils/utils')
 
+/**
+ * handles the creation of a set and adding the set to the user's set list in the db
+ */
 const createSet = async (req, res) => {
   const { name, language, words, description, ownerId, quickAccess } = req.body
   try {
@@ -40,6 +43,9 @@ const createSet = async (req, res) => {
   }
 }
 
+/**
+ * returns a list of all sets given a user id and language
+ */
 const getAllSetsOfLanguage = async (req, res) => {
   const { id, lang } = req.params
   try {
@@ -59,6 +65,9 @@ const getAllSetsOfLanguage = async (req, res) => {
   }
 }
 
+/**
+ * returns a single set given the set id
+ */
 const getSetById = async (req, res) => {
   const { id } = req.params
 
@@ -77,6 +86,9 @@ const getSetById = async (req, res) => {
   }
 }
 
+/**
+ * returns all user sets that contain verbs, mainly used for conjugation practice
+ */
 const getSetsWithVerbs = async (req, res) => {
   const { id, lang } = req.params
   try {
@@ -106,6 +118,9 @@ const getSetsWithVerbs = async (req, res) => {
   }
 }
 
+/**
+ * returns the word data for all words in the given set
+ */
 const getWordsInSet = async (req, res) => {
   const { id } = req.params
 
@@ -133,6 +148,9 @@ const getWordsInSet = async (req, res) => {
   then there needs to be a different means of storing that,
   or it needs to just be moved to the user.
 */
+/**
+ * adds/removes set from user's favorite set list
+ */
 const toggleFavorite = async (req, res) => {
   const { id } = req.params
 
@@ -156,6 +174,9 @@ const toggleFavorite = async (req, res) => {
   }
 }
 
+/**
+ * updates set in db with provided information
+ */
 const updateSet = async (req, res) => {
   const { id } = req.params
   const args = req.body
@@ -183,6 +204,9 @@ const updateSet = async (req, res) => {
   }
 }
 
+/**
+ * removes set from user's set list permanently
+ */
 const deleteSet = async (req, res) => {
   const { id } = req.params
 
@@ -200,6 +224,9 @@ const deleteSet = async (req, res) => {
   }
 }
 
+/**
+ * returns the last 4 most recently created sets for a given user and language
+ */
 const getMostRecentSets = async (req, res) => {
   const { id, lang } = req.params
   try {

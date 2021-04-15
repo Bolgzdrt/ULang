@@ -4,6 +4,9 @@ const Word = require('../models/Word')
 const { capitalizeWord, filterFalseyValues } = require('../utils/utils')
 const bcrypt = require('bcrypt')
 
+/**
+ * Add a user id to user's following list
+ */
 const followUser = async (req, res) => {
   // The id of the person to follow
   const { userId, followUserId } = req.body
@@ -26,6 +29,9 @@ const followUser = async (req, res) => {
   }
 }
 
+/**
+ * removes a user id from user's following list
+ */
 const unfollowUser = async (req, res) => {
   const { userId, unfollowUserId } = req.body
 
@@ -69,7 +75,9 @@ const getFollowingList = async (req, res) => {
   }
 }
 
-// Get followed user information
+/**
+ * Get followed user information
+ */
 const getFolledUserInfo = async (req, res) => {
   const { id } = req.params
 
@@ -89,6 +97,9 @@ const getFolledUserInfo = async (req, res) => {
   }
 }
 
+/**
+ * Get user information from supplied user id
+ */
 const getUserInfo = async (req, res) => {
   const { id } = req.params
 
@@ -110,6 +121,9 @@ const getUserInfo = async (req, res) => {
   }
 }
 
+/**
+ * retreives all languages assigned to given user
+ */
 const getUserLanguages = async (req, res) => {
   const { id } = req.params
   try {
@@ -128,6 +142,9 @@ const getUserLanguages = async (req, res) => {
   }
 }
 
+/**
+ * adds a new given language to user
+ */
 const addLanguagesToUser = async (req, res) => {
   console.log('addLanguagesToUser')
   const { id } = req.params
@@ -168,6 +185,9 @@ const addLanguagesToUser = async (req, res) => {
   }
 }
 
+/**
+ * updates user information in db with supplied information
+ */
 const updateUserInfo = async (req, res) => {
   const { id } = req.params
   const inputs = ({ email, password, firstName, lastName } = req.body)
@@ -187,6 +207,9 @@ const updateUserInfo = async (req, res) => {
   }
 }
 
+/**
+ * changes email for user in db
+ */
 const changeEmail = async (req, res) => {
   const { id } = req.params
   const { email, password } = req.body
@@ -213,6 +236,9 @@ const changeEmail = async (req, res) => {
   }
 }
 
+/**
+ * changes password for user in db
+ */
 const changePassword = async (req, res) => {
   const { id } = req.params
   const { oldPassword, newPassword } = req.body
@@ -241,6 +267,9 @@ const changePassword = async (req, res) => {
   }
 }
 
+/**
+ * removes account and all related data from db
+ */
 const deleteAccount = async (req, res) => {
   const { id } = req.params
   const { password } = req.body
@@ -294,6 +323,9 @@ const deleteAccount = async (req, res) => {
   }
 }
 
+/**
+ * returns possible matches from search string in nav bar
+ */
 const searchNames = async (req, res) => {
   const { query } = req.params
   try {
@@ -320,6 +352,9 @@ const searchNames = async (req, res) => {
   }
 }
 
+/**
+ * returns list of sets tagged for quick access based on user id and language
+ */
 const getQuickSets = async (req, res) => {
   const { id, language } = req.params
 
@@ -339,6 +374,9 @@ const getQuickSets = async (req, res) => {
   }
 }
 
+/**
+ * adds set to user's quick access list
+ */
 const addQuickSet = async (req, res) => {
   const { userId, setId } = req.body
 
@@ -360,6 +398,9 @@ const addQuickSet = async (req, res) => {
   }
 }
 
+/**
+ * deletes set from user's quick access list
+ */
 const removeQuickSet = async (req, res) => {
   const { userId, setId } = req.body
 
@@ -381,6 +422,9 @@ const removeQuickSet = async (req, res) => {
   }
 }
 
+/**
+ * adds set to user's set list
+ */
 const addSet = async (req, res) => {
   const { userId, setId} = req.body
   try {
@@ -401,6 +445,9 @@ const addSet = async (req, res) => {
   }
 }
 
+/**
+ * removes set from user's set list
+ */
 const removeSet = async (req, res) => {
   const { userId, setId} = req.body
   try {

@@ -46,7 +46,7 @@
         v-model="input"
         @keyup.enter="correctCheck"
       />
-      <AccentButtons @buttonClicked="appendChar" />
+      <AccentButtons @buttonClicked="appendChar" :language="language"/>
       <p class="error" v-if="entryErr">
         Please enter a conjugation for the ? cell
       </p>
@@ -77,6 +77,7 @@
 
 <script>
 import AccentButtons from '@/components/AccentButtons.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'tableInputCard',
@@ -99,6 +100,11 @@ export default {
       })
     }
   },
+  computed: {
+    language() {
+      return this.getLanguage()
+    },
+  },
   data() {
     return {
       input: '',
@@ -108,9 +114,12 @@ export default {
     }
   },
   methods: {
+    ...mapGetters('settings', ['getLanguage']),
+    // adds accent letter to translation field when an accent button is clicked
     appendChar(char) {
       this.input += char
     },
+    // checks whether input conjugation matches the correct answer and sets correct/incorrect for results
     correctCheck() {
       if (this.input) {
         if (this.input === this.conjObj.conjugation[this.conjObj.selected]) {
@@ -126,6 +135,7 @@ export default {
         this.entryErr = true
       }
     },
+    // progress to the next table in set
     cont() {
       this.resultModal = false
       this.input = ''

@@ -123,12 +123,14 @@ export default {
   methods: {
     ...mapGetters('settings', ['getLanguage']),
     ...mapGetters('auth', ['getUserId']),
+    // filters the word list when something is typed in the filter input box
     filterList() {
       this.filteredWords = this.words.filter(
         (word) =>
           word.english.includes(this.filter) || word.word.includes(this.filter)
       )
     },
+    // triggers set creation on submit button click
     submit() {
       const requestPayload = {
         name: this.name,
@@ -155,6 +157,7 @@ export default {
           this.requiredError = errorMsg
         })
     },
+    // return to previous page when cancel button is clicked
     cancel() {
       if (this.fromRoute) {
         this.$router.push(this.fromRoute)
