@@ -6,7 +6,8 @@ ULang is an application for mastering foreign languages with practice tools and 
 
 ## User Interface Specification
 
-* [UI Design Specification](./Assignments/UlangUIDesignSpec.pdf)
+* [UI Design Specification](./Assignments/ULangUIDesignSpec.pdf)
+* [Figma Designs](./Assignments/ULangFigmaDesign.pdf)
 
 ## Test Plan and Results
 
