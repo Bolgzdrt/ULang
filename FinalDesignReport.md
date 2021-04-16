@@ -21,7 +21,7 @@ ULang is an application for mastering foreign languages with practice tools and 
 
 ## Spring Final PPT Presentation
 
-[Presentation](https://docs.google.com/presentation/d/1ebwoC6WwzZYu7BoFigz9yEcMvEkoIs-Nefj_lccgEEE/edit?usp=sharing)
+[Presentation](https://youtu.be/E4_6qixd-5A)
 
 ## Final Expo Poster
 
