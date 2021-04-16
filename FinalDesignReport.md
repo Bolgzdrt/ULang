@@ -6,7 +6,7 @@ ULang is an application for mastering foreign languages with practice tools and 
 
 ## User Interface Specification
 
-<!-- TODO -->
+* [UI Design Specification](./Assignments/UlangUIDesignSpec.pdf)
 
 ## Test Plan and Results
 
@@ -37,9 +37,13 @@ ULang is an application for mastering foreign languages with practice tools and 
 
 * [Initial Assessment](./Assignments/robertbolgzds/robertbolgzds_IndividualAssessment.pdf)
 
+* [Final Assessment](./Assignments/robertbolgzds/robertbolgzds_final_self_assessment.pdf)
+
 ### Chris Messmer
 
 * [Initial Assessment](./Assignments/chrismessmer/MessmerIndividualCapstoneAssesment.pdf)
+
+* [Final Assessment](./Assignments/chrismessmer/MessmerSelfAssessment.pdf)
 
 ## Summary of Hours
 
