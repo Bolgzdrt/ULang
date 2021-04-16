@@ -11,7 +11,8 @@ ULang is an application for mastering foreign languages with practice tools and 
 ## Test Plan and Results
 
 [Test Plan](./Assignments/TestPlan.pdf)
-<!-- TODO results -->
+
+[Test Plan Results](./Assignmenst/../Assignments/testPlanResults.md)
 
 ## User Manual
 
